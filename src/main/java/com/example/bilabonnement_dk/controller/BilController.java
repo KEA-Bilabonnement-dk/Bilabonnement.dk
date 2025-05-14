@@ -14,11 +14,11 @@ public class BilController {
     @Autowired
     BilService BilService;
 
-    @GetMapping("/")
+    @GetMapping("Home/bil")
     public String index(Model model){
         List<Bil> bil = BilService.fetchAll();
         model.addAttribute("bil", bil);
-        return "home/index";
+        return "home";
     }
 
 
