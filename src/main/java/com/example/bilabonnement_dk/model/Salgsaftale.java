@@ -2,7 +2,7 @@ package com.example.bilabonnement_dk.model;
 import java.util.Date;
 
 public class Salgsaftale {
-<<<<<<< HEAD
+
     private int salgs_ID;
     private double salgspris;
     private Date leveringsdato;
@@ -78,7 +78,5 @@ public class Salgsaftale {
     public void setKunde(Kunde kunde) {
         this.kunde = kunde;
     }
-=======
 
->>>>>>> 584d4486cbcb855ade1b883444967f8638f5a7c1
 }
