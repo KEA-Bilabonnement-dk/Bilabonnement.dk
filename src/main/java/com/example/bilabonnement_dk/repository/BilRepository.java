@@ -20,7 +20,25 @@ public class BilRepository {
     }
 
     public void addBil(Bil a){
-        String sql = "INSERT INTO Bil (bil_ID, indkoebsdato, vognnr, stelnr, udstyrsniveau, staalpris, regafg, co2udl, type, mærke, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Bil (bil_ID, indkoebsdato, vognnr, stelnr, udstyrsniveau, staalpris, regafg, co2udl, type, maerke, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         template.update(sql, a.getBil_ID(), a.getIndkoebdato(), a.getVognnr(), a.getStelnr(), a.getUdstyrsniveau(), a.getStaalpris(), a.getRegafg(), a.getCo2udl(), a.getType(), a.getMaerke(), a.getModel());
     }
+
+    public Bil findBilById(int id){
+        String sql = "SELECT * FROM bil WHERE bil = ?";
+        RowMapper<Bil> rowMapper = new BeanPropertyRowMapper<>(Bil.class);
+        Bil p = template.queryForObject(sql, rowMapper, id);
+        return p;
+    }
+
+    public Boolean deleteBil(int id){
+        String sql = "DELETE FROM bil WHERE bil_ID = ?";
+        return template.update(sql, id) > 0;
+    }
+
+    public void updateBil(Bil a){
+        String sql = "UPDATE bil SET indkoebsdato = ?, vognnr = ?, stelnr = ?, udstyrsniveau = ?, staalpris = ?, regafg = ?, co2udl = ?, type = ?, type = ?, maerke = ?, model = ? WHERE Artist_ID = ?";
+        template.update(sql, a.getBil_ID(), a.getIndkoebdato(), a.getVognnr(), a.getStelnr(), a.getUdstyrsniveau(), a.getStaalpris(), a.getRegafg(), a.getCo2udl(), a.getType(), a.getMaerke(), a.getModel());
+    }
+
 }

@@ -19,7 +19,7 @@ public class BilService {
     public void addBil(Bil a){
         bilRepository.addBil(a);
     }
-/*
+
     public Bil findBilById(int id){
         return bilRepository.findBilById(id);
     }
@@ -31,5 +31,5 @@ public class BilService {
     public void updateBil(Bil a){
         bilRepository.updateBil(a);
     }
-    */
+
 }
