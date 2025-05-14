@@ -2,9 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Skadebehandler | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/skade.css">
 </head>
-<body>
+<body class="dashboard">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="" alt="Bilabonnement logo">
+        <h1 class="title">Skadebehandler Dashboard</h1>
+    </div>
+    <nav class="nav">
+        <ul>
+            <li><a href="/logout">Log ud</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main-content">
+    <h2>Velkommen, Skadebehandler!</h2>
+
+    <div class="dashboard-boxes">
+        <div class="dashboard-box">
+            <h3>Tilføj ny rapport</h3>
+            <p>Opret en ny skadesrapport baseret på en leasingaftale.</p>
+            <a href="/rapport/opret">Opret rapport</a>
+        </div>
+        <div class="dashboard-box">
+            <h3>Se rapport</h3>
+            <p>Få overblik over alle skaderapporter.</p>
+            <a href="/rapport">Gå til rapporter</a>
+        </div>
+        <div class="dashboard-box">
+            <h3>Rediger rapport</h3>
+            <p>Opdater eksisterende skaderapporter.</p>
+            <a href="/rapport/opret">Rediger rapport</a>
+        </div>
+        <div class="dashboard-box">
+            <h3>Slet rapport</h3>
+            <p>Fjern uønskede skaderapporter.</p>
+            <a href="/rapport/opret">Slet rapport</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 
 </body>
 </html>
