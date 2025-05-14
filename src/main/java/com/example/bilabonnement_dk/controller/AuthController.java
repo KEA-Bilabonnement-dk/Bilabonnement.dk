@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AuthController {
+
     @Autowired
     AuthService authService;
 
-    @GetMapping("/login")
-    public String visLoginSide()
-    {
-        return "login";
+    @GetMapping("/")
+    public String visLoginSide() {
+        return "home/login";
     }
 
     @PostMapping("/login")
@@ -26,11 +26,23 @@ public class AuthController {
                         @RequestParam String adgangskode,
                         HttpSession session,
                         Model model) {
+
         Medarbejder medarbejder = authService.login(brugernavn, adgangskode);
 
         if (medarbejder != null) {
             session.setAttribute("bruger", medarbejder);
-            return "redirect:/dashboard";
+
+            switch (medarbejder.getRolle()) {
+                case DATAREGISTRERINGSMEDARBEJDER:
+                    return "redirect:/data";
+                case SKADEBEHANDLER:
+                    return "redirect:/skade";
+                case FORRETNINGSUDVIKLER:
+                    return "redirect:/forretning";
+                default:
+                    return "redirect:/dashboard";
+            }
+
         } else {
             model.addAttribute("fejl", "Forkert brugernavn eller adgangskode");
             return "login";
@@ -38,9 +50,8 @@ public class AuthController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session)
-    {
+    public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/";
     }
 }
