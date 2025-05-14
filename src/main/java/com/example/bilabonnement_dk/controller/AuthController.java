@@ -18,7 +18,7 @@ public class AuthController {
 
     @GetMapping("/")
     public String visLoginSide() {
-        return "login";
+        return "home/login";
     }
 
     @PostMapping("/login")
