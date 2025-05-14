@@ -1,43 +1,43 @@
 package com.example.bilabonnement_dk.model;
 
 public class Rapportreservedel {
-    private int antalReservedeleID;
-    private int reservedelID;
-    private int skaderapportID;
+    private int antalReservedele_ID;
+    private Reservedel reservedel;
+    private Skaderapport skaderapport;
     private int antal;
 
-    public Rapportreservedel() {}
+    public Rapportreservedel() {
+    }
 
-    public Rapportreservedel(int antalReservedeleID, int reservedelID, int skaderapportID, int antal) {
-        this.antalReservedeleID = antalReservedeleID;
-        this.reservedelID = reservedelID;
-        this.skaderapportID = skaderapportID;
+    public Rapportreservedel(int antalReservedele_ID, Reservedel reservedel, Skaderapport skaderapport, int antal) {
+        this.antalReservedele_ID = antalReservedele_ID;
+        this.reservedel = reservedel;
+        this.skaderapport = skaderapport;
         this.antal = antal;
-
     }
 
-    public int getAntalReservedeleID() {
-        return antalReservedeleID;
+    public int getAntalReservedele_ID() {
+        return antalReservedele_ID;
     }
 
-    public void setAntalReservedeleID(int antalReservedeleID) {
-        this.antalReservedeleID = antalReservedeleID;
+    public void setAntalReservedele_ID(int antalReservedele_ID) {
+        this.antalReservedele_ID = antalReservedele_ID;
     }
 
-    public int getReservedelID() {
-        return reservedelID;
+    public Reservedel getReservedel() {
+        return reservedel;
     }
 
-    public void setReservedelID(int reservedelID) {
-        this.reservedelID = reservedelID;
+    public void setReservedel(Reservedel reservedel) {
+        this.reservedel = reservedel;
     }
 
-    public int getSkaderapportID() {
-        return skaderapportID;
+    public Skaderapport getSkaderapport() {
+        return skaderapport;
     }
 
-    public void setSkaderapportID(int skaderapportID) {
-        this.skaderapportID = skaderapportID;
+    public void setSkaderapport(Skaderapport skaderapport) {
+        this.skaderapport = skaderapport;
     }
 
     public int getAntal() {
