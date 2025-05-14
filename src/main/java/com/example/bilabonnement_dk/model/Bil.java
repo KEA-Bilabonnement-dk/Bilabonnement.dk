@@ -64,11 +64,11 @@ public class Bil {
         this.stelnr = stelnr;
     }
 
-    public String getUdstyrsniv() {
+    public String getUdstyrsniveau() {
         return udstyrsniv;
     }
 
-    public void setUdstyrsniv(String udstyrsniv) {
+    public void setUdstyrsniveau(String udstyrsniv) {
         this.udstyrsniv = udstyrsniv;
     }
 
