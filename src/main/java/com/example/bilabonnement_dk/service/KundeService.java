@@ -16,15 +16,13 @@ public class KundeService {
 
     public List<Kunde> fetchAll() {return kundeRepository.fetchAll();}
 
-    public void addKunde(Kunde k) {kundeRepository.addKunde(k);}
-
     public Kunde getKundeById(int id) {return kundeRepository.getKundeById(id);}
 
     public boolean deleteKunde(int id) {return kundeRepository.deleteKunde(id);}
 
     public void updateKunde(Kunde k) {kundeRepository.updateKunde(k);}
 
-
+    public void addKunde(Kunde k) {kundeRepository.addKunde(k);}
 
 
 
