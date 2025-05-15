@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 public class MedarbejderRepository
 {
     @Autowired
-    private JdbcTemplate template;
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     public Medarbejder findByBrugerOgKode(String brugernavn, String adgangskode) {

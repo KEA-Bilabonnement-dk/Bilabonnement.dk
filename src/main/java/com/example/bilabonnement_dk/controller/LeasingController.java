@@ -1,16 +1,41 @@
 package com.example.bilabonnement_dk.controller;
 
+import com.example.bilabonnement_dk.model.Leasing;
 import com.example.bilabonnement_dk.model.Medarbejder;
+import com.example.bilabonnement_dk.service.LeasingService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class LeasingController {
-    @GetMapping("home/leasing")
-    public String leasing(HttpSession Session, Model model) {
-        return "home/leasing";
 
+    @Autowired
+    private LeasingService leasingService;
+
+    @GetMapping("/leasing/opret")
+    public String visLeasingOpret(HttpSession session, Model model) {
+        Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
+        if (medarbejder == null || !medarbejder.getRolle().name().equals("DATAREGISTRERINGSMEDARBEJDER")) {
+            return "redirect:/";
+        }
+        model.addAttribute("leasing", new Leasing());
+        return "leasing/opret";
+    }
+
+    @PostMapping("/leasing/opret")
+    public String opretLeasing(@ModelAttribute Leasing leasing, HttpSession session) {
+        Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
+        if (medarbejder == null || !medarbejder.getRolle().name().equals("DATAREGISTRERINGSMEDARBEJDER")) {
+            return "redirect:/";
+        }
+
+        leasing.setMedarbejder(medarbejder);
+        leasingService.addLeasing(leasing);
+        return "redirect:/leasing";
     }
 }

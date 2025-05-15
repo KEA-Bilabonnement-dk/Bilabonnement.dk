@@ -17,7 +17,7 @@ public class BilController {
     BilService bilService;
 
 
-    @GetMapping("/")
+    @GetMapping("bil")
     public String index(Model model){
         List<Bil> bil = bilService.fetchAll();
         model.addAttribute("Bil", bil);

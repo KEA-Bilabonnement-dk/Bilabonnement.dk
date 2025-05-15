@@ -13,32 +13,42 @@ public class BilRepository {
     @Autowired
     private JdbcTemplate template;
 
+    public void addBil(Bil bil){
+        String sql = "INSERT INTO bil (indkoebsdato, vognnr, stelnr, udstyrsniv, staalpris, regafg,co2udl, Biltype, maerke, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        template.update(sql,
+                bil.getIndkoebdato(),
+                bil.getVognnr(),
+                bil.getStelnr(),
+                bil.getUdstyrsniveau(),
+                bil.getStaalpris(),
+                bil.getRegafg(),
+                bil.getCo2udl(),
+                bil.getBilType(),
+                bil.getMaerke(),
+                bil.getModel());
+    }
+
+    public Bil findBilById(int bil_ID){
+        String sql = "SELECT * FROM bil WHERE bil_ID = ?";
+        RowMapper<Bil> rowMapper = new BeanPropertyRowMapper<>(Bil.class);
+        return template.queryForObject(sql, rowMapper, bil_ID);
+    }
+
     public List<Bil> fetchAll(){
         String sql = "SELECT * FROM Bil";
         RowMapper<Bil> rowMapper = new BeanPropertyRowMapper<>(Bil.class);
         return template.query(sql, rowMapper);
     }
 
-    public void addBil(Bil a){
-        String sql = "INSERT INTO bil (indkoebsdato, vognnr, stelnr, udstyrsniv, staalpris, regafg, co2udl, Biltype, maerke, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        template.update(sql, a.getIndkoebdato(), a.getVognnr(), a.getStelnr(), a.getUdstyrsniveau(), a.getStaalpris(), a.getRegafg(), a.getCo2udl(), a.getBilType(), a.getMaerke(), a.getModel());
-    }
-
-
-    public Bil findBilById(int id){
-        String sql = "SELECT * FROM bil WHERE bil_ID = ?";
-        RowMapper<Bil> rowMapper = new BeanPropertyRowMapper<>(Bil.class);
-        return template.queryForObject(sql, rowMapper, id);
-    }
-
-    public Boolean deleteBil(int id){
-        String sql = "DELETE FROM bil WHERE bil_ID = ?";
-        return template.update(sql, id) > 0;
-    }
-
-    public void updateBil(Bil a){
+    public void updateBil(Bil bil){
         String sql = "UPDATE bil SET indkoebsdato = ?, vognnr = ?, stelnr = ?, udstyrsniveau = ?, staalpris = ?, regafg = ?, co2udl = ?, Biltype = ?, maerke = ?, model = ? WHERE bil_ID = ?";
-        template.update(sql, a.getIndkoebdato(), a.getVognnr(), a.getStelnr(), a.getUdstyrsniveau(), a.getStaalpris(), a.getRegafg(), a.getCo2udl(), a.getBilType(), a.getMaerke(), a.getModel());
+        template.update(sql, bil.getIndkoebdato(), bil.getVognnr(), bil.getStelnr(),
+                bil.getUdstyrsniveau(), bil.getStaalpris(), bil.getRegafg(), bil.getCo2udl(),
+                bil.getBilType(), bil.getMaerke(), bil.getModel());
     }
 
+    public void deleteBil(int bil_ID){
+        String sql = "DELETE FROM bil WHERE bil_ID = ?";
+        template.update(sql, bil_ID);
+    }
 }

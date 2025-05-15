@@ -12,23 +12,24 @@ public class BilService {
     @Autowired
     BilRepository bilRepository;
 
+    public void addBil(Bil bil){
+        bilRepository.addBil(bil);
+    }
+
+    public Bil findBilById(int bil_ID){
+        return bilRepository.findBilById(bil_ID);
+    }
+
     public List<Bil> fetchAll(){
         return bilRepository.fetchAll();
     }
 
-    public void addBil(Bil a){
-        bilRepository.addBil(a);
+    public void updateBil(Bil bil){
+        bilRepository.updateBil(bil);
     }
 
-    public Bil findBilById(int id){
-        return bilRepository.findBilById(id);
-    }
-
-    public Boolean deleteBil(int id){
-        return bilRepository.deleteBil(id);
-    }
-
-    public void updateBil(Bil a){
-        bilRepository.updateBil(a);
+    public void deleteBil(int bil_ID)
+    {
+        bilRepository.deleteBil(bil_ID);
     }
 }

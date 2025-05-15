@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Dataregistreringsmedarbejder | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/data.css">
 </head>
-<body>
+<body class="dashboard">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        <h1 class="title">Dataregistreringsmedarbejder Dashboard</h1>
+    </div>
+    <nav class="nav">
+        <ul>
+            <li><a href="/logout">Log ud</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="main-content">
+    <h2>Velkommen, Dataregistreringsmedarbejder!</h2>
+    <p th:if="${session.bruger != null}">
+        Du er logget ind som: <span th:text="${session.bruger.brugernavn}"></span>
+    </p>
+
+    <p class="intro">
+        På denne side kan du oprette, se, redigere og slette leasingaftaler. Brug venligst knapperne herunder til at håndtere dine opgaver.
+    </p>
+
+    <div class="dashboard-boxes">
+        <div class="dashboard-box">
+            <h3>Tilføj ny leasing</h3>
+            <p>Opret en ny leasingaftale.</p>
+            <a th:href="@{/leasing/opret}">Opret leasingaftale</a>
+        </div>
+        <div class="dashboard-box">
+            <h3>Se leasing</h3>
+            <p>Få overblik over alle leasingaftaler.</p>
+            <a href="/rapport">Gå til leasingaftaler</a>
+        </div>
+        <div class="dashboard-box">
+            <h3>Rediger leasing</h3>
+            <p>Opdater eksisterende leasingaftaler.</p>
+            <a href="/rapport/rediger">Rediger leasingaftaler</a>
+        </div>
+        <div class="dashboard-box">
+            <h3>Slet leasing</h3>
+            <p>Fjern uønskede leasingaftaler.</p>
+            <a href="/rapport/slet">Slet leasingaftale</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 
 </body>
 </html>
