@@ -16,7 +16,7 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @GetMapping("b")
+    @GetMapping("/")
     public String visLoginSide() {
         return "home/login";
     }
