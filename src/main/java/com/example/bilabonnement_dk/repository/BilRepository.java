@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class BilRepository {
     @Autowired
-    private JdbcTemplate template;
+    private static JdbcTemplate template;
 
     public void addBil(Bil bil){
         String sql = "INSERT INTO bil (indkoebsdato, vognnr, stelnr, udstyrsniv, staalpris, regafg,co2udl, Biltype, maerke, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
