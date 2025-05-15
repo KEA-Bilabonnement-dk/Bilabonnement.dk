@@ -31,5 +31,4 @@ public class BilService {
     public void updateBil(Bil a){
         bilRepository.updateBil(a);
     }
-
 }

@@ -7,27 +7,27 @@ public class Bil {
     private LocalDate indkoebdato;
     private String vognnr;
     private String stelnr;
-    private String udstyrsniv;
-    private String staalpris;
-    private String regafg;
-    private String co2udl;
-    private BilType type;
+    private String udstyrsniveau;
+    private double staalpris;
+    private double regafg;
+    private int co2udl;
+    private BilType Biltype;
     private String maerke;
     private String model;
 
     private Bil() {
     }
 
-    public Bil(int bil_ID, LocalDate indkoebdato, String vognnr, String stelnr, String udstyrsniv, String staalpris, String regafg, String co2udl, BilType type, String maerke, String model) {
+    public Bil(int bil_ID, LocalDate indkoebdato, String vognnr, String stelnr, String udstyrsniveau, double staalpris, double regafg, int co2udl, BilType BilType, String maerke, String model) {
         this.bil_ID = bil_ID;
         this.indkoebdato = indkoebdato;
         this.vognnr = vognnr;
         this.stelnr = stelnr;
-        this.udstyrsniv = udstyrsniv;
+        this.udstyrsniveau = udstyrsniveau;
         this.staalpris = staalpris;
         this.regafg = regafg;
         this.co2udl = co2udl;
-        this.type = type;
+        this.Biltype = BilType;
         this.maerke = maerke;
         this.model = model;
     }
@@ -65,43 +65,43 @@ public class Bil {
     }
 
     public String getUdstyrsniveau() {
-        return udstyrsniv;
+        return udstyrsniveau;
     }
 
-    public void setUdstyrsniveau(String udstyrsniv) {
-        this.udstyrsniv = udstyrsniv;
+    public void setUdstyrsniveau(String udstyrsniveau) {
+        this.udstyrsniveau = udstyrsniveau;
     }
 
-    public String getStaalpris() {
+    public double getStaalpris() {
         return staalpris;
     }
 
-    public void setStaalpris(String staalpris) {
+    public void setStaalpris(double staalpris) {
         this.staalpris = staalpris;
     }
 
-    public String getRegafg() {
+    public double getRegafg() {
         return regafg;
     }
 
-    public void setRegafg(String regafg) {
+    public void setRegafg(double regafg) {
         this.regafg = regafg;
     }
 
-    public String getCo2udl() {
+    public int getCo2udl() {
         return co2udl;
     }
 
-    public void setCo2udl(String co2udl) {
+    public void setCo2udl(int co2udl) {
         this.co2udl = co2udl;
     }
 
-    public BilType getType() {
-        return type;
+    public BilType getBilType() {
+        return Biltype;
     }
 
-    public void setType(BilType type) {
-        this.type = type;
+    public void setBilType(BilType Biltype) {
+        this.Biltype = Biltype;
     }
 
     public String getMaerke() {
