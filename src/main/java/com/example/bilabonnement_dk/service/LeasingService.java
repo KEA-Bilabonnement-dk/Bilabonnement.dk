@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class LeasingService {
     @Autowired
-    LeasingRepository leasingRepository;
+    private LeasingRepository leasingRepository;
 
     @Autowired
-    KundeRepository kundeRepository;
+    private KundeRepository kundeRepository;
 
     public void addLeasing(Leasing leasing)
     {

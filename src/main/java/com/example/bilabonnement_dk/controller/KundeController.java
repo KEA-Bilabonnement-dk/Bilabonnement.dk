@@ -12,6 +12,4 @@ public class KundeController {
     public String kundeController(HttpSession Session, Model model) {
         return "home/kunde";
     }
-
-
 }
