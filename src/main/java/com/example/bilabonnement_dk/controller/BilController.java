@@ -21,7 +21,7 @@ public class BilController {
     public String index(Model model){
         List<Bil> bil = bilService.fetchAll();
         model.addAttribute("Bil", bil);
-        return "home/Bil";
+        return "bil";
     }
 
     @PostMapping("/create")
