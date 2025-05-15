@@ -18,9 +18,9 @@ public class BilController {
     BilService bilService;
 
     @GetMapping("home/bil")
-    public String index(HttpSession Session, Model model){
-        List<Bil> bil = BilService.fetchAll();
-        model.addAttribute("bil", bil);
+    public String index(HttpSession Session, Model model) {
+        List<Bil> biler = bilService.fetchAll();
+        model.addAttribute("bil", biler);
         return "home";
 
 //    @GetMapping("home/bil")
@@ -35,4 +35,5 @@ public class BilController {
 //        bilService.addBil(bil);
 //        return "create";
 //    }
+    }
 }

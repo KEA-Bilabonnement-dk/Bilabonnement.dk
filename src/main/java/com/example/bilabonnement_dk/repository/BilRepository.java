@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public class BilRepository {
     @Autowired
-    private JdbcTemplate template;
+    private static JdbcTemplate template;
 
     public List<Bil> fetchAll(){
         String sql = "SELECT * FROM Bil";
