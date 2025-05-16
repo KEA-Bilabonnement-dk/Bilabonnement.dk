@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Opret Leasingaftale | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/data.css">
+</head>
+<body class="create">
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Opret leasingaftale</h2>
+        <form th:action="@{/leasing/create}" method="post" th:object="${leasing}">
+
+            <div class="form-group">
+                <label>Startdato:</label>
+                <input type="date" th:field="*{startdato}" placeholder="Startdato" required>
+            </div>
+
+            <div class="form-group">
+                <label>Slutdato:</label>
+                <input type="date" th:field="*{slutdato}" placeholder="Slutdato" required>
+            </div>
+
+            <div class="form-group">
+                <label></label>
+            </div>
+
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

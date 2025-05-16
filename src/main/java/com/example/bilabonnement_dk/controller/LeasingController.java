@@ -17,19 +17,21 @@ public class LeasingController {
     @Autowired
     private LeasingService leasingService;
 
-    @GetMapping("/leasing/opret")
+    @GetMapping("/leasing/create")
     public String visLeasingOpret(HttpSession session, Model model) {
         Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
+
         if (medarbejder == null || !medarbejder.getRolle().name().equals("DATAREGISTRERINGSMEDARBEJDER")) {
             return "redirect:/";
         }
         model.addAttribute("leasing", new Leasing());
-        return "leasing/opret";
+        return "leasing/create";
     }
 
-    @PostMapping("/leasing/opret")
+    @PostMapping("/leasing/create")
     public String opretLeasing(@ModelAttribute Leasing leasing, HttpSession session) {
         Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
+
         if (medarbejder == null || !medarbejder.getRolle().name().equals("DATAREGISTRERINGSMEDARBEJDER")) {
             return "redirect:/";
         }

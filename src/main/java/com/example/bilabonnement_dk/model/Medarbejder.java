@@ -6,6 +6,8 @@ public class Medarbejder {
     private String efternavn;
     private String telefonnummer;
     private String email;
+    private String brugernavn;
+    private String adgangskode;
     private Rolle rolle;
     Adresse adresse;
 
@@ -13,12 +15,14 @@ public class Medarbejder {
     {
     }
 
-    public Medarbejder(int medarbejder_ID, String fornavn, String efternavn, String telefonnummer, String email, Rolle rolle, Adresse adresse) {
+    public Medarbejder(int medarbejder_ID, String fornavn, String efternavn, String telefonnummer, String email, String brugernavn, String adgangskode, Rolle rolle, Adresse adresse) {
         this.medarbejder_ID = medarbejder_ID;
         this.fornavn = fornavn;
         this.efternavn = efternavn;
         this.telefonnummer = telefonnummer;
         this.email = email;
+        this.brugernavn = brugernavn;
+        this.adgangskode = adgangskode;
         this.rolle = rolle;
         this.adresse = adresse;
     }
@@ -61,6 +65,22 @@ public class Medarbejder {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getBrugernavn() {
+        return brugernavn;
+    }
+
+    public void setBrugernavn(String brugernavn) {
+        this.brugernavn = brugernavn;
+    }
+
+    public String getAdgangskode() {
+        return adgangskode;
+    }
+
+    public void setAdgangskode(String adgangskode) {
+        this.adgangskode = adgangskode;
     }
 
     public Rolle getRolle() {
