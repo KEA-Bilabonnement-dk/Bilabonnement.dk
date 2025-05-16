@@ -22,6 +22,9 @@
 
 <main class="main-content">
     <h2>Velkommen, Dataregistreringsmedarbejder!</h2>
+    <div th:if="${besked}" class="alert alert succes">
+        <p th:text="${besked}"></p>
+    </div>
     <p th:if="${session.bruger != null}">
         Du er logget ind som: <span th:text="${session.bruger.brugernavn}"></span>
     </p>

@@ -1,6 +1,0 @@
-package com.example.bilabonnement_dk.model;
-
-public enum Type {
-    LIMITED,
-    UNLIMITED
-}

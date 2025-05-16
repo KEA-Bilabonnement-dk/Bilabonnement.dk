@@ -14,14 +14,14 @@ public class LeasingRepository {
 
     public void addLeasing(Leasing leasing) {
         String sql = """
-            INSERT INTO leasing (kunde_ID, bil_ID, abonnementstype_ID, startdato, slutdato, pris, medarbejder_ID)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """;
+        INSERT INTO leasing (kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
 
         jdbcTemplate.update(sql,
                 leasing.getKunde().getKunde_ID(),
                 leasing.getBil().getBil_ID(),
-                leasing.getAbonnementstype().getAbonnementstype_ID(),
+                leasing.getAbonnementstype().name(),
                 leasing.getStartdato(),
                 leasing.getSlutdato(),
                 leasing.getPris(),

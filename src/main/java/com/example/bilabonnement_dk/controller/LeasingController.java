@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class LeasingController {
@@ -29,7 +30,7 @@ public class LeasingController {
     }
 
     @PostMapping("/leasing/create")
-    public String opretLeasing(@ModelAttribute Leasing leasing, HttpSession session) {
+    public String opretLeasing(@ModelAttribute Leasing leasing, HttpSession session, RedirectAttributes redirectAttributes) {
         Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
 
         if (medarbejder == null || !medarbejder.getRolle().name().equals("DATAREGISTRERINGSMEDARBEJDER")) {
@@ -38,6 +39,9 @@ public class LeasingController {
 
         leasing.setMedarbejder(medarbejder);
         leasingService.addLeasing(leasing);
-        return "redirect:/leasing";
+
+        redirectAttributes.addFlashAttribute("besked", "Leasingaftale oprettet!");
+
+        return "redirect:/data";
     }
 }

@@ -31,7 +31,7 @@
             <div class="form-group">
                 <label for="abonnementstype">Abonnementstype:</label>
                 <select id="abonnementstype" th:field="*{abonnementstype}" placeholder="Indtast abonementstype" required>
-                    <option th:each="type : ${T(com.example.bilabonnement_dk.model.Type).values()}"
+                    <option th:each="type : ${T(com.example.bilabonnement_dk.model.Abonnementstype).values()}"
                             th:value="${type}" th:text="${type}">
                     </option>
                 </select>
@@ -49,7 +49,7 @@
 
             <div class="form-group">
                 <label for="pris">Pris:</label>
-                <input type="number" step="0.01" id="pris" th:field="*{pris}" placeholder="Indtast pris i DKK" required>
+                <input type="number" step="1000.00" id="pris" th:field="*{pris}" placeholder="Indtast pris i DKK" required>
             </div>
 
             <button type="submit" class="btn btn create">Opret leasingaftale</button>
