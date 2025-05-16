@@ -2,9 +2,59 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Leasingaftaler</title>
+    <link rel="stylesheet" href="/data.css">
 </head>
 <body>
+<header class="header">
+    <div class="logo-container">
+        <h1 class="title">Alle leasingaftaler</h1>
+    </div>
+</header>
 
+<main class="container">
+    <!-- 🔍 SØGEFELT -->
+    <form th:action="@{/leasing/search}" method="get" class="search-form">
+        <label for="id">Søg leasing-ID:</label>
+        <input type="number" id="id" name="id" placeholder="Indtast ID" required>
+        <button type="submit">Søg</button>
+    </form>
+
+    <!-- 📋 TABEL -->
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Kunde</th>
+            <th>Bil</th>
+            <th>Start</th>
+            <th>Slut</th>
+            <th>Pris</th>
+            <th>Type</th>
+            <th>Se</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="leasing : ${leasingliste}">
+            <td th:text="${leasing.leasing_ID}"></td>
+            <td th:text="${leasing.kunde.kfornavn + ' ' + leasing.kunde.kefternavn}"></td>
+            <td th:text="${leasing.bil.maerke + ' ' + leasing.bil.model}"></td>
+            <td th:text="${leasing.startdato}"></td>
+            <td th:text="${leasing.slutdato}"></td>
+            <td th:text="${leasing.pris} + ' DKK'"></td>
+            <td th:text="${leasing.abonnementstype}"></td>
+            <td><a th:href="@{'/leasing/' + ${leasing.leasing_ID}}">Detaljer</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="button-links">
+        <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 </body>
 </html>

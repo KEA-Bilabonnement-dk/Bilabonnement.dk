@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -13,15 +15,17 @@ public class LeasingRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
     @Autowired
     private KundeRepository kundeRepository;
+
     @Autowired
     private BilRepository bilRepository;
 
     public void addLeasing(Leasing leasing) {
         String sql = """
-        INSERT INTO leasing (kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO leasing (kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
         jdbcTemplate.update(sql,
@@ -37,52 +41,39 @@ public class LeasingRepository {
 
     public List<Leasing> fetchAll() {
         String sql = """
-        SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
-        FROM leasing
-                """;
+            SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
+            FROM leasing
+        """;
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Leasing leasing = new Leasing();
-
-            leasing.setLeasing_ID(rs.getInt("leasing_ID"));
-            leasing.setStartdato(rs.getDate("startdato").toLocalDate());
-            leasing.setSlutdato(rs.getDate("slutdato").toLocalDate());
-            leasing.setPris(rs.getDouble("pris"));
-            leasing.setAbonnementstype(Abonnementstype.valueOf(rs.getString("abonnementstype")));
-
-            int kunde_ID = rs.getInt("kunde_ID");
-            int bil_ID = rs.getInt("bil_ID");
-
-            leasing.setKunde(kundeRepository.findKundeByID(kunde_ID));
-            leasing.setBil(bilRepository.findBilByID(bil_ID));
-
-            return leasing;
-        });
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs));
     }
 
-    public Leasing findLeasingByID(int leasing_ID)
-    {
+    public Leasing findLeasingByID(int leasing_ID) {
         String sql = """
-        SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
-        FROM leasing
-        WHERE leasing_ID = ?
-                """;
+            SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
+            FROM leasing
+            WHERE leasing_ID = ?
+        """;
 
-        return jdbcTemplate.queryForObject(sql, new Object[]{leasing_ID},(rs, rowNum) -> {
-            Leasing leasing = new Leasing();
+        return jdbcTemplate.queryForObject(sql, new Object[]{leasing_ID}, (rs, rowNum) -> mapRow(rs));
+    }
 
-            leasing.setStartdato(rs.getDate("startdato").toLocalDate());
-            leasing.setSlutdato(rs.getDate("slutdato").toLocalDate());
-            leasing.setPris(rs.getDouble("pris"));
-            leasing.setAbonnementstype(Abonnementstype.valueOf(rs.getString("abonnementstype")));
+    // Privat metode til at genbruge mapping
+    private Leasing mapRow(ResultSet rs) throws SQLException {
+        Leasing leasing = new Leasing();
 
-            int kunde_ID = rs.getInt("kunde_ID");
-            int bil_ID = rs.getInt("bil_ID");
+        leasing.setLeasing_ID(rs.getInt("leasing_ID"));
+        leasing.setStartdato(rs.getDate("startdato").toLocalDate());
+        leasing.setSlutdato(rs.getDate("slutdato").toLocalDate());
+        leasing.setPris(rs.getDouble("pris"));
+        leasing.setAbonnementstype(Abonnementstype.valueOf(rs.getString("abonnementstype")));
 
-            leasing.setKunde(kundeRepository.findKundeByID(kunde_ID));
-            leasing.setBil(bilRepository.findBilByID(bil_ID));
+        int kunde_ID = rs.getInt("kunde_ID");
+        int bil_ID = rs.getInt("bil_ID");
 
-            return leasing;
-        });
+        leasing.setKunde(kundeRepository.findKundeByID(kunde_ID));
+        leasing.setBil(bilRepository.findBilByID(bil_ID));
+
+        return leasing;
     }
 }
