@@ -19,22 +19,47 @@
         <form th:action="@{/leasing/create}" method="post" th:object="${leasing}">
 
             <div class="form-group">
-                <label>Startdato:</label>
-                <input type="date" th:field="*{startdato}" placeholder="Startdato" required>
+                <label for="kunde_ID">Kunde-ID:</label>
+                <input type="number" id="kunde_ID" th:field="*{kunde.kunde_ID}" placeholder="Indtast kunde-ID" required>
             </div>
 
             <div class="form-group">
-                <label>Slutdato:</label>
-                <input type="date" th:field="*{slutdato}" placeholder="Slutdato" required>
+                <label for="bil_ID">Bil-ID:</label>
+                <input type="number" id="bil_ID" th:field="*{bil.bil_ID}" placeholder="Indtast bil-ID" required>
             </div>
 
             <div class="form-group">
-                <label></label>
+                <label for="abonnementstype_ID">Abonnementstype-ID:</label>
+                <input type="number" id="abonnementstype_ID" th:field="*{abonnementstype.abonnementstype_ID}" placeholder="Indtast abonementstype-ID" required>
             </div>
 
+            <div class="form-group">
+                <label for="startdato">Startdato:</label>
+                <input type="date" id="startdato" th:field="*{startdato}" placeholder="Indtast startdato" required>
+            </div>
+
+            <div class="form-group">
+                <label for="slutdato">Slutdato:</label>
+                <input type="date" id="slutdato" th:field="*{slutdato}" placeholder="Indtast slutdato" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pris">Pris:</label>
+                <input type="number" step="0.01" id="pris" th:field="*{pris}" placeholder="Indtast pris i DKK" required>
+            </div>
+
+            <button type="submit" class="btn btn create">Opret leasingaftale</button>
+
+            <div class="button-links">
+                <a href="/data" class="btn btn-back">🏠 Back to Home</a>
+            </div>
         </form>
     </div>
 </main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 
 </body>
 </html>

@@ -15,7 +15,7 @@ public class Bil {
     private String maerke;
     private String model;
 
-    private Bil() {
+    public Bil() {
     }
 
     public Bil(int bil_ID, LocalDate indkoebdato, String vognnr, String stelnr, String udstyrsniveau, double staalpris, double regafg, int co2udl, BilType BilType, String maerke, String model) {
