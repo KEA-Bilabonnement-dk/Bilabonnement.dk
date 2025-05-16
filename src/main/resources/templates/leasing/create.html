@@ -29,8 +29,12 @@
             </div>
 
             <div class="form-group">
-                <label for="abonnementstype_ID">Abonnementstype-ID:</label>
-                <input type="number" id="abonnementstype_ID" th:field="*{abonnementstype.abonnementstype_ID}" placeholder="Indtast abonementstype-ID" required>
+                <label for="abonnementstype">Abonnementstype:</label>
+                <select id="abonnementstype" th:field="*{abonnementstype}" placeholder="Indtast abonementstype" required>
+                    <option th:each="type : ${T(com.example.bilabonnement_dk.model.Type).values()}"
+                            th:value="${type}" th:text="${type}">
+                    </option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -51,11 +55,49 @@
             <button type="submit" class="btn btn create">Opret leasingaftale</button>
 
             <div class="button-links">
-                <a href="/data" class="btn btn-back">🏠 Back to Home</a>
+                <a href="/data" class="btn btn-back">Back to Home</a>
             </div>
         </form>
     </div>
 </main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const abonnementstype = document.getElementById("abonnementstype");
+        const startdato = document.getElementById("startdato");
+        const slutdato = document.getElementById("slutdato");
+
+        function updateSlutdato() {
+            const start = new Date(startdato.value);
+            const type = abonnementstype.value;
+
+            if (!startdato.value) return;
+
+            slutdato.readOnly = false;
+            slutdato.min = "";
+
+            if (type == "LIMITED") {
+                // Sætter slutdato til præcis 5 måneder efter start
+                const limitedEnd = new Date(start);
+                limitedEnd.setMonth(start.getMonth() + 5);
+                slutdato.value = limitedEnd.toISOString().split("T")[0];
+                slutdato.readOnly = true;
+            } else if (type === "UNLIMITED") {
+                // Sæt minimumsdato til 3 måneder frem
+                const minEnd = new Date(start);
+                minEnd.setMonth(start.getMonth() + 3);
+                slutdato.min = minEnd.toISOString().split("T")[0];
+
+                const currentEnd = new Date(slutdato.value);
+                if (currentEnd < minEnd) {
+                    slutdato.value = "";
+                }
+            }
+        }
+        abonnementstype.addEventListener("change", updateSlutdato);
+        startdato.addEventListener("change", updateSlutdato)
+    });
+</script>
 
 <footer class="footer">
     <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
