@@ -2,35 +2,39 @@ package com.example.bilabonnement_dk.model;
 
 public class Abonnementstype {
     private int abonnementstype_ID;
-    private Enum type;
+    private Type type;
     private boolean kanForhaandSealges;
 
     public Abonnementstype() {}
 
-    public Abonnementstype(int abonnementstype_ID, Enum type, boolean kanForhaandSealges) {
+    public Abonnementstype(int abonnementstype_ID, Type type, boolean kanForhaandSealges) {
         this.abonnementstype_ID = abonnementstype_ID;
         this.type = type;
         this.kanForhaandSealges = kanForhaandSealges;
     }
+
     public int getAbonnementstype_ID() {
         return abonnementstype_ID;
-
     }
+
     public void setAbonnementstype_ID(int abonnementstype_ID) {
         this.abonnementstype_ID = abonnementstype_ID;
     }
-    public Enum getType() {
+
+    public Type getType() {
         return type;
     }
-    public void setType(Enum type) {
+
+    public void setType(Type type) {
         this.type = type;
     }
+
     public boolean isKanForhaandSealges() {
         return kanForhaandSealges;
     }
+
     public void setKanForhaandSealges(boolean kanForhaandSealges) {
         this.kanForhaandSealges = kanForhaandSealges;
     }
-
 }
 
