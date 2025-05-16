@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Bil {
     private int bil_ID;
-    private LocalDate indkoebdato;
+    private LocalDate indkoebsdato;
     private String vognnr;
     private String stelnr;
     private String udstyrsniveau;
@@ -18,16 +18,16 @@ public class Bil {
     private Bil() {
     }
 
-    public Bil(int bil_ID, LocalDate indkoebdato, String vognnr, String stelnr, String udstyrsniveau, double staalpris, double regafg, int co2udl, BilType BilType, String maerke, String model) {
+    public Bil(int bil_ID, LocalDate indkoebsdato, String vognnr, String stelnr, String udstyrsniveau, double staalpris, double regafg, int co2udl, BilType Biltype, String maerke, String model) {
         this.bil_ID = bil_ID;
-        this.indkoebdato = indkoebdato;
+        this.indkoebsdato = indkoebsdato;
         this.vognnr = vognnr;
         this.stelnr = stelnr;
         this.udstyrsniveau = udstyrsniveau;
         this.staalpris = staalpris;
         this.regafg = regafg;
         this.co2udl = co2udl;
-        this.Biltype = BilType;
+        this.Biltype = Biltype;
         this.maerke = maerke;
         this.model = model;
     }
@@ -40,12 +40,12 @@ public class Bil {
         this.bil_ID = bil_ID;
     }
 
-    public LocalDate getIndkoebdato() {
-        return indkoebdato;
+    public LocalDate getIndkoebsdato() {
+        return indkoebsdato;
     }
 
-    public void setIndkoebdato(LocalDate indkoebdato) {
-        this.indkoebdato = indkoebdato;
+    public void setIndkoebsdato(LocalDate indkoebsdato) {
+        this.indkoebsdato = indkoebsdato;
     }
 
     public String getVognnr() {
@@ -96,11 +96,11 @@ public class Bil {
         this.co2udl = co2udl;
     }
 
-    public BilType getBilType() {
+    public BilType getBiltype() {
         return Biltype;
     }
 
-    public void setBilType(BilType Biltype) {
+    public void setBiltype(BilType Biltype) {
         this.Biltype = Biltype;
     }
 

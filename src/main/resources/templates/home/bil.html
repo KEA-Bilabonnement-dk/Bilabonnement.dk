@@ -32,25 +32,25 @@
     </thead>
     <tbody>
     <tr th:each="Bil: ${bil}">
-        <td th:text="${bil.bil_ID}"/>
-        <td th:text="${bil.indkoebsdato}"/>
-        <td th:text="${bil.vognnr}"/>
-        <td th:text="${bil.stelnr}"/>
-        <td th:text="${bil.udstrysniveau}"/>
-        <td th:text="${bil.staalpris}"/>
-        <td th:text="${bil.regafg}"/>
-        <td th:text="${bil.co2udl}"/>
-        <td th:text="${bil.type}"/>
-        <td th:text="${bil.maerke}"/>
-        <td th:text="${bil.model}"/>
+        <td th:text="${Bil.bil_ID}"/>
+        <td th:text="${Bil.indkoebsdato}"/>
+        <td th:text="${Bil.vognnr}"/>
+        <td th:text="${Bil.stelnr}"/>
+        <td th:text="${Bil.udstyrsniveau}"/>
+        <td th:text="${Bil.staalpris}"/>
+        <td th:text="${Bil.regafg}"/>
+        <td th:text="${Bil.co2udl}"/>
+        <td th:text="${Bil.Biltype}"/>
+        <td th:text="${Bil.maerke}"/>
+        <td th:text="${Bil.model}"/>
         <td>
-            <a th:href="@{'/viewOne/'+${bil.bil_ID}}">
+            <a th:href="@{'/viewOne/'+${Bil.bil_ID}}">
                 <button class="btn-viewOne" id="btn-viewOne">Vis bil</button>
             </a>
-            <a th:href="@{'/deleteOne/'+${bil.bil_ID}}">
+            <a th:href="@{'/deleteOne/'+${Bil.bil_ID}}">
                 <button class="btn-deleteOne" id="btn-deleteOne">Slet bil</button>
             </a>
-            <a th:href="@{'/updateOne/'+${bil.bil_ID}}">
+            <a th:href="@{'/updateOne/'+${Bil.bil_ID}}">
                 <button class="btn-updateOne" id="btn-updateOne">Updater bil</button>
             </a>
         </td>
