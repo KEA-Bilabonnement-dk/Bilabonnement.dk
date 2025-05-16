@@ -16,8 +16,8 @@ public class BilService {
         bilRepository.addBil(bil);
     }
 
-    public Bil findBilById(int bil_ID){
-        return bilRepository.findBilById(bil_ID);
+    public Bil findBilByID(int bil_ID){
+        return bilRepository.findBilByID(bil_ID);
     }
 
     public List<Bil> fetchAll(){

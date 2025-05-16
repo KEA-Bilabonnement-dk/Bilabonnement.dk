@@ -1,16 +1,22 @@
 package com.example.bilabonnement_dk.repository;
 
-
+import com.example.bilabonnement_dk.model.Abonnementstype;
 import com.example.bilabonnement_dk.model.Leasing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class LeasingRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private KundeRepository kundeRepository;
+    @Autowired
+    private BilRepository bilRepository;
 
     public void addLeasing(Leasing leasing) {
         String sql = """
@@ -27,5 +33,56 @@ public class LeasingRepository {
                 leasing.getPris(),
                 leasing.getMedarbejder().getMedarbejder_ID()
         );
+    }
+
+    public List<Leasing> fetchAll() {
+        String sql = """
+        SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
+        FROM leasing
+                """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Leasing leasing = new Leasing();
+
+            leasing.setLeasing_ID(rs.getInt("leasing_ID"));
+            leasing.setStartdato(rs.getDate("startdato").toLocalDate());
+            leasing.setSlutdato(rs.getDate("slutdato").toLocalDate());
+            leasing.setPris(rs.getDouble("pris"));
+            leasing.setAbonnementstype(Abonnementstype.valueOf(rs.getString("abonnementstype")));
+
+            int kunde_ID = rs.getInt("kunde_ID");
+            int bil_ID = rs.getInt("bil_ID");
+
+            leasing.setKunde(kundeRepository.findKundeByID(kunde_ID));
+            leasing.setBil(bilRepository.findBilByID(bil_ID));
+
+            return leasing;
+        });
+    }
+
+    public Leasing findLeasingByID(int leasing_ID)
+    {
+        String sql = """
+        SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
+        FROM leasing
+        WHERE leasing_ID = ?
+                """;
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{leasing_ID},(rs, rowNum) -> {
+            Leasing leasing = new Leasing();
+
+            leasing.setStartdato(rs.getDate("startdato").toLocalDate());
+            leasing.setSlutdato(rs.getDate("slutdato").toLocalDate());
+            leasing.setPris(rs.getDouble("pris"));
+            leasing.setAbonnementstype(Abonnementstype.valueOf(rs.getString("abonnementstype")));
+
+            int kunde_ID = rs.getInt("kunde_ID");
+            int bil_ID = rs.getInt("bil_ID");
+
+            leasing.setKunde(kundeRepository.findKundeByID(kunde_ID));
+            leasing.setBil(bilRepository.findBilByID(bil_ID));
+
+            return leasing;
+        });
     }
 }

@@ -28,7 +28,7 @@ public class BilRepository {
                 bil.getModel());
     }
 
-    public Bil findBilById(int bil_ID){
+    public Bil findBilByID(int bil_ID){
         String sql = "SELECT * FROM bil WHERE bil_ID = ?";
         RowMapper<Bil> rowMapper = new BeanPropertyRowMapper<>(Bil.class);
         return template.queryForObject(sql, rowMapper, bil_ID);

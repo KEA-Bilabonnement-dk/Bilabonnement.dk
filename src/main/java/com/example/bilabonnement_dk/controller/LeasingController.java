@@ -44,4 +44,10 @@ public class LeasingController {
 
         return "redirect:/data";
     }
+
+    @GetMapping("/leasing")
+    public String visAlleLeasingAftaler(Model model) {
+        model.addAttribute("leasingliste", leasingService.fetchAll());
+        return "leasing/read";
+    }
 }

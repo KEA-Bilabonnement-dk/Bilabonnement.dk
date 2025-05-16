@@ -7,6 +7,8 @@ import com.example.bilabonnement_dk.repository.LeasingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LeasingService {
     @Autowired
@@ -21,5 +23,15 @@ public class LeasingService {
         Kunde kunde = kundeRepository.findKundeByID(kunde_ID);
         leasing.setKunde(kunde);
         leasingRepository.addLeasing(leasing);
+    }
+
+    public List<Leasing> fetchAll()
+    {
+        return leasingRepository.fetchAll();
+    }
+
+    public Leasing findLeasingByID(int leasing_ID)
+    {
+        return leasingRepository.findLeasingByID(leasing_ID);
     }
 }
