@@ -57,11 +57,36 @@ public class LeasingController {
     public String visEnLeasingAftale(@RequestParam("leasing_ID") int leasing_ID, Model model, RedirectAttributes redirectAttributes) {
         try {
             Leasing leasing = leasingService.findLeasingByID(leasing_ID);
-        model.addAttribute("leasing", leasing);
+            model.addAttribute("leasing", leasing);
         return "leasing/readOne";
             } catch (EmptyResultDataAccessException e) {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
             return "redirect:/leasing/read";
         }
+    }
+
+    @GetMapping("/leasing/update")
+    public String visOpdateringsFormular()
+    {
+    return "leasing/update";
+    }
+
+    @GetMapping("/leasing/updateOne")
+    public String opdaterEnLeasing(@RequestParam("leasing_ID") int leasing_ID, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Leasing leasing = leasingService.findLeasingByID(leasing_ID);
+            model.addAttribute("leasing", leasing);
+            return "leasing/update";
+        } catch (EmptyResultDataAccessException e) {
+            redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
+            return "redirect:/leasing/updateOne";
+        }
+    }
+
+    @PostMapping ("/leasing/update")
+    public String opdaterLeasing(@ModelAttribute Leasing leasing)
+    {
+        leasingService.updateLeasing(leasing);
+        return "redirect:/leasing/read";
     }
 }

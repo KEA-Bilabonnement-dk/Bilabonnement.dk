@@ -76,4 +76,24 @@ public class LeasingRepository {
 
         return leasing;
     }
+
+    public void updateLeasing(Leasing leasing)
+    {
+        String sql = """
+                UPDATE leasing
+                SET kunde_ID = ?, bil_ID = ?, abonnementstype = ?, startdato = ?, slutdato = ?, pris = ?, medarbejder_ID = ?
+                WHERE leasing_ID = ?
+                """;
+
+        jdbcTemplate.update(sql,
+                leasing.getKunde().getKunde_ID(),
+                leasing.getBil().getBil_ID(),
+                leasing.getAbonnementstype().name(),
+                leasing.getStartdato(),
+                leasing.getSlutdato(),
+                leasing.getPris(),
+                leasing.getMedarbejder().getMedarbejder_ID(),
+                leasing.getLeasing_ID()
+        );
+    }
 }
