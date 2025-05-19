@@ -2,9 +2,57 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Opdater Leasingaftale | Bilabonnement.dk</title>
+    <title>Opdater Leasingaftaler | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/data.css">
 </head>
-<body>
+<body class="update">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Opdater Leasingaftale</h2>
+        <form th:action="@{/leasing/update}" method="post" th:object="${leasing}">
+
+            <input type="hidden" th:field="*{leasing_ID}"/>
+
+            <label>Kunde-ID:</label>
+            <input type="number" th:field="*{kunde.kunde_ID}"/>
+
+            <label>Bil-ID:</label>
+            <input type="number" th:field="*{bil.bil_ID}"/>
+
+            <label>Startdato:</label>
+            <input type="date" th:field="*{startdato}"/>
+
+            <label>Slutdato:</label>
+            <input type="date" th:field="*{slutdato}"/>
+
+            <label>Pris:</label>
+            <input type="number" th:field="*{pris}"/>
+
+            <label>Abonnementstype:</label>
+            <select id="abonnementstype" th:field="*{abonnementstype}" placeholder="Indtast abonementstype" required>
+                <option th:each="type : ${T(com.example.bilabonnement_dk.model.Abonnementstype).values()}"
+                        th:value="${type}" th:text="${type}">
+                </option>
+            </select>
+
+            <button type="submit">Opdater Leasingaftale</button>
+
+            <div class="button-links">
+                <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+
 
 <footer class="footer">
     <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>

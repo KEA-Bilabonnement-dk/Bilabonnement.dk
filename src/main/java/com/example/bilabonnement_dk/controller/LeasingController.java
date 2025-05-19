@@ -61,7 +61,7 @@ public class LeasingController {
         return "leasing/readOne";
             } catch (EmptyResultDataAccessException e) {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
-            return "redirect:/leasing/read";
+            return "leasing/read";
         }
     }
 
@@ -76,10 +76,10 @@ public class LeasingController {
         try {
             Leasing leasing = leasingService.findLeasingByID(leasing_ID);
             model.addAttribute("leasing", leasing);
-            return "leasing/update";
+            return "leasing/updateOne";
         } catch (EmptyResultDataAccessException e) {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
-            return "redirect:/leasing/updateOne";
+            return "redirect:/leasing/update";
         }
     }
 
@@ -87,6 +87,6 @@ public class LeasingController {
     public String opdaterLeasing(@ModelAttribute Leasing leasing)
     {
         leasingService.updateLeasing(leasing);
-        return "redirect:/leasing/read";
+        return "leasing/read";
     }
 }
