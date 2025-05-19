@@ -50,8 +50,8 @@ public class BilController {
         return "Dataregistrere/CreateBil";
     }
 
-    @GetMapping("/Dataregistrere")
-    public String visAlleLeasingAftaler(Model model) {
+    @GetMapping("/Dataregistrere/ViewAllBil")
+    public String visAlleBiler(Model model) {
         model.addAttribute("bilListe", bilService.fetchAll());
         return "Dataregistrere/ViewAllBil";
     }

@@ -1,16 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>Opret Bil | Bilabonnement.dk</title>
-    <link rel="stylesheet" href="/data.css">
+    <title>Bil liste</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="ViewAll">
+<body>
+<h1>Bil liste</h1>
 
-<header class="header"></header>
-  <div class="logo-container">
-    <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-    <h1 class="title">Bilabonnement</h1>
-  </div>
+<div class="dashboard-box">
+    <h3>Opret bil</h3>
+    <p>Tilføj bil til bilkatalog</p>
+    <a th:href="@{/Dataregistrere/CreateBil}">Opret bil</a>
+</div>
+
+<table>
+
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>indkoebsdato</th>
+        <th>vognnr</th>
+        <th>stelnr</th>
+        <th>udstrysniveau</th>
+        <th>staalpris</th>
+        <th>regafg</th>
+        <th>co2udl</th>
+        <th>type</th>
+        <th>maerke</th>
+        <th>model</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="Bil: ${bilListe}">
+        <td th:text="${Bil.bil_ID}"/>
+        <td th:text="${Bil.indkoebsdato}"/>
+        <td th:text="${Bil.vognnr}"/>
+        <td th:text="${Bil.stelnr}"/>
+        <td th:text="${Bil.udstyrsniveau}"/>
+        <td th:text="${Bil.staalpris}"/>
+        <td th:text="${Bil.regafg}"/>
+        <td th:text="${Bil.co2udl}"/>
+        <td th:text="${Bil.biltype}"/>
+        <td th:text="${Bil.maerke}"/>
+        <td th:text="${Bil.model}"/>
+        <td>
+            <a th:href="@{'/viewOne/'+${Bil.bil_ID}}">
+                <button class="btn-viewOne" id="btn-viewOne">Vis bil</button>
+            </a>
+            <a th:href="@{'/deleteOne/'+${Bil.bil_ID}}">
+                <button class="btn-deleteOne" id="btn-deleteOne">Slet bil</button>
+
+            </a>
+            <a th:href="@{'/updateOne/'+${Bil.bil_ID}}">
+                <button class="btn-updateOne" id="btn-updateOne">Updater bil</button>
+            </a>
+
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="button-links">
+    <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
+</div>
 </body>
 </html>
