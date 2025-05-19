@@ -19,14 +19,14 @@ public class BilController {
     @Autowired
     BilService bilService;
 
-    @GetMapping("bil")
+    @GetMapping("ViewAllBil")
     public String index(Model model) {
         // Henter alle biler fra Service laget
         List<Bil> bil = bilService.fetchAll();
         // Tilføjer til model attribute
         model.addAttribute("bil", bil);
         // Returnere navnet på HTML filen så den kan render
-        return "home/bil";
+        return "Dataregistrere/ViewAllBil";
     }
 
     @PostMapping("/Dataregistrere/CreateBil")
