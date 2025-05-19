@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -48,27 +45,26 @@ public class LeasingController {
     }
 
     @GetMapping("/leasing/read")
-    public String visAlleLeasingAftaler(Model model) {
+    public String visAlleLeasing(Model model) {
         model.addAttribute("leasingliste", leasingService.fetchAll());
         return "leasing/read";
     }
 
     @GetMapping("/leasing/readOne")
-    public String visEnLeasingAftale(@RequestParam("leasing_ID") int leasing_ID, Model model, RedirectAttributes redirectAttributes) {
+    public String visEnLeasing(@RequestParam("leasing_ID") int leasing_ID, Model model, RedirectAttributes redirectAttributes) {
         try {
             Leasing leasing = leasingService.findLeasingByID(leasing_ID);
             model.addAttribute("leasing", leasing);
-        return "leasing/readOne";
-            } catch (EmptyResultDataAccessException e) {
+            return "leasing/readOne";
+        } catch (EmptyResultDataAccessException e) {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
             return "leasing/read";
         }
     }
 
     @GetMapping("/leasing/update")
-    public String visOpdateringsFormular()
-    {
-    return "leasing/update";
+    public String visOpdateringsFormular() {
+        return "leasing/update";
     }
 
     @GetMapping("/leasing/updateOne")
@@ -83,10 +79,26 @@ public class LeasingController {
         }
     }
 
-    @PostMapping ("/leasing/update")
-    public String opdaterLeasing(@ModelAttribute Leasing leasing)
-    {
+    @PostMapping("/leasing/update")
+    public String opdaterLeasing(@ModelAttribute Leasing leasing) {
         leasingService.updateLeasing(leasing);
         return "leasing/read";
+    }
+
+    @GetMapping("/leasing/delete")
+    public String visSletLeasing(Model model) {
+        model.addAttribute("leasingliste", leasingService.fetchAll());
+        return "leasing/delete";
+    }
+
+    @PostMapping("/leasing/delete")
+    public String sletLeasing(@RequestParam("leasing_ID") int leasing_ID, RedirectAttributes redirectAttributes) {
+        try {
+            leasingService.deleteLeasing(leasing_ID);
+            redirectAttributes.addFlashAttribute("besked", "Leasingaftale med ID: " + leasing_ID + " er blevet slettet.");
+        } catch (EmptyResultDataAccessException e) {
+            redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
+        }
+        return "redirect:/leasing/delete";
     }
 }

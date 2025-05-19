@@ -26,7 +26,7 @@ public class BilController {
         // Tilføjer til model attribute
         model.addAttribute("bil", bil);
         // Returnere navnet på HTML filen så den kan render
-        return "Dataregistrere/ViewAllBil";
+        return "viewBil";
     }
 
     @PostMapping("/Dataregistrere/CreateBil")
@@ -53,6 +53,6 @@ public class BilController {
     @GetMapping("/Dataregistrere/ViewAllBil")
     public String visAlleBiler(Model model) {
         model.addAttribute("bilListe", bilService.fetchAll());
-        return "Dataregistrere/ViewAllBil";
+        return "viewBil";
     }
 }

@@ -48,4 +48,9 @@ public class LeasingService {
 
         leasingRepository.updateLeasing(leasing);
     }
+
+    public void deleteLeasing(int leasing_ID)
+    {
+        leasingRepository.deleteLeasingByID(leasing_ID);
+    }
 }

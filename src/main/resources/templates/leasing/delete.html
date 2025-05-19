@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Slet Leasingaftale | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/data.css">
+</head>
+<body class="delete">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+
+    <div th:if="${fejlbesked}" class="fejlbesked">
+        <p th:text="${fejlbesked}"></p>
+    </div>
+
+    <div class="form-container">
+        <h2>Slet leasingaftale ved ID</h2>
+            <form th:action="@{/leasing/delete}" method="post" class="search-form">
+                <label for="leasing_ID">Indtast leasing-ID:</label>
+                <input type="number" id="leasing_ID" name="leasing_ID" placeholder="Indtast ID" required>
+                <button type="submit" class="btn btn-delete">Slet</button>
+            </form>
+    </div>
+
+    <section class="table-container">
+        <h2>Alle leasingaftaler</h2>
+            <table class="leasing-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Kunde</th>
+                        <th>Bil</th>
+                        <th>Type</th>
+                        <th>Start</th>
+                        <th>Slut</th>
+                        <th>Pris</th>
+                        <th>Handling</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr th:each="leasing : ${leasingliste}">
+                    <td th:text="${leasing.leasing_ID}"></td>
+                    <td th:text="${leasing.kunde.kFornavn + ' ' + leasing.kunde.kEfternavn}"></td>
+                    <td th:text="${leasing.bil.maerke + ' ' + leasing.bil.model}"></td>
+                    <td th:text="${leasing.abonnementstype}"></td>
+                    <td th:text="${leasing.startdato}"></td>
+                    <td th:text="${leasing.slutdato}"></td>
+                    <td th:text="${leasing.pris + ' DKK'}"></td>
+                    <td>
+                        <form th:action="@{/leasing/delete}" method="post" style="display:inline;">
+                            <input type="hidden" name="leasing_ID" th:value="${leasing.leasing_ID}" />
+                            <button type="submit"
+                                    th:onclick="|return confirm('Er du sikker på, at du vil slette leasingaftale ${leasing.leasing_ID}?')|">
+                                Slet
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+    </section>
+
+    <div class="button-links">
+        <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
+    </div>
+
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
+
+</body>
+</html>

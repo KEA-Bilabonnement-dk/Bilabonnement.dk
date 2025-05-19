@@ -31,7 +31,7 @@
 
             <div class="form-group">
                 <label for="abonnementstype">Abonnementstype:</label>
-                <select id="abonnementstype" th:field="*{abonnementstype}" placeholder="Indtast abonementstype" required>
+                <select id="abonnementstype" th:field="*{abonnementstype}" required>
                     <option th:each="type : ${T(com.example.bilabonnement_dk.model.Abonnementstype).values()}"
                             th:value="${type}" th:text="${type}">
                     </option>

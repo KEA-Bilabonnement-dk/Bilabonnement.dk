@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Opdater Leasingaftaler | Bilabonnement.dk</title>
+    <title>Opdater Leasingaftale | Bilabonnement.dk</title>
     <link rel="stylesheet" href="/data.css">
 </head>
 <body class="update">
@@ -27,6 +27,13 @@
             <label>Bil-ID:</label>
             <input type="number" th:field="*{bil.bil_ID}"/>
 
+            <label>Abonnementstype:</label>
+            <select id="abonnementstype" th:field="*{abonnementstype}" required>
+                <option th:each="type : ${T(com.example.bilabonnement_dk.model.Abonnementstype).values()}"
+                        th:value="${type}" th:text="${type}">
+                </option>
+            </select>
+
             <label>Startdato:</label>
             <input type="date" th:field="*{startdato}"/>
 
@@ -35,13 +42,6 @@
 
             <label>Pris:</label>
             <input type="number" th:field="*{pris}"/>
-
-            <label>Abonnementstype:</label>
-            <select id="abonnementstype" th:field="*{abonnementstype}" placeholder="Indtast abonementstype" required>
-                <option th:each="type : ${T(com.example.bilabonnement_dk.model.Abonnementstype).values()}"
-                        th:value="${type}" th:text="${type}">
-                </option>
-            </select>
 
             <button type="submit">Opdater Leasingaftale</button>
 

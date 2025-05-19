@@ -96,4 +96,10 @@ public class LeasingRepository {
                 leasing.getLeasing_ID()
         );
     }
+
+    public void deleteLeasingByID(int leasing_ID)
+    {
+        String sql = "DELETE FROM leasing WHERE leasing_ID = ?";
+        jdbcTemplate.update(sql, leasing_ID);
+    }
 }
