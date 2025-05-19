@@ -5,11 +5,13 @@ import com.example.bilabonnement_dk.model.Medarbejder;
 import com.example.bilabonnement_dk.service.LeasingService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -49,5 +51,17 @@ public class LeasingController {
     public String visAlleLeasingAftaler(Model model) {
         model.addAttribute("leasingliste", leasingService.fetchAll());
         return "leasing/read";
+    }
+
+    @GetMapping("/leasing/readOne")
+    public String visEnLeasingAftale(@RequestParam("leasing_ID") int leasing_ID, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Leasing leasing = leasingService.findLeasingByID(leasing_ID);
+        model.addAttribute("leasing", leasing);
+        return "leasing/readOne";
+            } catch (EmptyResultDataAccessException e) {
+            redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
+            return "redirect:/leasing/read";
+        }
     }
 }
