@@ -35,7 +35,7 @@
         <tbody>
         <tr th:each="leasing : ${leasingliste}">
             <td th:text="${leasing.leasing_ID}"></td>
-            <td th:text="${leasing.kunde.kfornavn + ' ' + leasing.kunde.kefternavn}"></td>
+            <td th:text="${leasing.kunde.kFornavn + ' ' + leasing.kunde.kEfternavn}"></td>
             <td th:text="${leasing.bil.maerke + ' ' + leasing.bil.model}"></td>
             <td th:text="${leasing.startdato}"></td>
             <td th:text="${leasing.slutdato}"></td>
