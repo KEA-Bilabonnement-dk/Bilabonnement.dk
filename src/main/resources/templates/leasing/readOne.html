@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Se Leasingaftaler | Bilabonnement.dk</title>
+    <title>Se Leasingaftale | Bilabonnement.dk</title>
     <link rel="stylesheet" href="/data.css">
 </head>
 <body class="read">
@@ -10,9 +10,49 @@
 <header class="header">
     <div class="logo-container">
         <img src="/images/Bilabonnement.dk.png" alt="Bilabonnemetn.dk logo" class="logo">
-        <h1 class="title">Kailua Car Rental</h1>
+        <h1 class="title">Bilabonnement.dk</h1>
     </div>
 </header>
 
+<main class="container">
+    <div class="form-container">
+        <h2>Detajler for leasingaftale</h2>
+
+        <table class="leasing-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Kunde</th>
+                <th>Bil</th>
+                <th>Start</th>
+                <th>Slut</th>
+                <th>Pris</th>
+                <th>Type</th>
+                <th>Se</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${leasing.leasing_ID}"></td>
+                <td th:text="${leasing.kunde.kFornavn + ' ' + leasing.kunde.kEfternavn}"></td>
+                <td th:text="${leasing.bil.maerke + ' ' + leasing.bil.model}"></td>
+                <td th:text="${leasing.startdato}"></td>
+                <td th:text="${leasing.slutdato}"></td>
+                <td th:text="${leasing.pris + ' DKK'}"></td>
+                <td th:text="${leasing.abonnementstype}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="button-links">
+            <a href="/leasing/read" class="btn">Tilbage til oversigt</a>
+            <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 </body>
 </html>
