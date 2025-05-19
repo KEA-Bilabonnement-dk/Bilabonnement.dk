@@ -11,14 +11,14 @@ public class Bil {
     private double staalpris;
     private double regafg;
     private int co2udl;
-    private BilType Biltype;
+    private BilType biltype;
     private String maerke;
     private String model;
 
     public Bil() {
     }
 
-    public Bil(int bil_ID, LocalDate indkoebsdato, String vognnr, String stelnr, String udstyrsniveau, double staalpris, double regafg, int co2udl, BilType Biltype, String maerke, String model) {
+    public Bil(int bil_ID, LocalDate indkoebsdato, String vognnr, String stelnr, String udstyrsniveau, double staalpris, double regafg, int co2udl, BilType biltype, String maerke, String model) {
         this.bil_ID = bil_ID;
         this.indkoebsdato = indkoebsdato;
         this.vognnr = vognnr;
@@ -27,7 +27,7 @@ public class Bil {
         this.staalpris = staalpris;
         this.regafg = regafg;
         this.co2udl = co2udl;
-        this.Biltype = Biltype;
+        this.biltype = biltype;
         this.maerke = maerke;
         this.model = model;
     }
@@ -97,11 +97,11 @@ public class Bil {
     }
 
     public BilType getBiltype() {
-        return Biltype;
+        return biltype;
     }
 
     public void setBiltype(BilType Biltype) {
-        this.Biltype = Biltype;
+        this.biltype = Biltype;
     }
 
     public String getMaerke() {

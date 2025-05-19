@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Opret Bil | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/data.css">
+</head>
+<body class="CreateBil">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Opret Bil</h2>
+        <form th:action="@{/Dataregistrere/CreateBil}" method="post" th:object="${bil}">
+
+            <div class="form-group">
+                <label for="Indkoebsdato">Indkøbsdato:</label>
+                <input type="date" id="Indkoebsdato" th:field="*{indkoebsdato}" placeholder="indkøbsdato" required>
+            </div>
+
+            <div class="form-group">
+                <label for="vognnr">Vognnummer:</label>
+                <input type="text" id="vognnr" th:field="*{vognnr}" placeholder="Vognnummer" required>
+            </div>
+
+            <div class="form-group">
+                <label for="stelnr">Stelnummer:</label>
+                <input type="text" id="stelnr" th:field="*{stelnr}" placeholder="Stelnummer" required>
+            </div>
+
+            <div class="form-group">
+                <label for="udstyrsniveaue">Udstyrsniveaue:</label>
+                <input type="text" id="udstyrsniveaue" th:field="*{udstyrsniveau}" placeholder="udstyrsniveau" required>
+            </div>
+
+            <div class="form-group">
+                <label for="staalpris">Stålpris:</label>
+                <input type="number" id="staalpris" th:field="*{staalpris}" placeholder="stålpris" required>
+            </div>
+
+            <div class="form-group">
+                <label for="regafg">Registrerings afgift:</label>
+                <input type="number" id="regafg" th:field="*{regafg}" placeholder="Registrerings afgift" required>
+            </div>
+
+            <div class="form-group">
+                <label for="co2udl">CO2 udledning:</label>
+                <input type="number" id="co2udl" th:field="*{co2udl}" placeholder="CO2 udledning" required>
+            </div>
+
+            <div class="form-group">
+                <label for="biltype">Biltype:</label>
+                <select id="biltype" th:field="*{biltype}" placeholder="Indtast biltype" required>
+                    <option th:each="type : ${T(com.example.bilabonnement_dk.model.BilType).values()}"
+                            th:value="${type}" th:text="${type}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="maerke">Mærke:</label>
+                <input type="text" id="maerke" th:field="*{maerke}" placeholder="mærke" required>
+            </div>
+
+            <div class="form-group">
+                <label for="model">Model:</label>
+                <input type="text" id="model" th:field="*{model}" placeholder="model" required>
+            </div>
+
+            <button type="submit" class="btn btn create">Opret bil</button>
+
+            <div class="button-links">
+                <a href="/data" class="btn btn-back">Back to Home</a>
+            </div>
+
+        </form>
+    </div>
+</main>
+</body>
+</html>

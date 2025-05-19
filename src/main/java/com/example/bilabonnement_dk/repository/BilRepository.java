@@ -14,7 +14,7 @@ public class BilRepository {
     JdbcTemplate template;
 
     public void addBil(Bil bil){
-        String sql = "INSERT INTO bil (indkoebsdato, vognnr, stelnr, udstyrsniv, staalpris, regafg,co2udl, Biltype, maerke, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO bil (indkoebsdato, vognnr, stelnr, udstyrsniveau, staalpris, regafg, co2udl, Biltype, maerke, model) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         template.update(sql,
                 bil.getIndkoebsdato(),
                 bil.getVognnr(),
@@ -23,7 +23,7 @@ public class BilRepository {
                 bil.getStaalpris(),
                 bil.getRegafg(),
                 bil.getCo2udl(),
-                bil.getBiltype(),
+                bil.getBiltype().name(),
                 bil.getMaerke(),
                 bil.getModel());
     }
@@ -35,7 +35,7 @@ public class BilRepository {
     }
 
     public List<Bil> fetchAll(){
-        String sql = "SELECT * FROM Bil";
+        String sql = "SELECT * FROM bil";
         RowMapper<Bil> rowMapper = new BeanPropertyRowMapper<>(Bil.class);
         return template.query(sql, rowMapper);
     }
@@ -44,7 +44,7 @@ public class BilRepository {
         String sql = "UPDATE bil SET indkoebsdato = ?, vognnr = ?, stelnr = ?, udstyrsniveau = ?, staalpris = ?, regafg = ?, co2udl = ?, Biltype = ?, maerke = ?, model = ? WHERE bil_ID = ?";
         template.update(sql, bil.getIndkoebsdato(), bil.getVognnr(), bil.getStelnr(),
                 bil.getUdstyrsniveau(), bil.getStaalpris(), bil.getRegafg(), bil.getCo2udl(),
-                bil.getBiltype(), bil.getMaerke(), bil.getModel());
+                    bil.getBiltype().name(), bil.getMaerke(), bil.getModel(), bil.getBil_ID());
     }
 
     public void deleteBil(int bil_ID){
