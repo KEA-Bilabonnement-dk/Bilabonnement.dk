@@ -34,7 +34,7 @@ public class BilController {
         Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
 
         if (medarbejder == null || !medarbejder.getRolle().name().equals("DATAREGISTRERINGSMEDARBEJDER")) {
-            return "redirect:/";
+            return "redirect:/Dataregistrere/ViewAllBil";
         }
 
         bilService.addBil(bil);
