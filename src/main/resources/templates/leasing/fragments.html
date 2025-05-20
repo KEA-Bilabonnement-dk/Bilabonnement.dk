@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<body>
+<div th:fragment="carRows">
+    <table>
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Indkøbsdato</th>
+            <th>Vognnr</th>
+            <th>Stelnr</th>
+            <th>Udstyrsniveau</th>
+            <th>Stålpris</th>
+            <th>Regafg</th>
+            <th>CO2udl</th>
+            <th>Type</th>
+            <th>Mærke</th>
+            <th>Model</th>
+            <th>Vælg</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${#lists.isEmpty(bilListe)}">
+            <td colspan="12">Ingen biler fundet.</td>
+        </tr>
+        <tr th:each="Bil: ${bilListe}">
+            <td th:text="${Bil.bil_ID}"></td>
+            <td th:text="${Bil.indkoebsdato}"></td>
+            <td th:text="${Bil.vognnr}"></td>
+            <td th:text="${Bil.stelnr}"></td>
+            <td th:text="${Bil.udstyrsniveau}"></td>
+            <td th:text="${Bil.staalpris}"></td>
+            <td th:text="${Bil.regafg}"></td>
+            <td th:text="${Bil.co2udl}"></td>
+            <td th:text="${Bil.biltype}"></td>
+            <td th:text="${Bil.maerke}"></td>
+            <td th:text="${Bil.model}"></td>
+            <td><button type="button" class="choose-car-btn" th:attr="data-bil-id=${Bil.bil_ID}">Vælg</button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

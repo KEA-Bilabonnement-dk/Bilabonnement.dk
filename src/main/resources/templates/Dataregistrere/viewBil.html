@@ -14,7 +14,7 @@
     <a th:href="@{/Dataregistrere/CreateBil}">Opret bil</a>
 </div>
 
-<!-- Unified Search Bar -->
+
 <form th:action="@{/Dataregistrere/searchAll}" method="get" style="margin-bottom: 1rem;">
     <input type="text" name="q" th:value="${searchQuery}" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" style="width: 350px;" />
     <button type="submit">Søg</button>

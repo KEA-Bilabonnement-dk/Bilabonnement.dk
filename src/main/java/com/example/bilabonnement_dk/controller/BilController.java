@@ -60,7 +60,19 @@ public class BilController {
     public String searchAll(@RequestParam("q") String query, Model model) {
         List<Bil> results = bilService.searchAllFields(query);
         model.addAttribute("bilListe", results);
-        model.addAttribute("searchQuery", query); // Optional: to show last search in the input
-        return "Dataregistrere/viewBil"; // or your main car list template
+        model.addAttribute("searchQuery", query);
+        return "Dataregistrere/viewBil";
+    }
+
+    @GetMapping("/Dataregistrere/searchAllFragment")
+    public String searchAllCarsModal(@RequestParam(value = "q", required = false) String query, Model model) {
+        List<Bil> results;
+        if (query == null || query.trim().isEmpty()) {
+            results = bilService.fetchAll(); // Fetch all cars if no query
+        } else {
+            results = bilService.searchAllFields(query);
+        }
+        model.addAttribute("bilListe", results);
+        return "leasing/fragments :: carRows";
     }
 }
