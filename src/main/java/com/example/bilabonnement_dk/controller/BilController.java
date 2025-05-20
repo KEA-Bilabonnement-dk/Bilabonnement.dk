@@ -19,29 +19,20 @@ public class BilController {
     @Autowired
     BilService bilService;
 
-    @GetMapping("ViewAllBil")
-    public String index(Model model) {
-        // Henter alle biler fra Service laget
-        List<Bil> bil = bilService.fetchAll();
-        // Tilføjer til model attribute
-        model.addAttribute("bil", bil);
-        // Returnere navnet på HTML filen så den kan render
-        return "viewBil";
-    }
 
     @PostMapping("/Dataregistrere/CreateBil")
     public String createBil(@ModelAttribute Bil bil, HttpSession session, RedirectAttributes redirectAttributes) {
         Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
 
         if (medarbejder == null || !medarbejder.getRolle().name().equals("DATAREGISTRERINGSMEDARBEJDER")) {
-            return "redirect:/Dataregistrere/ViewAllBil";
+            return "redirect:/";
         }
 
         bilService.addBil(bil);
 
         redirectAttributes.addFlashAttribute("besked", "Bil oprettet!");
 
-        return "redirect:/data";
+        return "redirect:/Dataregistrere/viewBil";
     }
 
     @GetMapping("/Dataregistrere/CreateBil")
@@ -50,9 +41,9 @@ public class BilController {
         return "Dataregistrere/CreateBil";
     }
 
-    @GetMapping("/Dataregistrere/ViewAllBil")
+    @GetMapping("/Dataregistrere/viewBil")
     public String visAlleBiler(Model model) {
         model.addAttribute("bilListe", bilService.fetchAll());
-        return "viewBil";
+        return "Dataregistrere/viewBil";
     }
 }
