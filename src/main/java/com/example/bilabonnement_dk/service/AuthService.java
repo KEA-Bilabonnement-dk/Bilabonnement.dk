@@ -18,4 +18,11 @@ public class AuthService {
             return null;
         }
     }
+
+    public boolean isValidPassword(String adgangskode) {
+        return adgangskode != null && adgangskode.length() >= 6;
+    }
 }
+
+
+
