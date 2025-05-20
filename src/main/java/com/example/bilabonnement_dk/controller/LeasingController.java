@@ -86,6 +86,10 @@ public class LeasingController {
 
         if (!model.containsAttribute("leasing")) {
             Leasing leasing = leasingService.findLeasingByID(leasing_ID);
+            if (leasing == null) {
+                model.addAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
+                return "redirect:/leasing/read";
+            }
             model.addAttribute("leasing", leasing);
         }
 

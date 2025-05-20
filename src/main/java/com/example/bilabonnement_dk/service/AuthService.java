@@ -23,6 +23,3 @@ public class AuthService {
         return adgangskode != null && adgangskode.length() >= 6;
     }
 }
-
-
-

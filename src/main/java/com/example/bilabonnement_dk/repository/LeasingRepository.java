@@ -55,7 +55,8 @@ public class LeasingRepository {
             WHERE leasing_ID = ?
         """;
 
-        return jdbcTemplate.queryForObject(sql, new Object[]{leasing_ID}, (rs, rowNum) -> mapRow(rs));
+        List<Leasing> resultater = jdbcTemplate.query(sql, new Object[]{leasing_ID}, (rs, rowNum) -> mapRow(rs));
+        return resultater.isEmpty() ? null : resultater.get(0);
     }
 
     // Privat metode til at genbruge mapping
