@@ -16,9 +16,9 @@
 
 <main class="container">
     <div class="table-container">
-        <h2>Søg på specifik leasingaftale</h2>
+        <h2>Se leasingaftaler</h2>
             <form th:action="@{/leasing/readOne}" method="get" class="search-form">
-                <label for="leasing_ID">Søg leasing-ID:</label>
+                <label for="leasing_ID">Søg på leasing-ID:</label>
                 <input type="number" id="leasing_ID" name="leasing_ID" placeholder="Indtast ID" required>
                 <button type="submit" class="btn btn-view">Søg</button>
             </form>
@@ -29,6 +29,7 @@
     </div>
 
     <table class="leasing-table">
+
         <thead>
         <tr>
             <th>ID</th>

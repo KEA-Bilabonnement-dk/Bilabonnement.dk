@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="da">
+<html lang="da" xmlns:th="http://www.thymeleaf.org">>
 <head>
     <meta charset="UTF-8">
     <title>Login | Bilabonnement.dk</title>
@@ -33,7 +33,10 @@
         </div>
     </form>
 
-    <p class="fejlbesked" th:if="${fejl}" th:text="${fejl}"></p>
+    <div th:if="${fejl}" class="fejl">
+        <p th:text="${fejl}"></p>
+    </div>
+
 </main>
 
 <footer class="footer">

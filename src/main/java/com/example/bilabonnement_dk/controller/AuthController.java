@@ -4,11 +4,13 @@ import com.example.bilabonnement_dk.model.Medarbejder;
 import com.example.bilabonnement_dk.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class AuthController {
@@ -29,23 +31,22 @@ public class AuthController {
 
         Medarbejder medarbejder = authService.login(brugernavn, adgangskode);
 
-        if (medarbejder != null) {
-            session.setAttribute("bruger", medarbejder);
+        if (medarbejder == null) {
+            model.addAttribute("fejl", "Forkert brugernavn eller adgangskode.");
+            return "home/login"; // vigtigt: brug den rigtige sti
+        }
 
-            switch (medarbejder.getRolle()) {
-                case DATAREGISTRERINGSMEDARBEJDER:
-                    return "redirect:/data";
-                case SKADEBEHANDLER:
-                    return "redirect:/skade";
-                case FORRETNINGSUDVIKLER:
-                    return "redirect:/forretning";
-                default:
-                    return "redirect:/dashboard";
-            }
+        session.setAttribute("bruger", medarbejder);
 
-        } else {
-            model.addAttribute("fejl", "Forkert brugernavn eller adgangskode");
-            return "login";
+        switch (medarbejder.getRolle()) {
+            case DATAREGISTRERINGSMEDARBEJDER:
+                return "redirect:/data";
+            case SKADEBEHANDLER:
+                return "redirect:/skade";
+            case FORRETNINGSUDVIKLER:
+                return "redirect:/forretning";
+            default:
+                return "redirect:/dashboard";
         }
     }
 

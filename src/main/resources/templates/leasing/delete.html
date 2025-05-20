@@ -16,10 +16,6 @@
 
 <main class="container">
 
-    <div th:if="${fejlbesked}" class="fejlbesked">
-        <p th:text="${fejlbesked}"></p>
-    </div>
-
     <div class="form-container">
         <h2>Slet leasingaftale ved ID</h2>
             <form th:action="@{/leasing/delete}" method="post" class="search-form">
@@ -27,6 +23,14 @@
                 <input type="number" id="leasing_ID" name="leasing_ID" placeholder="Indtast ID" required>
                 <button type="submit" class="btn btn-delete">Slet</button>
             </form>
+    </div>
+
+    <div th:if="${fejlbesked}" class="fejlbesked">
+        <p th:text="${fejlbesked}"></p>
+    </div>
+
+    <div th:if="${besked}" class="besked">
+        <p th:text="${besked}"></p>
     </div>
 
     <section class="table-container">
@@ -57,7 +61,7 @@
                         <form th:action="@{/leasing/delete}" method="post" style="display:inline;">
                             <input type="hidden" name="leasing_ID" th:value="${leasing.leasing_ID}" />
                             <button type="submit"
-                                    th:onclick="|return confirm('Er du sikker på, at du vil slette leasingaftale ${leasing.leasing_ID}?')|">
+                                    th:onclick="|return confirm('Er du sikker på, at du vil slette leasingaftale: ${leasing.leasing_ID}?')|">
                                 Slet
                             </button>
                         </form>
