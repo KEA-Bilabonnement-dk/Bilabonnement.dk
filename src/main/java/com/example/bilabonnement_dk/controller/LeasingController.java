@@ -57,15 +57,17 @@ public class LeasingController {
     }
 
     @GetMapping("/leasing/readOne")
-    public String visEnLeasing(@RequestParam("leasing_ID") int leasing_ID, Model model, RedirectAttributes redirectAttributes) {
-        try {
+    public String visEnLeasing(@RequestParam("leasing_ID") int leasing_ID,
+                               Model model,
+                               RedirectAttributes redirectAttributes) {
             Leasing leasing = leasingService.findLeasingByID(leasing_ID);
-            model.addAttribute("leasing", leasing);
-            return "leasing/readOne";
-        } catch (EmptyResultDataAccessException e) {
+
+            if (leasing == null) {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
             return "redirect:/leasing/read";
         }
+        model.addAttribute("leasing", leasing);
+        return "leasing/readOne";
     }
 
     @GetMapping("/leasing/update")
@@ -77,9 +79,12 @@ public class LeasingController {
     }
 
     @GetMapping("/leasing/updateOne")
-    public String opdaterEnLeasing(@RequestParam("leasing_ID") int leasing_ID, Model model,
+    public String opdaterEnLeasing(@RequestParam("leasing_ID") int leasing_ID,
+                                   Model model,
                                    @ModelAttribute("fejlbesked") String fejlbesked,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
+
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
             return "redirect:/";
         }
@@ -87,8 +92,8 @@ public class LeasingController {
         if (!model.containsAttribute("leasing")) {
             Leasing leasing = leasingService.findLeasingByID(leasing_ID);
             if (leasing == null) {
-                model.addAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
-                return "redirect:/leasing/read";
+                redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
+                return "redirect:/leasing/update";
             }
             model.addAttribute("leasing", leasing);
         }

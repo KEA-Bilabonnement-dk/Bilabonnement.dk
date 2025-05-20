@@ -24,6 +24,10 @@
             </div>
         <button type="submit" class="btn btn-view">Søg</button>
 
+            <div th:if="${fejlbesked}" class="fejlbesked">
+                <p th:text="${fejlbesked}"></p>
+            </div>
+
             <div class="button-links">
                 <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
             </div>
