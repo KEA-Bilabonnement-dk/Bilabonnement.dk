@@ -22,27 +22,35 @@
 
 <main class="main-content">
     <h2>Velkommen, Skadebehandler!</h2>
+    <div th:if="${besked}" class="alert alert succes">
+        <p th:text="${besked}"></p>
+    </div>
+    <p th:if="${session.bruger != null}">
+        Du er logget ind som: <span th:text="${session.bruger.brugernavn}"></span>
+    <p class="intro">
+        På denne side kan du oprette, se, redigere og slette skadesrapporter. Brug venligst knapperne herunder til at håndtere dine opgaver.
+    </p>
 
     <div class="dashboard-boxes">
         <div class="dashboard-box">
             <h3>Tilføj ny rapport</h3>
             <p>Opret en ny skadesrapport baseret på en leasingaftale.</p>
-            <a href="/rapport/opret">Opret rapport</a>
+            <a th:href="@{skade/create}">Opret rapport</a>
         </div>
         <div class="dashboard-box">
             <h3>Se rapporter</h3>
             <p>Få overblik over alle skaderapporter.</p>
-            <a href="/rapport">Gå til rapporter</a>
+            <a th:href="@{skade/read}">Gå til rapporter</a>
         </div>
         <div class="dashboard-box">
             <h3>Rediger rapport</h3>
             <p>Opdater eksisterende skaderapporter.</p>
-            <a href="/rapport/rediger">Rediger rapport</a>
+            <a th:href="@{skade/update}">Rediger rapport</a>
         </div>
         <div class="dashboard-box">
-            <h3>Slet rapport</h3>
+            <h3>Slet rappoth:rt</h3>
             <p>Fjern uønskede skaderapporter.</p>
-            <a href="/rapport/slet">Slet rapport</a>
+            <a th:href="@{skade/delete}">Slet rapport</a>
         </div>
     </div>
 </main>
