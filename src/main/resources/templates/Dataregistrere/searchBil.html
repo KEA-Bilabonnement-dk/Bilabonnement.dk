@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table>
+    <tr th:each="Bil : ${bilListe}">
+        <td th:text="${Bil.bil_ID}"></td>
+        <td th:text="${Bil.indkoebsdato}"></td>
+        <td th:text="${Bil.vognnr}"></td>
+        <td th:text="${Bil.stelnr}"></td>
+        <td th:text="${Bil.udstyrsniveau}"></td>
+        <td th:text="${Bil.staalpris}"></td>
+        <td th:text="${Bil.regafg}"></td>
+        <td th:text="${Bil.co2udl}"></td>
+        <td th:text="${Bil.biltype}"></td>
+        <td th:text="${Bil.maerke}"></td>
+        <td th:text="${Bil.model}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

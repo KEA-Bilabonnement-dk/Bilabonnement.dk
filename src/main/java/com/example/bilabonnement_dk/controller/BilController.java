@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -45,5 +46,21 @@ public class BilController {
     public String visAlleBiler(Model model) {
         model.addAttribute("bilListe", bilService.fetchAll());
         return "Dataregistrere/viewBil";
+    }
+
+    @GetMapping("/Dataregistrere/deleteBil")
+    public String deleteBil(@RequestParam("id") int id, RedirectAttributes redirectAttributes) {
+        bilService.deleteBil(id); // deletes the car with this ID
+        redirectAttributes.addFlashAttribute("besked", "Bil slettet!");
+        return "redirect:/Dataregistrere/viewBil";
+    }
+
+
+    @GetMapping("/Dataregistrere/searchAll")
+    public String searchAll(@RequestParam("q") String query, Model model) {
+        List<Bil> results = bilService.searchAllFields(query);
+        model.addAttribute("bilListe", results);
+        model.addAttribute("searchQuery", query); // Optional: to show last search in the input
+        return "Dataregistrere/viewBil"; // or your main car list template
     }
 }

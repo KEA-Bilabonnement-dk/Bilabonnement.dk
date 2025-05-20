@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -50,5 +51,29 @@ public class BilRepository {
     public void deleteBil(int bil_ID){
         String sql = "DELETE FROM bil WHERE bil_ID = ?";
         template.update(sql, bil_ID);
+    }
+
+    public List<Bil> searchAllFields(String query) {
+        String sql = """
+        SELECT * FROM bil WHERE
+            CAST(bil_ID AS CHAR) LIKE ? OR
+            LOWER(maerke) LIKE ? OR
+            LOWER(model) LIKE ? OR
+            LOWER(stelnr) LIKE ? OR
+            LOWER(vognnr) LIKE ? OR
+            LOWER(udstyrsniveau) LIKE ? OR
+            CAST(staalpris AS CHAR) LIKE ? OR
+            CAST(regafg AS CHAR) LIKE ? OR
+            CAST(co2udl AS CHAR) LIKE ? OR
+            LOWER(biltype) LIKE ? OR
+            DATE_FORMAT(indkoebsdato, '%Y-%m-%d') LIKE ?
+    """;
+        String pattern = "%" + query.toLowerCase() + "%";
+        Object[] params = {
+                pattern, pattern, pattern, pattern, pattern,
+                pattern, pattern, pattern, pattern, pattern, pattern
+        };
+        RowMapper<Bil> rowMapper = new BeanPropertyRowMapper<>(Bil.class);
+        return template.query(sql, rowMapper, params);
     }
 }

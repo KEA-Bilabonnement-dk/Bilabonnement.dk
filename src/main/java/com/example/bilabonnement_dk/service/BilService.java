@@ -32,4 +32,8 @@ public class BilService {
     {
         bilRepository.deleteBil(bil_ID);
     }
+
+    public List<Bil> searchAllFields(String query) {
+        return bilRepository.searchAllFields(query);
+    }
 }

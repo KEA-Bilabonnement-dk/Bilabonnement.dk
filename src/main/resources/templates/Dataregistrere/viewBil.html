@@ -10,53 +10,59 @@
 
 <div class="dashboard-box">
     <h3>Opret bil</h3>
-    <p>Tilføj bil til bilkatalog</p>
+    <p>Tilføj til bilkatalog</p>
     <a th:href="@{/Dataregistrere/CreateBil}">Opret bil</a>
 </div>
 
-<table>
+<!-- Unified Search Bar -->
+<form th:action="@{/Dataregistrere/searchAll}" method="get" style="margin-bottom: 1rem;">
+    <input type="text" name="q" th:value="${searchQuery}" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" style="width: 350px;" />
+    <button type="submit">Søg</button>
+</form>
 
+<table>
     <thead>
     <tr>
         <th>Id</th>
-        <th>indkoebsdato</th>
-        <th>vognnr</th>
-        <th>stelnr</th>
-        <th>udstrysniveau</th>
-        <th>staalpris</th>
-        <th>regafg</th>
-        <th>co2udl</th>
-        <th>type</th>
-        <th>maerke</th>
-        <th>model</th>
-        <th></th>
+        <th>Indkøbsdato</th>
+        <th>Vognnr</th>
+        <th>Stelnr</th>
+        <th>Udstyrsniveau</th>
+        <th>Stålpris</th>
+        <th>Regafg</th>
+        <th>CO2udl</th>
+        <th>Type</th>
+        <th>Mærke</th>
+        <th>Model</th>
+        <th>Handlinger</th>
     </tr>
     </thead>
     <tbody>
+    <tr th:if="${#lists.isEmpty(bilListe)}">
+        <td colspan="12">Ingen biler fundet.</td>
+    </tr>
     <tr th:each="Bil: ${bilListe}">
-        <td th:text="${Bil.bil_ID}"/>
-        <td th:text="${Bil.indkoebsdato}"/>
-        <td th:text="${Bil.vognnr}"/>
-        <td th:text="${Bil.stelnr}"/>
-        <td th:text="${Bil.udstyrsniveau}"/>
-        <td th:text="${Bil.staalpris}"/>
-        <td th:text="${Bil.regafg}"/>
-        <td th:text="${Bil.co2udl}"/>
-        <td th:text="${Bil.biltype}"/>
-        <td th:text="${Bil.maerke}"/>
-        <td th:text="${Bil.model}"/>
+        <td th:text="${Bil.bil_ID}"></td>
+        <td th:text="${Bil.indkoebsdato}"></td>
+        <td th:text="${Bil.vognnr}"></td>
+        <td th:text="${Bil.stelnr}"></td>
+        <td th:text="${Bil.udstyrsniveau}"></td>
+        <td th:text="${Bil.staalpris}"></td>
+        <td th:text="${Bil.regafg}"></td>
+        <td th:text="${Bil.co2udl}"></td>
+        <td th:text="${Bil.biltype}"></td>
+        <td th:text="${Bil.maerke}"></td>
+        <td th:text="${Bil.model}"></td>
         <td>
             <a th:href="@{'/viewOne/'+${Bil.bil_ID}}">
                 <button class="btn-viewOne" id="btn-viewOne">Vis bil</button>
             </a>
-            <a th:href="@{'/deleteOne/'+${Bil.bil_ID}}">
+            <a th:href="@{'/Dataregistrere/deleteBil'(id=${Bil.bil_ID})}">
                 <button class="btn-deleteOne" id="btn-deleteOne">Slet bil</button>
-
             </a>
             <a th:href="@{'/updateOne/'+${Bil.bil_ID}}">
                 <button class="btn-updateOne" id="btn-updateOne">Updater bil</button>
             </a>
-
         </td>
     </tr>
     </tbody>
