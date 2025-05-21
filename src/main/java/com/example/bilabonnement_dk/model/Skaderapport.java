@@ -3,6 +3,7 @@ package com.example.bilabonnement_dk.model;
 public class Skaderapport {
     private int skaderapport_ID;
     private double pris;
+    private int arbejdstid;
     private Leasing leasing;
     private Medarbejder medarbejder;
 
@@ -10,9 +11,10 @@ public class Skaderapport {
     {
     }
 
-    public Skaderapport(int skaderapport_ID, double pris, Leasing leasing, Medarbejder medarbejder) {
+    public Skaderapport(int skaderapport_ID, double pris, int arbejdstid, Leasing leasing, Medarbejder medarbejder) {
         this.skaderapport_ID = skaderapport_ID;
         this.pris = pris;
+        this.arbejdstid = arbejdstid;
         this.leasing = leasing;
         this.medarbejder = medarbejder;
     }
@@ -27,6 +29,14 @@ public class Skaderapport {
 
     public double getPris() {
         return pris;
+    }
+
+    public int getArbejdstid() {
+        return arbejdstid;
+    }
+
+    public void setArbejdstid(int arbejdstid) {
+        this.arbejdstid = arbejdstid;
     }
 
     public void setPris(double pris) {
