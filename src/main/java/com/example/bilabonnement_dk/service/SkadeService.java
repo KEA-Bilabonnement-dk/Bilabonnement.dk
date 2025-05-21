@@ -7,6 +7,8 @@ import com.example.bilabonnement_dk.repository.SkadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class SkadeService {
@@ -25,7 +27,17 @@ public class SkadeService {
         rapportreservedelRepository.insertRapportreservedel(rapportreservedel);
     }
 
-    public void opdaterPris(int skaderapport_ID, double nyPris) {
-        skadeRepository.opdaterPris(skaderapport_ID, nyPris);
+    public void updatePrice(int skaderapport_ID, double nyPris) {
+        skadeRepository.updatePrice(skaderapport_ID, nyPris);
+    }
+
+    public List<Skaderapport> hentAlleSkaderapporterMedReservedele() {
+        List<Skaderapport> skaderapporter = skadeRepository.fetchAll();
+
+        for (Skaderapport skaderapport : skaderapporter) {
+            List<Rapportreservedel> rapportreservedele = rapportreservedelRepository.findBySkaderapportID(skaderapport.getSkaderapport_ID());
+            skaderapport.setReservedele(rapportreservedele);
+        }
+        return skaderapporter;
     }
 }

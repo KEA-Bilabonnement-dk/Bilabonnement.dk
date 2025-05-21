@@ -91,9 +91,20 @@ public class SkadeController {
         }
 
         samletPris += skaderapport.getArbejdstid() * 500;
-        skadeService.opdaterPris(rapport_ID, samletPris);
+        skadeService.updatePrice(rapport_ID, samletPris);
 
         redirectAttributes.addFlashAttribute("besked", "Skaderapport oprettet!");
         return "redirect:/skade/create";
+    }
+
+    @GetMapping("/skade/read")
+    public String visAlleSkader(Model model, HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+
+        List<Skaderapport> skaderapporter = skadeService.hentAlleSkaderapporterMedReservedele();
+        model.addAttribute("skaderapporter", skaderapporter);
+        return "skade/read";
     }
 }

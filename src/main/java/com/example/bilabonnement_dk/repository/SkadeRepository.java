@@ -1,5 +1,7 @@
 package com.example.bilabonnement_dk.repository;
 
+import com.example.bilabonnement_dk.model.Leasing;
+import com.example.bilabonnement_dk.model.Medarbejder;
 import com.example.bilabonnement_dk.model.Rapportreservedel;
 import com.example.bilabonnement_dk.model.Skaderapport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class SkadeRepository {
@@ -36,9 +40,38 @@ public class SkadeRepository {
         return keyHolder.getKey().intValue();
     }
 
-    public void opdaterPris(int skadeRapport_ID, double nyPris)
-    {
+    public void updatePrice(int skadeRapport_ID, double nyPris) {
         String sql = "UPDATE skaderapport SET pris = ? WHERE skaderapport_ID = ?";
         jdbcTemplate.update(sql, nyPris, skadeRapport_ID);
+    }
+
+    public List<Skaderapport> fetchAll() {
+        String sql = """
+                SELECT s.*,
+                       l.leasing_ID,
+                       m.medarbejder_ID, m.fornavn, m.efternavn
+                FROM skaderapport s
+                JOIN leasing l ON s.leasing_ID = l.leasing_ID
+                JOIN medarbejder m ON s.medarbejder_ID = m.medarbejder_ID
+                """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Leasing leasing = new Leasing();
+            leasing.setLeasing_ID(rs.getInt("leasing_ID"));
+
+            Medarbejder medarbejder = new Medarbejder();
+            medarbejder.setMedarbejder_ID(rs.getInt("medarbejder_ID"));
+            medarbejder.setFornavn(rs.getString("fornavn"));
+            medarbejder.setEfternavn(rs.getString("efternavn"));
+
+            return new Skaderapport(
+                    rs.getInt("skaderapport_ID"),
+                    rs.getDouble("pris"),
+                    rs.getInt("arbejdstid"),
+                    leasing,
+                    medarbejder,
+                    new ArrayList<>()
+            );
+        });
     }
 }
