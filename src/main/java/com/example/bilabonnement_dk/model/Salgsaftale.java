@@ -79,4 +79,6 @@ public class Salgsaftale {
         this.kunde = kunde;
     }
 
+
+
 }

@@ -28,6 +28,7 @@ public class LeasingRepository {
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
+        int medarbejderId = 0;
         jdbcTemplate.update(sql,
                 leasing.getKunde().getKunde_ID(),
                 leasing.getBil().getBil_ID(),
@@ -86,6 +87,7 @@ public class LeasingRepository {
                 WHERE leasing_ID = ?
                 """;
 
+        int medarbejderId = 0;
         jdbcTemplate.update(sql,
                 leasing.getKunde().getKunde_ID(),
                 leasing.getBil().getBil_ID(),
