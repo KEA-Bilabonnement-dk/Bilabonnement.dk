@@ -1,5 +1,8 @@
 package com.example.bilabonnement_dk.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Skaderapport {
     private int skaderapport_ID;
     private double pris;
@@ -7,16 +10,19 @@ public class Skaderapport {
     private Leasing leasing;
     private Medarbejder medarbejder;
 
+    private List<Rapportreservedel> reservedele = new ArrayList<>();
+
     public Skaderapport()
     {
     }
 
-    public Skaderapport(int skaderapport_ID, double pris, int arbejdstid, Leasing leasing, Medarbejder medarbejder) {
+    public Skaderapport(int skaderapport_ID, double pris, int arbejdstid, Leasing leasing, Medarbejder medarbejder, List<Rapportreservedel> reservedele) {
         this.skaderapport_ID = skaderapport_ID;
         this.pris = pris;
         this.arbejdstid = arbejdstid;
         this.leasing = leasing;
         this.medarbejder = medarbejder;
+        this.reservedele = reservedele;
     }
 
     public int getSkaderapport_ID() {
@@ -57,5 +63,15 @@ public class Skaderapport {
 
     public void setMedarbejder(Medarbejder medarbejder) {
         this.medarbejder = medarbejder;
+    }
+
+    public List<Rapportreservedel> getReservedele()
+    {
+        return reservedele;
+    }
+
+    public void setReservedele(List<Rapportreservedel> reservedele)
+    {
+        this.reservedele = reservedele;
     }
 }

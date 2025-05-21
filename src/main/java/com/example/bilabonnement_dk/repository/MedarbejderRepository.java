@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class MedarbejderRepository
 {
@@ -18,5 +20,16 @@ public class MedarbejderRepository
                 new Object[]{brugernavn, adgangskode},
                 new BeanPropertyRowMapper<>(Medarbejder.class)
         );
+    }
+
+    public List<Medarbejder> fetchAll() {
+        String sql = "SELECT FROM * medarbejder";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Medarbejder m = new Medarbejder();
+            m.setMedarbejder_ID(rs.getInt("medarbejder_ID"));
+            m.setBrugernavn(rs.getString("brugernavn"));
+            m.setAdgangskode(rs.getString("adgangskode"));
+            return m;
+        });
     }
 }
