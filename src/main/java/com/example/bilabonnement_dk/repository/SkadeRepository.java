@@ -74,4 +74,36 @@ public class SkadeRepository {
             );
         });
     }
+
+    public Skaderapport findByID(int skaderapport_ID) {
+        String sql = """
+                SELECT s.*, l.leasing_ID,
+                       m.medarbejder_ID, m.fornavn, m.efternavn
+                FROM skaderapport s
+                JOIN leasing l ON s.leasing_ID = l.leasing_ID
+                JOIN medarbejder m ON s.medarbejder_ID = m.medarbejder_ID
+                WHERE s.skaderapport_ID = ?
+                """;
+
+        List<Skaderapport> result = jdbcTemplate.query(sql, new Object[]{skaderapport_ID}, (rs, rowNum) -> {
+            Leasing leasing = new Leasing();
+            leasing.setLeasing_ID(rs.getInt("leasing_ID"));
+
+            Medarbejder medarbejder = new Medarbejder();
+            medarbejder.setMedarbejder_ID(rs.getInt("medarbejder_ID"));
+            medarbejder.setFornavn(rs.getString("fornavn"));
+            medarbejder.setEfternavn(rs.getString("efternavn"));
+
+            return new Skaderapport(
+                    rs.getInt("skaderapport_ID"),
+                    rs.getDouble("pris"),
+                    rs.getInt("arbejdstid"),
+                    leasing,
+                    medarbejder,
+                    new ArrayList<>()
+            );
+        });
+
+        return result.isEmpty() ? null : result.get(0);
+    }
 }

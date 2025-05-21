@@ -31,7 +31,7 @@ public class SkadeService {
         skadeRepository.updatePrice(skaderapport_ID, nyPris);
     }
 
-    public List<Skaderapport> hentAlleSkaderapporterMedReservedele() {
+    public List<Skaderapport> fetchAll() {
         List<Skaderapport> skaderapporter = skadeRepository.fetchAll();
 
         for (Skaderapport skaderapport : skaderapporter) {
@@ -39,5 +39,14 @@ public class SkadeService {
             skaderapport.setReservedele(rapportreservedele);
         }
         return skaderapporter;
+    }
+
+    public Skaderapport findBySkaderapportID(int skaderapport_ID) {
+        Skaderapport skaderapport = skadeRepository.findByID(skaderapport_ID);
+        if (skaderapport != null) {
+            List<Rapportreservedel> rapportreservedele = rapportreservedelRepository.findBySkaderapportID(skaderapport_ID);
+            skaderapport.setReservedele(rapportreservedele);
+        }
+        return skaderapport;
     }
 }

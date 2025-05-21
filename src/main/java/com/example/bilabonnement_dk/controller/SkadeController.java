@@ -103,8 +103,25 @@ public class SkadeController {
             return "redirect:/";
         }
 
-        List<Skaderapport> skaderapporter = skadeService.hentAlleSkaderapporterMedReservedele();
+        List<Skaderapport> skaderapporter = skadeService.fetchAll();
         model.addAttribute("skaderapporter", skaderapporter);
         return "skade/read";
+    }
+
+    @GetMapping("/skade/readOne")
+    public String visSkadeRapport(@RequestParam("skaderapport_ID") int skaderapport_ID,
+                                                 Model model, HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+
+        Skaderapport skaderapport = skadeService.findBySkaderapportID(skaderapport_ID);
+        if (skaderapport == null) {
+            model.addAttribute("fejlbesked", "Ingen skaderapporter fundet med det angivne ID: " + skaderapport_ID);
+            return "skade/readOne";
+        }
+
+        model.addAttribute("skaderapport", skaderapport);
+        return "skade/readOne";
     }
 }
