@@ -12,11 +12,13 @@ import java.util.List;
 
 @Service
 public class LeasingService {
+
     @Autowired
     private LeasingRepository leasingRepository;
 
     @Autowired
     private KundeRepository kundeRepository;
+
     @Autowired
     private BilRepository bilRepository;
 
