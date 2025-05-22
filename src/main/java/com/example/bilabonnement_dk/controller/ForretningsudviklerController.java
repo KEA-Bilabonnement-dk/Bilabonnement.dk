@@ -18,8 +18,8 @@ public class ForretningsudviklerController {
     }
     @GetMapping("/dashboard")
     public String visDashboard(Model model) {
-        int antalUdlejde = forretningsudviklerService.hentAntalUdledeBiler();
-        var samletPris = forretningsudviklerService.hentSamletPrisUdlejedeBiler();
+        int antalUdlejde = forretningsudviklerService.hentAntalUdlejdeBiler();
+        var samletPris = forretningsudviklerService.hentSamletPrisUdlejdeBiler();
         model.addAttribute("antalUdlejde", antalUdlejde);
         model.addAttribute("samletPris", samletPris);
         return "dashboard";

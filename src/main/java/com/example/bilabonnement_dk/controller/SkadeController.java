@@ -164,8 +164,7 @@ public class SkadeController {
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
         if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
-            return "redirect:/";
         }
-    })
-
+        return "redirect:/";
+    }
 }
