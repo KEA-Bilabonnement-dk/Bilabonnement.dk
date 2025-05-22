@@ -1,6 +1,7 @@
 package com.example.bilabonnement_dk.service;
 
 
+import com.example.bilabonnement_dk.repository.ForretningsudviklerRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -8,18 +9,17 @@ import java.math.BigDecimal;
 
 @Service
 public class ForretningsudviklerService {
-    private JdbcTemplate jdbcTemplate;
-    public ForretningsudviklerService(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    private ForretningsudviklerRepository forretningsudviklerRepository;
+
+    public ForretningsudviklerService(ForretningsudviklerRepository repository) {
+        this.forretningsudviklerRepository = repository;
     }
-    public int hentAntalUdledeBiler() {
-        String sql = "SELECT COUNT(*) FROM leasing";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+    public int hentAntalUdlejdeBiler() {
+        return forretningsudviklerRepository.findAntalUdlejedeBiler();
     }
-    public BigDecimal hentSamletPrisUdlejedeBiler() {
-        String sql = "SELECT SUM(pris) FROM leasing";
-        return jdbcTemplate.queryForObject(sql, BigDecimal.class);
+    public BigDecimal hentSamletPrisUdlejdeBiler() {
+        BigDecimal pris = forretningsudviklerRepository.findSamletPrisUdlejedeBiler();
+        return pris != null ? pris : BigDecimal.ZERO;
 
     }
-
 }
