@@ -1,9 +1,6 @@
 package com.example.bilabonnement_dk.controller;
 
-import com.example.bilabonnement_dk.model.Medarbejder;
-import com.example.bilabonnement_dk.model.Rapportreservedel;
-import com.example.bilabonnement_dk.model.Reservedel;
-import com.example.bilabonnement_dk.model.Skaderapport;
+import com.example.bilabonnement_dk.model.*;
 import com.example.bilabonnement_dk.repository.MedarbejderRepository;
 import com.example.bilabonnement_dk.service.LeasingService;
 import com.example.bilabonnement_dk.service.ReservedelService;
@@ -18,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -66,6 +64,12 @@ public class SkadeController {
         Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER");
         if (medarbejder == null)
             return "redirect:/";
+
+        Leasing valgtLeasing = leasingService.findLeasingByID(skaderapport.getLeasing().getLeasing_ID());
+        if (valgtLeasing.getSlutdato().isAfter(LocalDate.now())) {
+            redirectAttributes.addFlashAttribute("fejlbesked", "Du kan kun oprette skader på biler med afsluttet leasingperiode.");
+            return "redirect_/skade/create";
+        }
 
         skaderapport.setMedarbejder(medarbejder);
         int rapport_ID = skadeService.addSkade(skaderapport);

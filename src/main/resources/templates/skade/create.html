@@ -23,6 +23,10 @@
             <p th:text="${besked}"></p>
         </div>
 
+        <div th:if="${fejlbesked}" class="fejlbesked">
+            <p th:text="${fejlbesked}"></p>
+        </div>
+
         <form th:action="@{/skade/create}" method="post" th:object="${skaderapport}" id="skadeform">
             <div class="form-group">
                 <label for="leasing_ID">Leasingaftale:</label>
