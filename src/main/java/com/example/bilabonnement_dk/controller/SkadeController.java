@@ -156,4 +156,16 @@ public class SkadeController {
         model.addAttribute("reservedelliste", reservedelService.fetchAll());
         return "skade/updateOne";
     }
+
+    @PostMapping
+    public String opdaterSkade(@ModelAttribute Skaderapport skaderapport,
+                               @RequestParam(name = "reservedel_ID", required = false) List<Integer> reservedelIDs,
+                               @RequestParam(name = "antal", required = false) List<Integer> antalListe,
+                               HttpSession session,
+                               RedirectAttributes redirectAttributes) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+    })
+
 }
