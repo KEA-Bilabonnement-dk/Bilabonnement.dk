@@ -1,40 +1,39 @@
 package com.example.bilabonnement_dk.service;
 
-
-import com.example.bilabonnement_dk.controller.SalgsaftaleController;
-import com.example.bilabonnement_dk.model.Leasing;
 import com.example.bilabonnement_dk.model.Salgsaftale;
 import com.example.bilabonnement_dk.repository.SalgsaftaleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-
-
-import java.util.Optional;
 
 @Service
 public class SalgsaftaleService {
 
+    private final SalgsaftaleRepository salgsaftaleRepository;
 
     @Autowired
-    private SalgsaftaleRepository salgsaftaleRepository;
-
-    public Salgsaftale findById(int leasingid) {
-        return salgsaftaleRepository.findSalgsaftaleByID(leasingid);
-    }
-    public List<Salgsaftale> findAll() {
-        return salgsaftaleRepository.findAllSalgsaftale();
-    }
-    public void save(Salgsaftale salgsaftale) {
-        salgsaftaleRepository.save(salgsaftale);
-
-    }
-    public void deleteById(int leasingid) {
-        salgsaftaleRepository.deleteSalgsaftaleByID(leasingid);
-
+    public SalgsaftaleService(SalgsaftaleRepository salgsaftaleRepository) {
+        this.salgsaftaleRepository = salgsaftaleRepository;
     }
 
+    public void addSalgsaftale(Salgsaftale salgsaftale) {
+        salgsaftaleRepository.addSalgsaftale(salgsaftale);
+    }
 
+    public List<Salgsaftale> fetchAll() {
+        return salgsaftaleRepository.fetchAll();
+    }
 
+    public Salgsaftale findSalgsaftaleByID(int salgs_ID) {
+        return salgsaftaleRepository.findSalgsaftaleByID(salgs_ID);
+    }
 
+    public void updateSalgsaftale(Salgsaftale salgsaftale) {
+        salgsaftaleRepository.updateSalgsaftale(salgsaftale);
+    }
+
+    public void deleteSalgsaftale(int salgs_ID) {
+        salgsaftaleRepository.deleteSalgsaftaleByID(salgs_ID);
+    }
 }

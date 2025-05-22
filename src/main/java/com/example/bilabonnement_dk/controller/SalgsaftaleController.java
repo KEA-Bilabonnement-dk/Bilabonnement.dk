@@ -1,78 +1,72 @@
 package com.example.bilabonnement_dk.controller;
 
-import com.example.bilabonnement_dk.model.*;
-
-import com.example.bilabonnement_dk.repository.SalgsaftaleRepository;
+import com.example.bilabonnement_dk.model.Bil;
+import com.example.bilabonnement_dk.model.Medarbejder;
+import com.example.bilabonnement_dk.model.Salgsaftale;
 import com.example.bilabonnement_dk.service.SalgsaftaleService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Date;
-import java.util.List;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-
 public class SalgsaftaleController {
 
     @Autowired
-    private SalgsaftaleRepository salgsaftaleRepository;
+    SalgsaftaleService salgsaftaleService;
 
-    @GetMapping("/salgsaftaler")
-    public String getAllSalgsaftaler(Model model, HttpSession session) {
-        List<Salgsaftale> salgsaftaler = salgsaftaleRepository.findAllSalgsaftale();
-        model.addAttribute("salgsaftale", salgsaftaler);
-        return "salgsaftale";
+    private Medarbejder hentMedarbejderHvisAdgang(HttpSession session, String ønsketRolle) {
+        Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
+        if (medarbejder != null && medarbejder.getRolle().name().equals(ønsketRolle)) {
+            return medarbejder;
+        }
+        return null;
     }
-    @GetMapping("/salgsaftale")
-    public String getSalgsaftale(@RequestParam("id") int leasingId, Model model, HttpSession session) {
-        Salgsaftale salgsaftale = salgsaftaleRepository.findSalgsaftaleByID(leasingId);
-        model.addAttribute("salgsaftale", salgsaftale);
-        return "salgsaftale";
-    }
-    @GetMapping("/salgsaftale/opret")
-    public String AddSalgsaftale(Model model, HttpSession session) {
+
+    @GetMapping("/Dataregistrere/createSalgsaftale")
+    public String showCreateSalgsaftaleForm(Model model) {
         model.addAttribute("salgsaftale", new Salgsaftale());
-        return "opretSalgsaftale";
-    }
-    @PostMapping("/salgsaftale/gem")
-    public String gemsalgsaftale(@RequestParam("salgspris") double salgspris,
-                                 @RequestParam("leveringsdato") Date leveringsdato,
-                                 @RequestParam("adresse_ID") int adresseId,
-                                 @RequestParam("medarbejder_ID") int medarbejderId,
-                                 @RequestParam("bil_ID") int bilId,
-                                 @RequestParam("kunde_ID") int kundeId)
-    {
-        Salgsaftale salgsaftale = new Salgsaftale();
-        salgsaftale.setSalgspris(salgspris);
-        salgsaftale.setLeveringsdato(leveringsdato);
-
-       Adresse adresse = new Adresse();
-       adresse.setAdresse_ID(adresseId);
-       salgsaftale.setAdresse(adresse);
-
-       Medarbejder medarbejder = new Medarbejder();
-       medarbejder.setMedarbejder_ID(medarbejderId);
-       salgsaftale.setMedarbejder(medarbejder);
-
-        Bil bil = new Bil();
-        bil.setBil_ID(bilId);
-        salgsaftale.setBil(bil);
-
-        Kunde kunde = new Kunde();
-        kunde.setKunde_ID(kundeId);
-        salgsaftale.setKunde(kunde);
-
-        return "redirect:/salgsaftaler";
+        return "Dataregistrere/createSalgsaftale";
     }
 
+    @PostMapping("/Dataregistrere/createSalgsaftale")
+    public String opretSalgsaftale(@ModelAttribute Salgsaftale salgsaftale, HttpSession session, RedirectAttributes redirectAttributes) {
+        Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER");
+        if (medarbejder == null) {
+            return "redirect:/";
+        }
+        salgsaftale.setMedarbejder(medarbejder);
+        salgsaftaleService.addSalgsaftale(salgsaftale);
+        redirectAttributes.addFlashAttribute("besked", "Salgsaftale oprettet!");
+        return "redirect:/data";
+    }
 
-    @PostMapping("/salgsaftale/slet")
-    public String sletsalgsaftale(@RequestParam("id") int Salgs_ID, Model model, HttpSession session) {
-        salgsaftaleRepository.deleteSalgsaftaleByID(Salgs_ID);
-        return "redirect:/salgsaftaler";
+    @GetMapping("/Dataregistrere/VisSalgsaftaler")
+    public String showOpretSalgsaftaleForm(Model model) {
+        model.addAttribute("salgsaftale", new Salgsaftale());
+        return "Dataregistrere/VisSalgsaftale";
+    }
 
-}
+    @GetMapping("/Dataregistrere/Vissalgsaftaler")
+    public String visAlleSalgsaftale(Model model) {
+        model.addAttribute("salgsaftaleliste", salgsaftaleService.fetchAll());
+        return "Dataregistrere/visSalgsaftale";
+    }
+
+    @PostMapping("/Dataregistrere/sletSalgsaftale")
+    public String sletSalgsaftale(@RequestParam("salgs_ID") int salgs_ID, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
+            return "redirect:/";
+        }
+        try {
+            salgsaftaleService.deleteSalgsaftale(salgs_ID);
+            redirectAttributes.addFlashAttribute("besked", "Salgsaftale med ID: " + salgs_ID + " er blevet slettet.");
+        } catch (EmptyResultDataAccessException e) {
+            redirectAttributes.addFlashAttribute("fejlbesked", "Ingen salgsaftale fundet med det angivne ID: " + salgs_ID);
+        }
+        return "redirect:/Dataregistrere/sletSalgsaftale";
+    }
 }

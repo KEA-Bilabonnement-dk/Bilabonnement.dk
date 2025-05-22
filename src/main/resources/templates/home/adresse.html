@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Opret adresse | Bilabonnement.dk</title>
+  <link rel="stylesheet" href="/data.css">
+</head>
+<body class="CreateAdresse">
+
+<header class="header">
+  <div class="logo-container">
+    <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+    <h1 class="title">Bilabonnement.dk</h1>
+  </div>
+</header>
+
+<main class="container">
+  <div class="form-container">
+    <h2>Opret adresse</h2>
+    <form th:action="@{/home/adresse}" method="post" th:object="${adresse}">
+      <div class="form-group">
+        <label for="vejnr">Vejnummer:</label>
+        <input type="number" id="vejnr" th:field="*{vejnr}" placeholder="vejnummer" required>
+      </div>
+
+      <div class="form-group">
+        <label for="vejnavn">Vejnavn:</label>
+        <input type="text" id="vejnavn" th:field="*{vejnavn}" placeholder="vejnavn" required>
+      </div>
+
+      <div class="form-group">
+        <label for="land">Land:</label>
+        <input type="text" id="land" th:field="*{land}" placeholder="land" required>
+      </div>
+
+      <div class="form-group">
+        <label for="postnr">Postnummer:</label>
+        <input type="number" id="postnr" th:field="*{postnr}" placeholder="postnr" required>
+      </div>
+
+      <button type="submit" class="btn btn create">Opret adresse</button>
+    </form>
+  </div>
+</main>
+</body>
+</html>

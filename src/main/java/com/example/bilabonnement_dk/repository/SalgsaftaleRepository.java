@@ -1,28 +1,42 @@
 package com.example.bilabonnement_dk.repository;
 
-
-import com.example.bilabonnement_dk.model.*;
+import com.example.bilabonnement_dk.model.Bil;
+import com.example.bilabonnement_dk.model.Kunde;
+import com.example.bilabonnement_dk.model.Salgsaftale;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
 @Repository
 public class SalgsaftaleRepository {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void save(Salgsaftale salgsaftale) {
-        String sql = "INSERT INTO salgsaftale (salgspris, leveringsdato, adresse_ID, medarbejder_ID, Bil_ID, kunde_ID) " + "VALUES (?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(
-                sql, salgsaftale.getSalgspris(),
-                new java.sql.Date(salgsaftale.getLeveringsdato().getTime()),
+    @Autowired
+    private BilRepository bilRepository;
+
+    @Autowired
+    private MedarbejderRepository medarbejderRepository;
+
+    @Autowired
+    private KundeRepository kundeRepository;
+
+
+    public void addSalgsaftale(Salgsaftale salgsaftale) {
+        String sql = """
+            INSERT INTO salgsaftale (salgs_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
+
+        jdbcTemplate.update(sql,
+                salgsaftale.getSalgs_ID(),
+                salgsaftale.getSalgspris(),
+                salgsaftale.getLeveringsdato(),
                 salgsaftale.getAdresse().getAdresse_ID(),
                 salgsaftale.getMedarbejder().getMedarbejder_ID(),
                 salgsaftale.getBil().getBil_ID(),
@@ -30,51 +44,67 @@ public class SalgsaftaleRepository {
         );
     }
 
-    public Salgsaftale findSalgsaftaleByID(int salgsID) {
-        String sql = "SELECT * FROM salgsaftale WHERE salgspris = ?";
+    public List<Salgsaftale> fetchAll() {
+        String sql = """
+            SELECT salgs_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID
+            FROM salgsaftale
+        """;
 
-        return jdbcTemplate.queryForObject(sql, new Object[]{salgsID}, new SalgsaftaleRowMapper());
-    }
-    public List<Salgsaftale> findAllSalgsaftale() {
-        String sql = "SELECT * FROM salgsaftale ORDER BY salgspris";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Salgsaftale.class));
-    }
-    public void deleteSalgsaftaleByID(int salgsID) {
-        String sql = "DELETE FROM salgsaftale WHERE salgspris = ?";
-        jdbcTemplate.update(sql, salgsID);
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs));
     }
 
+    public Salgsaftale findSalgsaftaleByID(int salgs_ID) {
+        String sql = """
+            SELECT salgs_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID
+            FROM salgsaftale
+            WHERE salgs_ID = ?
+        """;
 
+        List<Salgsaftale> resultater = jdbcTemplate.query(sql, new Object[]{salgs_ID}, (rs, rowNum) -> mapRow(rs));
+        return resultater.isEmpty() ? null : resultater.get(0);
+    }
 
-    private static class SalgsaftaleRowMapper implements RowMapper<Salgsaftale> {
-        @Override
-        public Salgsaftale mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Salgsaftale salgsaftale = new Salgsaftale();
-            salgsaftale.setSalgs_ID(rs.getInt("salgspris"));
-            salgsaftale.setSalgspris(rs.getInt("salgspris"));
-            salgsaftale.setLeveringsdato(rs.getDate("leveringsdato"));
+    // Privat metode til at genbruge mapping
+    private Salgsaftale mapRow(ResultSet rs) throws SQLException {
+        Salgsaftale salgsaftale = new Salgsaftale();
 
-            Adresse adresse = new Adresse();
-            adresse.setAdresse_ID(rs.getInt("adresse_ID"));
-            salgsaftale.setAdresse(adresse);
+        salgsaftale.setSalgs_ID(rs.getInt("Salgs_ID"));
+        salgsaftale.setSalgspris(rs.getDouble("Salgspris"));
+        salgsaftale.setLeveringsdato(rs.getDate("leveringsdato").toLocalDate());
 
-            Medarbejder medarbejder = new Medarbejder();
-            medarbejder.setMedarbejder_ID(rs.getInt("medarbejder_ID"));
-            salgsaftale.setMedarbejder(medarbejder);
+        int medarbejder_ID = rs.getInt("medarbejder_ID");
+        int bil_ID = rs.getInt("bil_ID");
+        int kunde_ID = rs.getInt("kunde_ID");
 
-            Bil bil = new Bil();
-            bil.setBil_ID(rs.getInt("bil_ID"));
-            salgsaftale.setBil(bil);
+        salgsaftale.setMedarbejder(medarbejderRepository.findMedarbejderByID(medarbejder_ID));
+        salgsaftale.setKunde(kundeRepository.findKundeByID(kunde_ID));
+        salgsaftale.setBil(bilRepository.findBilByID(bil_ID));
 
-            Kunde kunde = new Kunde();
-            kunde.setKunde_ID(rs.getInt("kunde_ID"));
-            salgsaftale.setKunde(kunde);
+        return salgsaftale;
+    }
 
-            return salgsaftale;
-
-        }
+    public void updateSalgsaftale(Salgsaftale salgsaftale)
+    {
+        String sql = """
+    UPDATE salgsaftale
+    SET salgspris = ?, leveringsdato = ?, adresse_ID = ?, medarbejder_ID = ?, bil_ID = ?, kunde_ID = ?
+    WHERE salgs_ID = ?
+""";
+        jdbcTemplate.update(sql,
+                salgsaftale.getSalgspris(),
+                salgsaftale.getLeveringsdato(),
+                salgsaftale.getAdresse().getAdresse_ID(),
+                salgsaftale.getMedarbejder().getMedarbejder_ID(),
+                salgsaftale.getBil().getBil_ID(),
+                salgsaftale.getKunde().getKunde_ID(),
+                salgsaftale.getSalgs_ID()
+        );
     }
 
 
-
+    public void deleteSalgsaftaleByID(int salgs_ID)
+    {
+        String sql = "DELETE FROM salgsaftale WHERE salgs_ID = ?";
+        jdbcTemplate.update(sql, salgs_ID);
+    }
 }
