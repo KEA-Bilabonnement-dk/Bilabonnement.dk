@@ -106,4 +106,9 @@ public class SkadeRepository {
 
         return result.isEmpty() ? null : result.get(0);
     }
+
+    public void updateSkaderapport(int skaderapport_ID, int arbejdstid, double pris) {
+        String sql = "UPDATE skaderapport SET arbejdstid = ?, pris = ? WHERE skaderapport_ID = ?";
+                jdbcTemplate.update(sql, arbejdstid, pris, skaderapport_ID);
+    }
 }
