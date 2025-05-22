@@ -1,11 +1,7 @@
 package com.example.bilabonnement_dk.controller;
 
-import com.example.bilabonnement_dk.model.Medarbejder;
-import com.example.bilabonnement_dk.model.Rapportreservedel;
-import com.example.bilabonnement_dk.model.Reservedel;
-import com.example.bilabonnement_dk.model.Skaderapport;
+import com.example.bilabonnement_dk.model.*;
 import com.example.bilabonnement_dk.repository.MedarbejderRepository;
-import com.example.bilabonnement_dk.repository.ReservedelRepository;
 import com.example.bilabonnement_dk.service.LeasingService;
 import com.example.bilabonnement_dk.service.ReservedelService;
 import com.example.bilabonnement_dk.service.SkadeService;
@@ -19,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -51,7 +48,7 @@ public class SkadeController {
             return "redirect:/";
         }
         model.addAttribute("skaderapport", new Skaderapport());
-        model.addAttribute("leasingliste", leasingService.fetchAll());
+        model.addAttribute("leasingliste", leasingService.findEndedLeasing());
         model.addAttribute("reservedelliste", reservedelService.fetchAll());
 
         return "skade/create";
@@ -59,44 +56,76 @@ public class SkadeController {
 
     @PostMapping("/skade/create")
     public String opretSkade(@ModelAttribute Skaderapport skaderapport,
-                             @RequestParam("reservedel_ID") List<Integer> reservedelIDs,
-                             @RequestParam("antal") List<Integer> antalListe,
+                             @RequestParam(name = "reservedel_ID", required = false) List<Integer> reservedelIDs,
+                             @RequestParam(name = "antal", required = false) List<Integer> antalListe,
                              HttpSession session,
                              RedirectAttributes redirectAttributes) {
 
         Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER");
-        if (medarbejder == null) {
+        if (medarbejder == null)
             return "redirect:/";
+
+        Leasing valgtLeasing = leasingService.findLeasingByID(skaderapport.getLeasing().getLeasing_ID());
+        if (valgtLeasing.getSlutdato().isAfter(LocalDate.now())) {
+            redirectAttributes.addFlashAttribute("fejlbesked", "Du kan kun oprette skader på biler med afsluttet leasingperiode.");
+            return "redirect_/skade/create";
         }
 
         skaderapport.setMedarbejder(medarbejder);
-
         int rapport_ID = skadeService.addSkade(skaderapport);
-
         double samletPris = 0;
 
-        for (int i = 0; i < reservedelIDs.size(); i++) {
-            int reservedelID = reservedelIDs.get(i);
-            int antal = antalListe.get(i);
+        if (reservedelIDs != null && antalListe != null && !reservedelIDs.isEmpty() && !antalListe.isEmpty()) {
+            for (int i = 0; i < reservedelIDs.size(); i++) {
+                int reservedelID = reservedelIDs.get(i);
+                int antal = antalListe.get(i);
 
-            Reservedel reservedel = reservedelService.findByID(reservedelID);
-            double delpris = reservedel.getPris() * antal;
-            samletPris += delpris;
+                Reservedel reservedel = reservedelService.findByID(reservedelID);
+                double delpris = reservedel.getPris() * antal;
+                samletPris += delpris;
 
-            Rapportreservedel rr = new Rapportreservedel();
-            rr.setSkaderapport(new Skaderapport());
-            rr.getSkaderapport().setSkaderapport_ID(rapport_ID);
-            rr.setReservedel(reservedel);
-            rr.setAntal(antal);
+                Rapportreservedel rr = new Rapportreservedel();
+                rr.setSkaderapport(new Skaderapport());
+                rr.getSkaderapport().setSkaderapport_ID(rapport_ID);
+                rr.setReservedel(reservedel);
+                rr.setAntal(antal);
 
-            skadeService.addRapportreservedel(rr);
+                skadeService.addRapportreservedel(rr);
+            }
         }
 
         samletPris += skaderapport.getArbejdstid() * 500;
-
-        skadeService.opdaterPris(rapport_ID, samletPris);
+        skadeService.updatePrice(rapport_ID, samletPris);
 
         redirectAttributes.addFlashAttribute("besked", "Skaderapport oprettet!");
         return "redirect:/skade/create";
+    }
+
+    @GetMapping("/skade/read")
+    public String visAlleSkader(Model model, HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+
+        List<Skaderapport> skaderapporter = skadeService.fetchAll();
+        model.addAttribute("skaderapporter", skaderapporter);
+        return "skade/read";
+    }
+
+    @GetMapping("/skade/readOne")
+    public String visSkadeRapport(@RequestParam("skaderapport_ID") int skaderapport_ID,
+                                                 Model model, HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+
+        Skaderapport skaderapport = skadeService.findBySkaderapportID(skaderapport_ID);
+        if (skaderapport == null) {
+            model.addAttribute("fejlbesked", "Ingen skaderapporter fundet med det angivne ID: " + skaderapport_ID);
+            return "skade/readOne";
+        }
+
+        model.addAttribute("skaderapport", skaderapport);
+        return "skade/readOne";
     }
 }

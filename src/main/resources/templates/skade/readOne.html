@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Se Leasingaftaler | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/skade.css">
+</head>
+<body class="read">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <h2>Detaljer for Skaderapport</h2>
+
+    <div th:if="${fejlbesked}" class="fejlbesked">
+        <p th:text="${fejlbesked}"></p>
+    </div>
+
+    <div th:if="${skaderapport != null}">
+        <p><strong>ID:</strong> <span th:text="${skaderapport.skaderapport_ID}"></span></p>
+        <p><strong>Medarbejder:</strong> <span th:text="${skaderapport.medarbejder.fornavn + '' + skaderapport.medarbejder.efternavn}"></span></p>
+        <p><strong>Leasing-ID:</strong> <span th:text="${skaderapport.leasing.leasing_ID}"></span></p>
+        <p><strong>Arbejdstid:</strong> <span th:text="${skaderapport.arbejdstid}"></span> timer</p>
+        <p><strong>Pris:</strong> <span th:text="${skaderapport.pris}"></span> DKK</p>
+
+        <h3>Reservedele</h3>
+        <table class="reservedel-table" th:if="${skaderapport.reservedele.size() > 0}">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Pris</th>
+                    <th>Antal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${skaderapport.reservedele}">
+                    <td th:text="${r.reservedel.type}"></td>
+                    <td th:text="${r.reservedel.pris + ' DKK'}"></td>
+                    <td th:text="${r.antal}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p th:if="${skaderapport.reservedele.size() == 0}">Ingen reservedele registreret.</p>
+    </div>
+
+    <div class="button-links">
+        <a href="/skade/read" class="btn btn-back">Tilbage til oversigt</a>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
+</body>
+</html>

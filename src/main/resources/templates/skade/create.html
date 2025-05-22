@@ -1,10 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Opret Skaderapport | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/skade.css">
 </head>
-<body>
+<body class="create">
 
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Opret skaderapport</h2>
+
+        <div th:if="${besked}" class="besked">
+            <p th:text="${besked}"></p>
+        </div>
+
+        <div th:if="${fejlbesked}" class="fejlbesked">
+            <p th:text="${fejlbesked}"></p>
+        </div>
+
+        <form th:action="@{/skade/create}" method="post" th:object="${skaderapport}" id="skadeform">
+            <div class="form-group">
+                <label for="leasing_ID">Leasingaftale:</label>
+                <select id="leasing_ID" th:field="*{leasing.leasing_ID}">
+                    <option th:each="l : ${leasingliste}" th:value="${l.leasing_ID}" th:text="${l.leasing_ID}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Arbejdstid (timer):</label>
+                <input type="number" name="arbejdstid" th:field="*{arbejdstid}" id="arbejdstid" min="0" required>
+            </div>
+
+            <div id="reservedel-container">
+                <div class="form-group reservedel-entry">
+                        <select name="reservedel_ID" class="reservedel-select">
+                            <option value="">-- Vælg reservedel --</option>
+                            <option th:each="r : ${reservedelliste}"
+                                    th:value="${r.reservedel_ID}"
+                                    th:text="${r.type}"
+                                    th:attr="data-pris=${r.pris}">
+                            </option>
+                        </select>
+                    <input type="number" name="antal" class="antal-input" placeholder="Antal" min="1" value="1">
+                    <button type="button" class="remove-entry">Fjern</button>
+                </div>
+            </div>
+
+            <button type="button" id="add-entry">+ Tilføj reservedel</button>
+
+            <div class="form-group">
+                <label>Samlet pris:</label>
+                <strong id="samlet-pris">0 DKK</strong>
+            </div>
+
+            <button type="submit" class="btn btn create">Opret Skaderapport</button>
+
+            <div class="button-links">
+                <a href="/skade" class="btn btn-back">Tilbage til dashboard</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("reservedel-container");
+        const addBtn = document.getElementById("add-entry");
+        const arbejdstidInput = document.getElementById("arbejdstid");
+        const visPris = document.getElementById("samlet-pris");
+
+        function beregnPris() {
+            let samlet = 0;
+            container.querySelectorAll(".reservedel-entry").forEach(entry => {
+                const select = entry.querySelector("select");
+                const pris = parseFloat(select.selectedOptions[0].getAttribute("data-pris")) || 0;
+                const antal = parseInt(entry.querySelector(".antal-input").value) || 0;
+                samlet += pris * antal;
+            });
+
+            const arbejdstid = parseInt(arbejdstidInput.value) || 0;
+            samlet += arbejdstid * 500;
+
+            visPris.textContent = samlet.toFixed(2) + " DKK";
+        }
+
+        addBtn.addEventListener("click", () => {
+            const entry = container.querySelector(".reservedel-entry").cloneNode(true);
+            entry.querySelector("select").selectedIndex = 0;
+            entry.querySelector(".antal-input").value = 1;
+            container.appendChild(entry);
+
+            entry.querySelector("select").addEventListener("change", beregnPris);
+            entry.querySelector(".antal-input").addEventListener("input", beregnPris);
+
+            beregnPris();
+        });
+
+        container.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-entry")) {
+                const allEntries = container.querySelectorAll(".reservedel-entry");
+                if (allEntries.length > 1) {
+                    e.target.parentElement.remove();
+                    beregnPris();
+                }
+            }
+        });
+
+        container.addEventListener("input", beregnPris);
+        arbejdstidInput.addEventListener("input", beregnPris);
+
+        beregnPris();
+    });
+</script>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 </body>
 </html>

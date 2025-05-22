@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Se Leasingaftaler | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/skade.css">
 </head>
-<body>
+<body class="read">
 
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <h2>Oversigt over skaderapporter</h2>
+
+    <form th:action="@{/skade/readOne}" method="get" class="search-form">
+        <label for="skaderapport_ID">Søg på skaderapport-ID:</label>
+        <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="Indtast ID" required>
+        <button type="submit" class="btn btn-view">Søg</button>
+    </form>
+
+    <div th:if="${fejlbesked}" class="fejlbesked">
+        <p th:text="${fejlbesked}"></p>
+    </div>
+
+    <div th:each="s : ${skaderapporter}" class="rapport-box">
+        <h3>Skaderapport ID: <span th:text="${s.skaderapport_ID}"></span></h3>
+
+        <p><strong>Medarbejder:</strong>
+            <span th:text="${s.medarbejder.fornavn + '' + s.medarbejder.efternavn}"></span>
+        </p>
+
+        <p><strong>Leasingaftale ID:</strong> <span th:text="${s.leasing.leasing_ID}"></span></p>
+        <p><strong>Arbejdstid:</strong> <span th:text="${s.arbejdstid}"></span> timer</p>
+        <p><strong>Samlet pris:</strong> <span th:text="${s.pris}"></span> DKK</p>
+
+        <h4>Reservedele:</h4>
+        <table class="reservedel-table" th:if="${s.reservedele.size() > 0}">
+            <thead>
+            <tr>
+                <th>Type</th>
+                <th>Pris pr. stk</th>
+                <th>Antal</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="rr : ${s.reservedele}">
+                <td th:text="${rr.reservedel.type}"></td>
+                <td th:text="${rr.reservedel.pris} + ' DKK'"></td>
+                <td th:text="${rr.antal}"></td>
+                <td th:text="${#numbers.formatDecimal(rr.reservedel.pris * rr.antal, 1, 'POINT', 2, 'COMMA')} + ' DKK'"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p th:if="${s.reservedele.size() == 0}" class="ingen skader">Ingen registrerede reservedele</p>
+        <hr>
+    </div>
+
+    <div class="button-links">
+        <a href="/skade/create" class="btn">Opret ny skaderapport</a>
+        <a href="/skade" class="btn btn-back">Tilbage til dashboard</a>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 </body>
 </html>

@@ -22,8 +22,7 @@ public class LeasingService {
     @Autowired
     private BilRepository bilRepository;
 
-    public void addLeasing(Leasing leasing)
-    {
+    public void addLeasing(Leasing leasing) {
         int kunde_ID = leasing.getKunde().getKunde_ID();
         Kunde kunde = kundeRepository.findKundeByID(kunde_ID);
         leasing.setKunde(kunde);
@@ -40,8 +39,7 @@ public class LeasingService {
         return leasingRepository.findLeasingByID(leasing_ID);
     }
 
-    public void updateLeasing(Leasing leasing)
-    {
+    public void updateLeasing(Leasing leasing) {
         int kunde_ID = leasing.getKunde().getKunde_ID();
         leasing.setKunde(kundeRepository.findKundeByID(kunde_ID));
 
@@ -54,5 +52,9 @@ public class LeasingService {
     public void deleteLeasing(int leasing_ID)
     {
         leasingRepository.deleteLeasingByID(leasing_ID);
+    }
+
+    public List<Leasing> findEndedLeasing() {
+        return leasingRepository.findEndedLeasing();
     }
 }
