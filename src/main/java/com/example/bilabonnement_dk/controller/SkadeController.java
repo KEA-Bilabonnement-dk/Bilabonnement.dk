@@ -114,7 +114,7 @@ public class SkadeController {
 
     @GetMapping("/skade/readOne")
     public String visSkadeRapport(@RequestParam("skaderapport_ID") int skaderapport_ID,
-                                                 Model model, HttpSession session) {
+                                  Model model, HttpSession session) {
         if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
             return "redirect:/";
         }
@@ -127,5 +127,33 @@ public class SkadeController {
 
         model.addAttribute("skaderapport", skaderapport);
         return "skade/readOne";
+    }
+
+    @GetMapping("/skade/update")
+    public String visOpdateringFormular(HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+        return "skade/update";
+    }
+
+    @GetMapping("skade/updateOne")
+    public String opdaterEnSkade(@RequestParam("skaderapport_ID") int skaderapport_ID,
+                                 Model model,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+
+        Skaderapport skaderapport = skadeService.findBySkaderapportID(skaderapport_ID);
+        if (skaderapport == null) {
+            model.addAttribute("fejlbesked", "Ingen skaderapport fundet med det angivne ID:" + skaderapport_ID);
+            return "redirect:/skade/update";
+        }
+
+        model.addAttribute("skaderapport", skaderapport);
+        model.addAttribute("reservedelliste", reservedelService.fetchAll());
+        return "skade/updateOne";
     }
 }

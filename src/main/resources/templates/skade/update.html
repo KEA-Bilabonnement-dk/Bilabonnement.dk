@@ -1,10 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Rediger Skaderapporter | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/skade.css">
 </head>
-<body>
+<body class="update">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Opdater Skaderapport</h2>
+        <form th:action="@{/skade/updateOne}" method="get" class="search-form">
+            <div class="form-group">
+                <label for="skaderapport_ID">Søg på skaderapport-ID:</label>
+                <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="Skaderapport-ID" required>
+                <div class="button-links">
+                    <button type="submit" class="btn btn-view">Søg</button>
+                </div>
+            </div>
+
+            <div th:if="${fejlbesked}" class="fejlbesked">
+                <p th:text="${fejlbesked}"></p>
+            </div>
+
+            <div class="button-links">
+                <a href="/skade" class="btn btn-back">Tilbage til dashboard</a>
+            </div>
+        </form>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 
 </body>
 </html>

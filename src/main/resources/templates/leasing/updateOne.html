@@ -2,7 +2,8 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Opdater Leasingaftale | Bilabonnement.dk</title>
+    <title>Rediger Leasingaftale | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/data.css">
 </head>
 <body class="update">
@@ -16,33 +17,49 @@
 
 <main class="container">
     <div class="form-container">
-        <h2>Opdater Leasingaftale</h2>
+        <h2>Rediger Leasingaftale</h2>
+
         <form th:action="@{/leasing/update}" method="post" th:object="${leasing}">
             <input type="hidden" th:field="*{leasing_ID}"/>
 
-            <label>Kunde-ID:</label>
-            <input type="number" th:field="*{kunde.kunde_ID}" required/>
+            <div class="form-group">
+                <label>Kunde-ID:</label>
+                <input type="number" th:field="*{kunde.kunde_ID}" required/>
+            </div>
 
-            <label>Bil-ID:</label>
-            <input type="number" th:field="*{bil.bil_ID}" required/>
+            <div class="form-group">
+                <label>Bil-ID:</label>
+                <input type="number" th:field="*{bil.bil_ID}" required/>
+            </div>
 
-            <label>Abonnementstype:</label>
-            <select id="abonnementstype" th:field="*{abonnementstype}" required>
-                <option th:each="type : ${T(com.example.bilabonnement_dk.model.Abonnementstype).values()}"
-                        th:value="${type}" th:text="${type}">
-                </option>
-            </select>
+            <div class="form-group">
+                <label>Abonnementstype:</label>
+                <select id="abonnementstype" th:field="*{abonnementstype}" required>
+                    <option th:each="type : ${T(com.example.bilabonnement_dk.model.Abonnementstype).values()}"
+                            th:value="${type}"
+                            th:text="${type}">
+                    </option>
+                </select>
+            </div>
 
-            <label for="startdato">Startdato:</label>
-            <input type="date" id="startdato" th:field="*{startdato}" required />
+            <div class="form-group">
+                <label for="startdato">Startdato:</label>
+                <input type="date" id="startdato" th:field="*{startdato}" required />
+            </div>
 
-            <label for="slutdato">Slutdato:</label>
-            <input type="date" id="slutdato" th:field="*{slutdato}" required/>
+            <div class="form-group">
+                <label for="slutdato">Slutdato:</label>
+                <input type="date" id="slutdato" th:field="*{slutdato}" required />
+            </div>
 
-            <label>Pris:</label>
-            <input type="number" th:field="*{pris}" required/>
+            <div class="form-group">
+                <label>Pris:</label>
+                <input type="number" th:field="*{pris}" required/>
+            </div>
 
-            <button type="submit">Opdater Leasingaftale</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-save">Gem ændringer</button>
+            </div>
 
             <div th:if="${fejlbesked}" class="fejlbesked">
                 <p th:text="${fejlbesked}"></p>
@@ -55,7 +72,45 @@
     </div>
 </main>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const abonnementstype = document.getElementById("abonnementstype");
+        const startdato = document.getElementById("startdato");
+        const slutdato = document.getElementById("slutdato");
 
+        function updateSlutdato() {
+            const start = new Date(startdato.value);
+            const type = abonnementstype.value;
+
+            if (!startdato.value) return;
+
+            slutdato.readOnly = false;
+            slutdato.min = "";
+
+            if (type === "LIMITED") {
+                const limitedEnd = new Date(start);
+                limitedEnd.setMonth(start.getMonth() + 5);
+                slutdato.value = limitedEnd.toISOString().split("T")[0];
+                slutdato.readOnly = true;
+            } else if (type === "UNLIMITED") {
+                const minEnd = new Date(start);
+                minEnd.setMonth(start.getMonth() + 3);
+                slutdato.min = minEnd.toISOString().split("T")[0];
+
+                const currentEnd = new Date(slutdato.value);
+                if (currentEnd < minEnd) {
+                    slutdato.value = "";
+                }
+            }
+        }
+
+        abonnementstype.addEventListener("change", updateSlutdato);
+        startdato.addEventListener("change", updateSlutdato);
+        slutdato.addEventListener("change", updateSlutdato);
+
+        updateSlutdato();
+    });
+</script>
 
 <footer class="footer">
     <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>

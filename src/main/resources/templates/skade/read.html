@@ -21,7 +21,10 @@
     <form th:action="@{/skade/readOne}" method="get" class="search-form">
         <label for="skaderapport_ID">Søg på skaderapport-ID:</label>
         <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="Indtast ID" required>
-        <button type="submit" class="btn btn-view">Søg</button>
+
+        <div class="button-links">
+            <button type="submit" class="btn btn-view">Søg</button>
+        </div>
     </form>
 
     <div th:if="${fejlbesked}" class="fejlbesked">

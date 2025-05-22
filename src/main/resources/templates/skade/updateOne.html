@@ -2,11 +2,11 @@
 <html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Opret Skaderapport | Bilabonnement.dk</title>
+    <title>Rediger Skaderapport | Bilabonnement.dk</title>
     <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="/skade.css">
+    <link rel="stylesheet" href="/data.css">
 </head>
-<body class="create">
+<body class="update">
 
 <header class="header">
     <div class="logo-container">
@@ -17,43 +17,35 @@
 
 <main class="container">
     <div class="form-container">
-        <h2>Opret skaderapport</h2>
+        <h2>Rediger skaderapport</h2>
 
-        <div th:if="${besked}" class="besked">
-            <p th:text="${besked}"></p>
-        </div>
+        <form th:action="@{/skade/update}" method="post" th:object="${skaderapport}" id="skadeform">
+            <input type="hidden" th:field="*{skaderapport_ID}" />
 
-        <div th:if="${fejlbesked}" class="fejlbesked">
-            <p th:text="${fejlbesked}"></p>
-        </div>
-
-        <form th:action="@{/skade/create}" method="post" th:object="${skaderapport}" id="skadeform">
             <div class="form-group">
-                <label for="leasing_ID">Leasingaftale:</label>
-                <select id="leasing_ID" th:field="*{leasing.leasing_ID}">
-                    <option th:each="l : ${leasingliste}" th:value="${l.leasing_ID}" th:text="${l.leasing_ID}"></option>
-                </select>
+                <label>Leasingaftale-ID</label>
+                <span th:text="*{leasing.leasing_ID}"></span>
             </div>
 
             <div class="form-group">
                 <label>Arbejdstid (timer):</label>
-                <input type="number" name="arbejdstid" th:field="*{arbejdstid}" id="arbejdstid" min="0" required>
+                <input type="number" th:field="*{arbejdstid}" class="antal-input" min="0" required>
             </div>
 
-            <div id="reservedel-container">
-                <div class="form-group reservedel-entry">
-                        <select name="reservedel_ID" class="reservedel-select">
-                            <option value="">-- Vælg reservedel --</option>
-                            <option th:each="r : ${reservedelliste}"
-                                    th:value="${r.reservedel_ID}"
-                                    th:text="${r.type}"
-                                    th:attr="data-pris=${r.pris}">
+            <h4>Reservedele:</h4>
+                <div id="reservedel-container">
+                    <div class="form-group reservedel-entry" th:each="r : *{reservedele}">
+                        <select name="reservedel_ID" class="reservedel-select" required>
+                            <option th:each="reserve : ${reservedelliste}"
+                                    th:value="${reserve.reservedel_ID}"
+                                    th:text="${reserve.type}" th:attr="data-pris=${reserve.pris}"
+                                    th:selected="${reserve.reservedel_ID == r.reservedel.reservedel_ID}">
                             </option>
                         </select>
-                    <input type="number" name="antal" class="antal-input" placeholder="Antal" min="1" value="1">
-                    <button type="button" class="remove-entry">Fjern</button>
+                        <input type="number" name="antal" class="antal-input" min="1" th:value="${r.antal}" required>
+                        <button type="button" class="remove-entry">Fjern</button>
+                    </div>
                 </div>
-            </div>
 
             <button type="button" id="add-entry">+ Tilføj reservedel</button>
 
@@ -62,11 +54,12 @@
                 <strong id="samlet-pris">0 DKK</strong>
             </div>
 
-            <div class="form-group">
-                <button type="submit" class="btn btn create">Opret Skaderapport</button>
+            <div class="button-links">
+                <button type="submit" class="btn">Gem ændringer</button>
             </div>
 
             <div class="button-links">
+                <a href="/skade/read" class="btn btn-back">Tilbage til oversigt</a>
                 <a href="/skade" class="btn btn-back">Tilbage til dashboard</a>
             </div>
         </form>
@@ -127,5 +120,6 @@
 <footer class="footer">
     <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
 </footer>
+
 </body>
 </html>
