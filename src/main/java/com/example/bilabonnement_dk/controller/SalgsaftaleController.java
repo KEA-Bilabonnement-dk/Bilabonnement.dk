@@ -44,13 +44,13 @@ public class SalgsaftaleController {
         return "redirect:/data";
     }
 
-    @GetMapping("/Dataregistrere/VisSalgsaftaler")
+    @GetMapping("/Dataregistrere/visSalgsaftaler")
     public String showOpretSalgsaftaleForm(Model model) {
         model.addAttribute("salgsaftale", new Salgsaftale());
-        return "Dataregistrere/VisSalgsaftale";
+        return "Dataregistrere/visSalgsaftale";
     }
 
-    @GetMapping("/Dataregistrere/Vissalgsaftaler")
+    @GetMapping("/Dataregistrere/v  isSalgsaftaler")
     public String visAlleSalgsaftale(Model model) {
         model.addAttribute("salgsaftaleliste", salgsaftaleService.fetchAll());
         return "Dataregistrere/visSalgsaftale";

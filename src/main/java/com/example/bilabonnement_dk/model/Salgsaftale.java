@@ -1,6 +1,5 @@
 package com.example.bilabonnement_dk.model;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Salgsaftale {
 
@@ -11,6 +10,8 @@ public class Salgsaftale {
     private Medarbejder medarbejder;
     private Bil bil;
     private Kunde kunde;
+
+
 
     public Salgsaftale(){}
 

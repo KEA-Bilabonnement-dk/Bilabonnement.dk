@@ -49,8 +49,4 @@ public class KundeRepository {
         String sql = "DELETE FROM kunde WHERE kunde_ID = ?";
         jdbcTemplate.update(sql,kunde_ID);
     }
-
-
-
-
 }

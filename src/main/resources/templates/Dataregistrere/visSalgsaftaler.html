@@ -29,6 +29,7 @@
     <tbody>
     <tr th:if="${#lists.isEmpty(salgsaftaleliste)}">
         <td colspan="12">Ingen salgsaftaler fundet.</td>
+    </tr>
     <tr th:each="salgsaftale : ${salgsaftaleliste}">
         <td th:text="${salgsaftale.salgs_ID}"></td>
         <td th:text="${salgsaftale.salgspris}"></td>
@@ -38,13 +39,14 @@
         <td th:text="${salgsaftale.bil}"></td>
         <td th:text="${salgsaftale.kunde}"></td>
     </tr>
-            <a th:href="@{'/viewOne/'+${Salgsaftale.salgs_ID}}">
+            <a th:href="@{'/viewOne/'+${salgsaftale.salgs_ID}}">
                 <button class="btn-viewOne" id="btn-viewOne">Vis salgsaftale</button>
             </a>
-            <a th:href="@{'/Dataregistrere/sletSalgsaftale'+${Salgsaftale.salgs_ID}}">
-                <button class="btn-deleteOne" id="btn-deleteOne">Slet salgsaftale</button>
-            </a>
-            <a th:href="@{'/updateOne/'+${Salgsaftale.salgs_ID}}">
+            <form th:action="@{/Dataregistrere/sletSalgsaftale}" method="post">
+                <input type="hidden" th:name="salgs_ID" th:value="${salgsaftale.salgs_ID}" />
+                <button type="submit" class="btn-deleteOne" id="btn-deleteOne">Slet salgsaftale</button>
+            </form>
+            <a th:href="@{'/updateOne/'+${salgsaftale.salgs_ID}}">
                 <button class="btn-updateOne" id="btn-updateOne">Updater salgsaftale</button>
             </a>
         </td>

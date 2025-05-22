@@ -9,7 +9,7 @@ public class Medarbejder {
     private String brugernavn;
     private String adgangskode;
     private Rolle rolle;
-    Adresse adresse;
+    private Adresse adresse;
 
     public Medarbejder()
     {

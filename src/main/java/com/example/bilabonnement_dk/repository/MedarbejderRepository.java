@@ -24,16 +24,33 @@ public class MedarbejderRepository
         );
     }
 
+    public void addMedarbejder(Medarbejder medarbejder) {
+        String sql = "INSERT INTO medarbejder (medarbejder_ID, fornavn, efternavn, telefonnummer, mail, brugernavn, adgangskode, rolle, adresse_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql,medarbejder.getMedarbejder_ID(),medarbejder.getFornavn(),
+                medarbejder.getEfternavn(),medarbejder.getTelefonnummer(),
+                medarbejder.getEmail(),medarbejder.getBrugernavn(),medarbejder.getAdgangskode(),medarbejder.getRolle(),medarbejder.getAdresse().getAdresse_ID());
+    }
+
     public List<Medarbejder> fetchAll() {
         String sql = "SELECT * FROM medarbejder";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Medarbejder m = new Medarbejder();
-            m.setMedarbejder_ID(rs.getInt("medarbejder_ID"));
-            m.setBrugernavn(rs.getString("brugernavn"));
-            m.setAdgangskode(rs.getString("adgangskode"));
-            return m;
-        });
+        RowMapper<Medarbejder> rowMapper = new BeanPropertyRowMapper<>(Medarbejder.class);
+        return jdbcTemplate.query(sql, rowMapper);
     }
+
+    public void updateMedarbejder(Medarbejder medarbejder) {
+        String sql = "UPDATE Medarbejder SET fornavn = ?, efternavn = ?, telefonnummer = ?, mail = ?, brugernavn = ?, adgangskode = ?, rolle = ?, adresse_ID = ? WHERE medarbejder_ID = ?";
+        jdbcTemplate.update(sql,
+                medarbejder.getFornavn(),
+                medarbejder.getEfternavn(),
+                medarbejder.getTelefonnummer(),
+                medarbejder.getEmail(),
+                medarbejder.getBrugernavn(),
+                medarbejder.getAdgangskode(),
+                medarbejder.getRolle(),
+                medarbejder.getRolle() != null ? medarbejder.getRolle().toString() : null,
+                medarbejder.getAdresse() != null ? medarbejder.getAdresse().getAdresse_ID() : null);
+    }
+
     public Medarbejder findMedarbejderByID(int medarbejder_ID)
     {
         String sql = "SELECT * FROM medarbejder WHERE medarbejder_ID = ?";
@@ -41,4 +58,9 @@ public class MedarbejderRepository
         return jdbcTemplate.queryForObject(sql, rowMapper, medarbejder_ID);
     }
 
+    public void deleteMedarbejder(int medarbejder_ID)
+    {
+        String sql = "DELETE FROM medarbejder WHERE medarbejder_ID = ?";
+        jdbcTemplate.update(sql,medarbejder_ID);
+    }
 }

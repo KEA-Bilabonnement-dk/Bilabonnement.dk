@@ -35,19 +35,33 @@
 
       <div class="form-group">
         <label for="medarbejder">Medarbejder:</label>
-        <input type="text" id="medarbejder" th:field="*{medarbejder}" placeholder="medarbejder" required>
+        <select id="medarbejder" th:field="*{medarbejder}" required>
+          <option value="" disabled selected>Vælg medarbejder</option>
+          <option th:each="m : ${medarbejdere}"
+                  th:value="${m.medarbejder_ID}"
+                  th:text="${m.fornavn + ' ' + m.efternavn}"></option>
+        </select>
       </div>
 
       <div class="form-group">
         <label for="bil">Bil:</label>
-        <input type="text" id="bil" th:field="*{bil}" placeholder="bil" required>
+        <select id="bil" th:field="*{bil}" required>
+          <option value="" disabled selected>Vælg bil</option>
+          <option th:each="b : ${biler}"
+                  th:value="${b.bil_ID}"
+                  th:text="${b.maerke + ' ' + b.model}"></option>
+        </select>
       </div>
 
       <div class="form-group">
         <label for="kunde">Kunde:</label>
-        <input type="text" id="kunde" th:field="*{kunde}" placeholder="kunde" required>
+        <select id="kunde" th:field="*{kunde}" required>
+          <option value="" disabled selected>Vælg kunde</option>
+          <option th:each="k : ${kunder}"
+                  th:value="${k.kunde_ID}"
+                  th:text="${k.kFornavn + ' ' + k.kEfternavn}"></option>
+        </select>
       </div>
-
       <button type="submit" class="btn btn create">Opret salgsaftale</button>
 
       <div class="button-links">
