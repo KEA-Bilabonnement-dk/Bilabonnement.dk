@@ -148,7 +148,7 @@ public class SkadeController {
 
         Skaderapport skaderapport = skadeService.findBySkaderapportID(skaderapport_ID);
         if (skaderapport == null) {
-            model.addAttribute("fejlbesked", "Ingen skaderapport fundet med det angivne ID:" + skaderapport_ID);
+            redirectAttributes.addFlashAttribute("fejlbesked", "Ingen skaderapport fundet med det angivne ID:" + skaderapport_ID);
             return "redirect:/skade/update";
         }
 
@@ -157,14 +157,45 @@ public class SkadeController {
         return "skade/updateOne";
     }
 
-    @PostMapping
+    @PostMapping("skade/update")
     public String opdaterSkade(@ModelAttribute Skaderapport skaderapport,
                                @RequestParam(name = "reservedel_ID", required = false) List<Integer> reservedelIDs,
                                @RequestParam(name = "antal", required = false) List<Integer> antalListe,
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
-        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+        Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER");
+        if (medarbejder == null) {
+            return "redirect:/";
         }
-        return "redirect:/";
+
+        skadeService.deleteRapportreservedel(skaderapport.getSkaderapport_ID());
+
+        double samletPris = 0;
+
+        if (reservedelIDs != null && antalListe != null && !reservedelIDs.isEmpty()) {
+            for (int i = 0; i < reservedelIDs.size(); i++) {
+                int reservedelID = reservedelIDs.get(i);
+                int antal = antalListe.get(i);
+
+                Reservedel reservedel = reservedelService.findByID(reservedelID);
+                double delpris = reservedel.getPris() * antal;
+                samletPris += delpris;
+
+                Rapportreservedel rr = new Rapportreservedel();
+                rr.setSkaderapport(new Skaderapport());
+                rr.getSkaderapport().setSkaderapport_ID(skaderapport.getSkaderapport_ID());
+                rr.setReservedel(reservedel);
+                rr.setAntal(antal);
+
+                skadeService.addRapportreservedel(rr);
+            }
+        }
+
+        samletPris += skaderapport.getArbejdstid() * 500;
+
+        skadeService.updateSkaderapport(skaderapport.getSkaderapport_ID(), skaderapport.getArbejdstid(), samletPris);
+
+        redirectAttributes.addFlashAttribute("besked", "Skaderapport opdateret!");
+        return "redirect:/skade/read";
     }
 }

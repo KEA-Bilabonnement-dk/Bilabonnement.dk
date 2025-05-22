@@ -49,4 +49,12 @@ public class SkadeService {
         }
         return skaderapport;
     }
+
+    public void updateSkaderapport(int skaderapport_ID, int arbejdstid, double pris) {
+        skadeRepository.updateSkaderapport(skaderapport_ID, arbejdstid, pris);
+    }
+
+    public void deleteRapportreservedel(int skaderapport_ID) {
+        rapportreservedelRepository.deleteSkaderapportByID(skaderapport_ID);
+    }
 }

@@ -49,4 +49,9 @@ public class RapportreservedelRepository {
             return rr;
         });
     }
+
+    public void deleteSkaderapportByID(int skaderapport_ID) {
+        String sql = "DELETE FROM rapportreservedel WHERE skaderapport_ID = ?";
+        jdbcTemplate.update(sql, skaderapport_ID);
+    }
 }
