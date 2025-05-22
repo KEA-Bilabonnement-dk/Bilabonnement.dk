@@ -50,7 +50,7 @@ public class SkadeController {
             return "redirect:/";
         }
         model.addAttribute("skaderapport", new Skaderapport());
-        model.addAttribute("leasingliste", leasingService.fetchAll());
+        model.addAttribute("leasingliste", leasingService.findEndedLeasing());
         model.addAttribute("reservedelliste", reservedelService.fetchAll());
 
         return "skade/create";

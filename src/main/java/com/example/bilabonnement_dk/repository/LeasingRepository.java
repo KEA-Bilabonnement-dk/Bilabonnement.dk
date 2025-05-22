@@ -105,4 +105,21 @@ public class LeasingRepository {
         String sql = "DELETE FROM leasing WHERE leasing_ID = ?";
         jdbcTemplate.update(sql, leasing_ID);
     }
+
+    public List<Leasing> findEndedLeasing() {
+        String sql = """
+                SELECT * FROM leasing
+                WHERE slutdato < CURDATE()
+                """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Leasing leasing = new Leasing();
+            leasing.setLeasing_ID(rs.getInt("leasing_ID"));
+            leasing.setStartdato(rs.getDate("startdato").toLocalDate());
+            leasing.setSlutdato(rs.getDate("slutdato").toLocalDate());
+            leasing.setPris(rs.getDouble("pris"));
+
+            return leasing;
+        });
+    }
 }
