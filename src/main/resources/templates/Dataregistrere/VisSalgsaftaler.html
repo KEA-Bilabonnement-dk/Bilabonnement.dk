@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Bil liste</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Bil liste</h1>
+
+<div class="dashboard-box">
+    <h3>Opret salgsaftale</h3>
+    <p>Tilføj salgsaftale</p>
+    <a th:href="@{/Dataregistrere/createSalgsaftale}">Opret salgsaftale</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>salgspris</th>
+        <th>leveringsdato</th>
+        <th>adresse</th>
+        <th>medarbejder</th>
+        <th>bil</th>
+        <th>kunde</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${#lists.isEmpty(salgsaftaleliste)}">
+        <td colspan="12">Ingen salgsaftaler fundet.</td>
+    <tr th:each="salgsaftale : ${salgsaftaleliste}">
+        <td th:text="${salgsaftale.salgs_ID}"></td>
+        <td th:text="${salgsaftale.salgspris}"></td>
+        <td th:text="${salgsaftale.leveringsdato}"></td>
+        <td th:text="${salgsaftale.adresse}"></td>
+        <td th:text="${salgsaftale.medarbejder}"></td>
+        <td th:text="${salgsaftale.bil}"></td>
+        <td th:text="${salgsaftale.kunde}"></td>
+    </tr>
+            <a th:href="@{'/viewOne/'+${Salgsaftale.salgs_ID}}">
+                <button class="btn-viewOne" id="btn-viewOne">Vis salgsaftale</button>
+            </a>
+            <a th:href="@{'/Dataregistrere/sletSalgsaftale'+${Salgsaftale.salgs_ID}}">
+                <button class="btn-deleteOne" id="btn-deleteOne">Slet salgsaftale</button>
+            </a>
+            <a th:href="@{'/updateOne/'+${Salgsaftale.salgs_ID}}">
+                <button class="btn-updateOne" id="btn-updateOne">Updater salgsaftale</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<div class="button-links">
+    <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
+</div>
+</body>
+</html>

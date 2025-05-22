@@ -1,11 +1,12 @@
 package com.example.bilabonnement_dk.model;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class Salgsaftale {
 
     private int salgs_ID;
     private double salgspris;
-    private Date leveringsdato;
+    private LocalDate leveringsdato;
     private Adresse adresse;
     private Medarbejder medarbejder;
     private Bil bil;
@@ -13,7 +14,7 @@ public class Salgsaftale {
 
     public Salgsaftale(){}
 
-    public Salgsaftale(int salgs_ID, double salgspris, Date leveringsdato, Adresse adresse, Medarbejder medarbejder, Bil bil, Kunde kunde){
+    public Salgsaftale(int salgs_ID, double salgspris, LocalDate leveringsdato, Adresse adresse, Medarbejder medarbejder, Bil bil, Kunde kunde){
         this.salgs_ID = salgs_ID;
         this.salgspris = salgspris;
         this.leveringsdato = leveringsdato;
@@ -31,7 +32,7 @@ public class Salgsaftale {
         return salgspris;
     }
 
-    public Date getLeveringsdato() {
+    public LocalDate getLeveringsdato() {
         return leveringsdato;
     }
 
@@ -59,7 +60,7 @@ public class Salgsaftale {
         this.salgspris = salgspris;
     }
 
-    public void setLeveringsdato(Date leveringsdato) {
+    public void setLeveringsdato(LocalDate leveringsdato) {
         this.leveringsdato = leveringsdato;
     }
 
