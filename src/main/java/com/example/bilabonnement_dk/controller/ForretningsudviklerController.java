@@ -1,5 +1,7 @@
 package com.example.bilabonnement_dk.controller;
 
+import com.example.bilabonnement_dk.model.Bil;
+import com.example.bilabonnement_dk.service.BilService;
 import com.example.bilabonnement_dk.service.ForretningsudviklerService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -8,15 +10,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/forretningsudvikler")
 public class ForretningsudviklerController {
 
+    private final BilService bilService;
     private ForretningsudviklerService forretningsudviklerService;
 
-    public ForretningsudviklerController(ForretningsudviklerService forretningsudviklerService) {
+    public ForretningsudviklerController(ForretningsudviklerService forretningsudviklerService, BilService bilService) {
         this.forretningsudviklerService = forretningsudviklerService;
+        this.bilService = bilService;
     }
     @GetMapping("/forretningsudvikler/read")
     public String visDashboard(Model model) {
@@ -37,6 +43,18 @@ public class ForretningsudviklerController {
         return "forretningsudvikler/readpris";
 
     }
+    @GetMapping("/forretningsudvikler/bilerliste")
+    public String bilerListe(Model model) {
+        List<Bil> udlejedeBiler = forretningsudviklerService.hentUdlejedeBiler();
+        List<Bil> bilerPaaLager = forretningsudviklerService.hentBilerPaaLager();
+
+        model.addAttribute("udlejedeBiler", udlejedeBiler);
+        model.addAttribute("bilerPaaLager", bilerPaaLager);
+
+        return "forretningsudvikler/bilerliste";
+
+    }
+
 
 
 

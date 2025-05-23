@@ -1,10 +1,13 @@
 package com.example.bilabonnement_dk.repository;
 
 
+import com.example.bilabonnement_dk.model.Bil;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Repository
 public class ForretningsudviklerRepository {
@@ -30,6 +33,14 @@ public class ForretningsudviklerRepository {
     public BigDecimal findSamletPrisAktiveUdlejedeBiler() {
         String sql = "SELECT SUM(pris) FROM leasing WHERE slutdato > CURRENT_DATE";
         return jdbcTemplate.queryForObject(sql, BigDecimal.class);
+    }
+    public List<Bil> findUdlejedeBiler() {
+        String sql = "SELECT b.* FROM bil b JOIN leasing l ON b.bil_ID = l.bil_ID WHERE l.slutdato > CURRENT_DATE";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Bil.class));
+    }
+    public List<Bil> findBilerPaaLager() {
+        String sql = "SELECT * FROM bil WHERE bil_ID NOT IN (SELECT bil_ID From leasing WHERE slutdato > CURRENT_DATE)";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Bil.class));
     }
 }
 
