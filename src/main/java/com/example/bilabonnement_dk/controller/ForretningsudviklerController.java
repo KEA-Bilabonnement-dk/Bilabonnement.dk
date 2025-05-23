@@ -52,5 +52,17 @@ public class ForretningsudviklerController {
         return "forretningsudvikler/readpris";
 
     }
+    @GetMapping("/forretningsudvikler/bilerliste")
+    public String bilerListe(Model model) {
+        List<Bil> udlejedeBiler = forretningsudviklerService.hentUdlejedeBiler();
+        List<Bil> bilerPaaLager = forretningsudviklerService.hentBilerPaaLager();
+
+        model.addAttribute("udlejedeBiler", udlejedeBiler);
+        model.addAttribute("bilerPaaLager", bilerPaaLager);
+
+        return "forretningsudvikler/bilerliste";
+
+    }
+
 
 }

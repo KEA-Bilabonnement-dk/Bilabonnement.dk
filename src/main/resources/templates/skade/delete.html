@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Slet Skaderapporter | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/data.css">
 </head>
-<body>
+<body class="delete">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+
+    <div class="form-container">
+        <h2>Slet skaderapport ved ID</h2>
+            <form th:action="@{/skade/delete}" method="post" class="search-form">
+                <label for="skaderapport_ID">Indtsat skaderapport-ID:</label>
+                <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="Indtast-ID" required>
+                <div class="button-links">
+                    <button type="submit" class="btn btn-delete">Slet</button>
+                </div>
+            </form>
+    </div>
+
+    <div th:if="${fejlbesked}" class="fejlbesked">
+        <p th:text="${fejlbesked}"></p>
+    </div>
+
+    <div th:if="${besked}" class="besked">
+        <p th:text="${besked}"></p>
+    </div>
+
+    <section class="table-container">
+        <h2>Alle skaderapport</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Medarbejder</th>
+                    <th>Leasing-ID</th>
+                    <th>Handling</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="s : ${skaderapporter}">
+                    <td th:text="${s.skaderapport_ID}"></td>
+                    <td th:text="${s.medarbejder.fornavn + ' ' + s.medarbejder.efternavn}"></td>
+                    <td th:text="${s.leasing.leasing_ID}"></td>
+                    <td>
+                        <form th:action="@{/skade/delete}" method="post">
+                            <input type="hidden" name="skaderapport_ID" th:value="${s.skaderapport_ID}" />
+                            <button type="submit" class="btn btn-delete">Slet</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <div class="button-links">
+        <a href="/skade" class="btn btn-back">Tilbage til menu</a>
+    </div>
+
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 
 </body>
 </html>

@@ -56,5 +56,6 @@ public class SkadeService {
 
     public void deleteRapportreservedel(int skaderapport_ID) {
         rapportreservedelRepository.deleteSkaderapportByID(skaderapport_ID);
+        skadeRepository.deleteSkaderapport(skaderapport_ID);
     }
 }

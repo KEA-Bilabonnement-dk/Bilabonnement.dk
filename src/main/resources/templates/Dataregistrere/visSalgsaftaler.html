@@ -31,14 +31,14 @@
         <td colspan="12">Ingen salgsaftaler fundet.</td>
     </tr>
     <tr th:each="salgsaftale : ${salgsaftaleliste}">
-        <td th:text="${salgsaftale.salgs_ID}"></td>
+        <td th:text="${salgsaftale.salg_ID}"></td>
         <td th:text="${salgsaftale.salgspris}"></td>
         <td th:text="${salgsaftale.leveringsdato}"></td>
         <td th:text="${salgsaftale.adresse}"></td>
-        <td th:text="${salgsaftale.medarbejder}"></td>
-        <td th:text="${salgsaftale.bil}"></td>
-        <td th:text="${salgsaftale.kunde}"></td>
-    </tr>
+        <td th:text="${salgsaftale.medarbejder.fornavn + ' ' + salgsaftale.medarbejder.efternavn}"></td>
+        <td th:text="${salgsaftale.bil.bil_ID}"></td>
+        <td th:text="${salgsaftale.kunde.kFornavn + ' ' + salgsaftale.kunde.kEfternavn}"></td>
+        <td>
             <a th:href="@{'/viewOne/'+${salgsaftale.salgs_ID}}">
                 <button class="btn-viewOne" id="btn-viewOne">Vis salgsaftale</button>
             </a>

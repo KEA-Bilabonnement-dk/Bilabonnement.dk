@@ -109,6 +109,11 @@ public class SkadeRepository {
 
     public void updateSkaderapport(int skaderapport_ID, int arbejdstid, double pris) {
         String sql = "UPDATE skaderapport SET arbejdstid = ?, pris = ? WHERE skaderapport_ID = ?";
-                jdbcTemplate.update(sql, arbejdstid, pris, skaderapport_ID);
+        jdbcTemplate.update(sql, arbejdstid, pris, skaderapport_ID);
+    }
+
+    public void deleteSkaderapport(int skaderapport_ID) {
+        String sql = "DELETE FROM skaderapport WHERE skaderapport_ID = ?";
+        jdbcTemplate.update(sql, skaderapport_ID);
     }
 }

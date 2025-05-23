@@ -148,7 +148,7 @@ public class SkadeController {
 
         Skaderapport skaderapport = skadeService.findBySkaderapportID(skaderapport_ID);
         if (skaderapport == null) {
-            redirectAttributes.addFlashAttribute("fejlbesked", "Ingen skaderapport fundet med det angivne ID:" + skaderapport_ID);
+            redirectAttributes.addFlashAttribute( "fejlbesked", "Ingen skaderapport fundet med det angivne ID:" + skaderapport_ID);
             return "redirect:/skade/update";
         }
 
@@ -197,5 +197,29 @@ public class SkadeController {
 
         redirectAttributes.addFlashAttribute("besked", "Skaderapport opdateret!");
         return "redirect:/skade/read";
+    }
+
+    @GetMapping("/skade/delete")
+    public String visSletSkade(Model model, HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+
+        List<Skaderapport> skaderapporter = skadeService.fetchAll();
+        model.addAttribute("skaderapporter", skaderapporter);
+        return "skade/delete";
+    }
+
+    @PostMapping("skade/delete")
+    public String sletSkaderapport(@RequestParam("skaderapport_ID") int skaderapport_ID,
+                                   RedirectAttributes redirectAttributes,
+                                   HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER") == null) {
+            return "redirect:/";
+        }
+
+        skadeService.deleteRapportreservedel(skaderapport_ID);
+        redirectAttributes.addFlashAttribute("besked", "Skaderapport med ID " + skaderapport_ID + " blev succesfuldt slettet.");
+        return "redirect:/skade/delete";
     }
 }
