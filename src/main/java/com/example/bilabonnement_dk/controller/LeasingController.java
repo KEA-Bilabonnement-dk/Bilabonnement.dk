@@ -134,7 +134,9 @@ public class LeasingController {
     }
 
     @PostMapping("/leasing/delete")
-    public String sletLeasing(@RequestParam("leasing_ID") int leasing_ID, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String sletLeasing(@RequestParam("leasing_ID") int leasing_ID,
+                              RedirectAttributes redirectAttributes,
+                              HttpSession session) {
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
             return "redirect:/";
         }
