@@ -1,12 +1,12 @@
 package com.example.bilabonnement_dk.service;
 
 
-import com.example.bilabonnement_dk.controller.ForretningsudviklerController;
+import com.example.bilabonnement_dk.model.Bil;
 import com.example.bilabonnement_dk.repository.ForretningsudviklerRepository;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import java.math.BigDecimal;
+import java.util.Map;
 
 @Service
 public class ForretningsudviklerService {
@@ -29,6 +29,16 @@ public class ForretningsudviklerService {
     public BigDecimal hentSamletPrisAktiveUdlejdeBiler() {
         BigDecimal pris = forretningsudviklerRepository.findSamletPrisAktiveUdlejedeBiler();
         return pris != null ? pris : BigDecimal.ZERO;
+    }
+    public double hentUdlejningsgrad() {
+        return forretningsudviklerRepository.hentUdlejningsgrad();
+    }
+    public List<Bil> hentUdlejedeBiler() {
+        return forretningsudviklerRepository.findUdlejedeBiler();
+    }
+    public List<Bil> hentBilerPaaLager() {
+        return forretningsudviklerRepository.findBilerPaaLager();
 
     }
+
 }

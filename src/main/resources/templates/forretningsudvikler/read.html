@@ -2,8 +2,9 @@
 <html lang="da" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Antal Udlejede Biler | Bilabonnement.dk</title>
+    <title>Biloversigt | Bilabonnement.dk</title>
     <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="login">
 
@@ -15,15 +16,100 @@
 </header>
 
 <main class="login-container">
-    <h2>Antal Udlejede Biler</h2>
+    <h2>Biloversigt</h2>
 
+    <section>
+        <h3>Udlejede Biler</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Vognnummer</th>
+                <th>Mærke</th>
+                <th>Model</th>
+                <th>Udstyrsniveau</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bil : ${udlejedeBiler}">
+                <td th:text="${bil.vognnr}">Vognnr</td>
+                <td th:text="${bil.maerke}">Mærke</td>
+                <td th:text="${bil.model}">Model</td>
+                <td th:text="${bil.udstyrsniveau}">Udstyr</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h3>Biler på Lager</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Vognnummer</th>
+                <th>Mærke</th>
+                <th>Model</th>
+                <th>Udstyrsniveau</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bil : ${bilerPaaLager}">
+                <td th:text="${bil.vognnr}">Vognnr</td>
+                <td th:text="${bil.maerke}">Mærke</td>
+                <td th:text="${bil.model}">Model</td>
+                <td th:text="${bil.udstyrsniveau}">Udstyr</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <br>
+    <a href="/forretning">Tilbage til dashboard</a>
     <!-- Samlet antal leasingaftaler -->
     <p th:text="'Der har i alt været ' + ${antalUdlejde} + ' leasingaftaler.'">Indlæser...</p>
 
     <!-- Aktive udlejninger -->
     <p th:text="'Heraf er ' + ${antalAktive} + ' aktive udlejninger.'">Indlæser...</p>
 
-    <a href="/forretning">Tilbage til dashboard</a>
+    <p>Udlejningsgrad: <strong th:text="${udlejningsgrad} + '%'">0%</strong></p>
+    <canvas id="udlejningsgradChart" width="500" height="500" style="margin-top: 20px;"></canvas>
+
+    <script th:inline="javascript">
+        const udlejningsgrad = [[${udlejningsgrad}]];
+        const ikkeUdlejet = 100 - udlejningsgrad;
+
+        const ctx = document.getElementById('udlejningsgradChart').getContext('2d');
+        const udlejningsgradChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Udlejet', 'Ikke udlejet'],
+                datasets: [{
+                    label: 'Udlejningsgrad',
+                    data: [udlejningsgrad, ikkeUdlejet],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(255, 99, 132, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: false,  // Her skal du sætte det til false
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Fordeling af udlejede vs. ikke udlejede biler'
+                    }
+                }
+            }
+        });
+    </script>
 </main>
 
 <footer class="footer">
