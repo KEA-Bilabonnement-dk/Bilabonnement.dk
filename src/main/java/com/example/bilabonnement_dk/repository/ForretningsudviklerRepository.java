@@ -21,6 +21,6 @@ public class ForretningsudviklerRepository {
         String sql = "SELECT SUM(pris) FROM leasing";
         return jdbcTemplate.queryForObject(sql, BigDecimal.class);
     }
-
-
 }
+
+

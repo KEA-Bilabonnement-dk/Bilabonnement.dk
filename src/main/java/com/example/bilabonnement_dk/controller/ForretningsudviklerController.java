@@ -7,8 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
+
 @Controller
-@RequestMapping("/forretningsudvikling")
+@RequestMapping("/forretningsudvikler")
 public class ForretningsudviklerController {
 
     private ForretningsudviklerService forretningsudviklerService;
@@ -16,15 +18,20 @@ public class ForretningsudviklerController {
     public ForretningsudviklerController(ForretningsudviklerService forretningsudviklerService) {
         this.forretningsudviklerService = forretningsudviklerService;
     }
-    @GetMapping("/dashboard")
+    @GetMapping("/forretningsudvikler/read")
     public String visDashboard(Model model) {
         int antalUdlejde = forretningsudviklerService.hentAntalUdlejdeBiler();
-        var samletPris = forretningsudviklerService.hentSamletPrisUdlejdeBiler();
         model.addAttribute("antalUdlejde", antalUdlejde);
-        model.addAttribute("samletPris", samletPris);
-        return "dashboard";
+        return "forretningsudvikler/read";
 
     }
+    @GetMapping("/forretningsudvikler/readpris")
+    public String visDashboardPris(Model model) {
+        BigDecimal samletPris = forretningsudviklerService.hentSamletPrisUdlejdeBiler();
+        model.addAttribute("samletPris", samletPris);
+        return "forretningsudvikler/readpris";
+    }
+
 
 
 
