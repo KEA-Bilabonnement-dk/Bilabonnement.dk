@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SkadeController {
@@ -74,6 +76,7 @@ public class SkadeController {
         skaderapport.setMedarbejder(medarbejder);
         int rapport_ID = skadeService.addSkade(skaderapport);
         double samletPris = 0;
+        Map<Integer, Rapportreservedel> reservedelsMap = new HashMap<>();
 
         if (reservedelIDs != null && antalListe != null && !reservedelIDs.isEmpty() && !antalListe.isEmpty()) {
             for (int i = 0; i < reservedelIDs.size(); i++) {
@@ -81,15 +84,24 @@ public class SkadeController {
                 int antal = antalListe.get(i);
 
                 Reservedel reservedel = reservedelService.findByID(reservedelID);
-                double delpris = reservedel.getPris() * antal;
+
+                if (reservedelsMap.containsKey(reservedelID)) {
+                    Rapportreservedel eksisterende = reservedelsMap.get(reservedelID);
+                    eksisterende.setAntal(eksisterende.getAntal() + antal);
+                } else {
+                    Rapportreservedel rr = new Rapportreservedel();
+                    Skaderapport dummy = new Skaderapport();
+                    dummy.setSkaderapport_ID(skaderapport.getSkaderapport_ID());
+                    rr.setSkaderapport(dummy);
+                    rr.setReservedel(reservedel);
+                    rr.setAntal(antal);
+                    reservedelsMap.put(reservedelID, rr);
+                }
+            }
+
+            for (Rapportreservedel rr : reservedelsMap.values()) {
+                double delpris = rr.getReservedel().getPris() * rr.getAntal();
                 samletPris += delpris;
-
-                Rapportreservedel rr = new Rapportreservedel();
-                rr.setSkaderapport(new Skaderapport());
-                rr.getSkaderapport().setSkaderapport_ID(rapport_ID);
-                rr.setReservedel(reservedel);
-                rr.setAntal(antal);
-
                 skadeService.addRapportreservedel(rr);
             }
         }
@@ -163,6 +175,7 @@ public class SkadeController {
                                @RequestParam(name = "antal", required = false) List<Integer> antalListe,
                                HttpSession session,
                                RedirectAttributes redirectAttributes) {
+
         Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "SKADEBEHANDLER");
         if (medarbejder == null) {
             return "redirect:/";
@@ -171,28 +184,38 @@ public class SkadeController {
         skadeService.deleteRapportreservedel(skaderapport.getSkaderapport_ID());
 
         double samletPris = 0;
+        Map<Integer, Rapportreservedel> reservedelsMap = new HashMap<>();
 
-        if (reservedelIDs != null && antalListe != null && !reservedelIDs.isEmpty()) {
+        if (reservedelIDs != null && antalListe != null && !reservedelIDs.isEmpty() && !antalListe.isEmpty()) {
+
             for (int i = 0; i < reservedelIDs.size(); i++) {
                 int reservedelID = reservedelIDs.get(i);
                 int antal = antalListe.get(i);
 
                 Reservedel reservedel = reservedelService.findByID(reservedelID);
-                double delpris = reservedel.getPris() * antal;
+
+                if (reservedelsMap.containsKey(reservedelID)) {
+                    Rapportreservedel eksisterende = reservedelsMap.get(reservedelID);
+                    eksisterende.setAntal(eksisterende.getAntal() + antal);
+                } else {
+                    Rapportreservedel rr = new Rapportreservedel();
+                    Skaderapport dummy = new Skaderapport();
+                    dummy.setSkaderapport_ID(skaderapport.getSkaderapport_ID());
+                    rr.setSkaderapport(dummy);
+                    rr.setReservedel(reservedel);
+                    rr.setAntal(antal);
+                    reservedelsMap.put(reservedelID, rr);
+                }
+            }
+
+            for (Rapportreservedel rr : reservedelsMap.values()) {
+                double delpris = rr.getReservedel().getPris() * rr.getAntal();
                 samletPris += delpris;
-
-                Rapportreservedel rr = new Rapportreservedel();
-                rr.setSkaderapport(new Skaderapport());
-                rr.getSkaderapport().setSkaderapport_ID(skaderapport.getSkaderapport_ID());
-                rr.setReservedel(reservedel);
-                rr.setAntal(antal);
-
                 skadeService.addRapportreservedel(rr);
             }
         }
 
         samletPris += skaderapport.getArbejdstid() * 500;
-
         skadeService.updateSkaderapport(skaderapport.getSkaderapport_ID(), skaderapport.getArbejdstid(), samletPris);
 
         redirectAttributes.addFlashAttribute("besked", "Skaderapport opdateret!");
