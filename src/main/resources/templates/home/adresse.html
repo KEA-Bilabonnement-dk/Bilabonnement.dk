@@ -20,7 +20,7 @@
     <form th:action="@{/home/adresse}" method="post" th:object="${adresse}">
       <div class="form-group">
         <label for="vejnr">Vejnummer:</label>
-        <input type="number" id="vejnr" th:field="*{vejnr}" placeholder="vejnummer" required>
+        <input type="text" id="vejnr" th:field="*{vejnr}" placeholder="vejnummer" required>
       </div>
 
       <div class="form-group">
@@ -35,7 +35,12 @@
 
       <div class="form-group">
         <label for="postnummer">Postnummer:</label>
-        <input type="number" id="postnummer" th:field="*{postnummer}" placeholder="postnr" required>
+        <input type="number" id="postnummer" th:field="*{postnummer}" placeholder="postnummer" required>
+      </div>
+
+      <div class="form-group">
+        <label for="bynavn">Bynavn:</label>
+        <input type="text" id="bynavn" th:field="*{bynavn}" placeholder="bynavn" required>
       </div>
 
       <button type="submit" class="btn btn create">Opret adresse</button>
