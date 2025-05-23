@@ -20,16 +20,22 @@ public class ForretningsudviklerController {
     }
     @GetMapping("/forretningsudvikler/read")
     public String visDashboard(Model model) {
-        int antalUdlejde = forretningsudviklerService.hentAntalUdlejdeBiler();
+        int antalUdlejde = forretningsudviklerService.hentAlleLeasninger();
         model.addAttribute("antalUdlejde", antalUdlejde);
+        int aktiveUdlejninger = forretningsudviklerService.hentAntalAktiveBiler();
+        model.addAttribute("antalAktive",aktiveUdlejninger);
         return "forretningsudvikler/read";
 
     }
+
     @GetMapping("/forretningsudvikler/readpris")
     public String visDashboardPris(Model model) {
         BigDecimal samletPris = forretningsudviklerService.hentSamletPrisUdlejdeBiler();
         model.addAttribute("samletPris", samletPris);
+        BigDecimal aktivPris = forretningsudviklerService.hentSamletPrisAktiveUdlejdeBiler();
+        model.addAttribute("aktivPris", aktivPris);
         return "forretningsudvikler/readpris";
+
     }
 
 

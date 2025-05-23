@@ -13,12 +13,22 @@ public class ForretningsudviklerRepository {
     public ForretningsudviklerRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
-    public int findAntalUdlejedeBiler() {
+    public int fetchAllLeasninger() {
         String sql = "SELECT COUNT(*) FROM leasing";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
+
+    public int findSamletAntalAktivtUdlejede() {
+        String sql = "SELECT COUNT(*) FROM leasing WHERE slutdato > CURRENT_DATE";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+
+    }
     public BigDecimal findSamletPrisUdlejedeBiler() {
-        String sql = "SELECT SUM(pris) FROM leasing";
+        String sql = "SELECT SUM(pris) FROM leasing ";
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class);
+    }
+    public BigDecimal findSamletPrisAktiveUdlejedeBiler() {
+        String sql = "SELECT SUM(pris) FROM leasing WHERE slutdato > CURRENT_DATE";
         return jdbcTemplate.queryForObject(sql, BigDecimal.class);
     }
 }

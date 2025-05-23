@@ -16,7 +16,11 @@
 
 <main class="login-container">
     <h2>Samlet Pris For Udlejede Biler</h2>
-    <p th:text="'Der er i alt udlejet for en værdi af ' + ${samletPris} + ' for udlejede biler.'">Indlæser...</p>
+
+    <!-- Total pris for alle udlejninger -->
+    <p th:text="'Der er i alt udlejet for ' + ${samletPris} + ' kr.'">Indlæser...</p>
+    <p th:text="'Heraf er ' + ${aktivPris} + ' kr. stadig aktive udlejninger.'">Indlæser...</p>
+
     <a href="/forretning">Tilbage til dashboard</a>
 </main>
 

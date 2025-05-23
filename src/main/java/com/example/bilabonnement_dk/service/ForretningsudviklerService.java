@@ -15,11 +15,19 @@ public class ForretningsudviklerService {
     public ForretningsudviklerService(ForretningsudviklerRepository repository) {
         this.forretningsudviklerRepository = repository;
     }
-    public int hentAntalUdlejdeBiler() {
-        return forretningsudviklerRepository.findAntalUdlejedeBiler();
+    public int hentAlleLeasninger(){
+        return forretningsudviklerRepository.fetchAllLeasninger();
+    }
+    public int hentAntalAktiveBiler() {
+        return forretningsudviklerRepository.findSamletAntalAktivtUdlejede();
     }
     public BigDecimal hentSamletPrisUdlejdeBiler() {
         BigDecimal pris = forretningsudviklerRepository.findSamletPrisUdlejedeBiler();
+        return pris != null ? pris : BigDecimal.ZERO;
+
+    }
+    public BigDecimal hentSamletPrisAktiveUdlejdeBiler() {
+        BigDecimal pris = forretningsudviklerRepository.findSamletPrisAktiveUdlejedeBiler();
         return pris != null ? pris : BigDecimal.ZERO;
 
     }
