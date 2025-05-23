@@ -25,6 +25,7 @@ public class ForretningsudviklerController {
         return "forretningsudvikler/read";
 
     }
+
     @GetMapping("/forretningsudvikler/readpris")
     public String visDashboardPris(Model model) {
         BigDecimal samletPris = forretningsudviklerService.hentSamletPrisUdlejdeBiler();
