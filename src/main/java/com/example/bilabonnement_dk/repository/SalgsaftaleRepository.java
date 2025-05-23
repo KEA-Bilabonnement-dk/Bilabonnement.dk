@@ -26,15 +26,18 @@ public class SalgsaftaleRepository {
     @Autowired
     private KundeRepository kundeRepository;
 
+    @Autowired
+    private AdresseRepository adresseRepository;
+
 
     public void addSalgsaftale(Salgsaftale salgsaftale) {
         String sql = """
-            INSERT INTO salgsaftale (salgs_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID)
+            INSERT INTO salgsaftale (salg_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
 
         jdbcTemplate.update(sql,
-                salgsaftale.getSalgs_ID(),
+                salgsaftale.getSalg_ID(),
                 salgsaftale.getSalgspris(),
                 salgsaftale.getLeveringsdato(),
                 salgsaftale.getAdresse().getAdresse_ID(),
@@ -46,35 +49,39 @@ public class SalgsaftaleRepository {
 
     public List<Salgsaftale> fetchAll() {
         String sql = """
-            SELECT salgs_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID
+            SELECT salg_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID
             FROM salgsaftale
         """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs));
     }
 
-    public Salgsaftale findSalgsaftaleByID(int salgs_ID) {
+    public Salgsaftale findSalgsaftaleByID(int salg_ID) {
         String sql = """
-            SELECT salgs_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID
+            SELECT salg_ID, salgspris, leveringsdato, adresse_ID, medarbejder_ID, bil_ID, kunde_ID
             FROM salgsaftale
-            WHERE salgs_ID = ?
+            WHERE salg_ID = ?
         """;
 
-        List<Salgsaftale> resultater = jdbcTemplate.query(sql, new Object[]{salgs_ID}, (rs, rowNum) -> mapRow(rs));
+        List<Salgsaftale> resultater = jdbcTemplate.query(sql, new Object[]{salg_ID}, (rs, rowNum) -> mapRow(rs));
         return resultater.isEmpty() ? null : resultater.get(0);
+
     }
 
     // Privat metode til at genbruge mapping
     private Salgsaftale mapRow(ResultSet rs) throws SQLException {
         Salgsaftale salgsaftale = new Salgsaftale();
 
-        salgsaftale.setSalgs_ID(rs.getInt("Salgs_ID"));
+        salgsaftale.setSalg_ID(rs.getInt("Salg_ID"));
         salgsaftale.setSalgspris(rs.getDouble("Salgspris"));
         salgsaftale.setLeveringsdato(rs.getDate("leveringsdato").toLocalDate());
 
         int medarbejder_ID = rs.getInt("medarbejder_ID");
         int bil_ID = rs.getInt("bil_ID");
         int kunde_ID = rs.getInt("kunde_ID");
+        int adresse_ID = rs.getInt("adresse_ID");
+        salgsaftale.setAdresse(adresseRepository.findAdresseByID(adresse_ID));
+
 
         salgsaftale.setMedarbejder(medarbejderRepository.findMedarbejderByID(medarbejder_ID));
         salgsaftale.setKunde(kundeRepository.findKundeByID(kunde_ID));
@@ -97,7 +104,7 @@ public class SalgsaftaleRepository {
                 salgsaftale.getMedarbejder().getMedarbejder_ID(),
                 salgsaftale.getBil().getBil_ID(),
                 salgsaftale.getKunde().getKunde_ID(),
-                salgsaftale.getSalgs_ID()
+                salgsaftale.getSalg_ID()
         );
     }
 

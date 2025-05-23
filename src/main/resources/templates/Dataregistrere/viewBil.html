@@ -54,14 +54,8 @@
         <td th:text="${Bil.maerke}"></td>
         <td th:text="${Bil.model}"></td>
         <td>
-            <a th:href="@{'/viewOne/'+${Bil.bil_ID}}">
-                <button class="btn-viewOne" id="btn-viewOne">Vis bil</button>
-            </a>
             <a th:href="@{'/Dataregistrere/deleteBil'(id=${Bil.bil_ID})}">
                 <button class="btn-deleteOne" id="btn-deleteOne">Slet bil</button>
-            </a>
-            <a th:href="@{'/updateOne/'+${Bil.bil_ID}}">
-                <button class="btn-updateOne" id="btn-updateOne">Updater bil</button>
             </a>
         </td>
     </tr>

@@ -45,15 +45,9 @@ public class SalgsaftaleController {
     }
 
     @GetMapping("/Dataregistrere/visSalgsaftaler")
-    public String showOpretSalgsaftaleForm(Model model) {
-        model.addAttribute("salgsaftale", new Salgsaftale());
-        return "Dataregistrere/visSalgsaftale";
-    }
-
-    @GetMapping("/Dataregistrere/v  isSalgsaftaler")
     public String visAlleSalgsaftale(Model model) {
         model.addAttribute("salgsaftaleliste", salgsaftaleService.fetchAll());
-        return "Dataregistrere/visSalgsaftale";
+        return "Dataregistrere/visSalgsaftaler";
     }
 
     @PostMapping("/Dataregistrere/sletSalgsaftale")
@@ -67,6 +61,6 @@ public class SalgsaftaleController {
         } catch (EmptyResultDataAccessException e) {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen salgsaftale fundet med det angivne ID: " + salgs_ID);
         }
-        return "redirect:/Dataregistrere/sletSalgsaftale";
+        return "redirect:/Dataregistrere/visSalgsaftaler";
     }
 }

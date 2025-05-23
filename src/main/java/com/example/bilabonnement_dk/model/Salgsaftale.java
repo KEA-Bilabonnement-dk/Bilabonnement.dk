@@ -3,7 +3,7 @@ import java.time.LocalDate;
 
 public class Salgsaftale {
 
-    private int salgs_ID;
+    private int salg_ID;
     private double salgspris;
     private LocalDate leveringsdato;
     private Adresse adresse;
@@ -15,8 +15,8 @@ public class Salgsaftale {
 
     public Salgsaftale(){}
 
-    public Salgsaftale(int salgs_ID, double salgspris, LocalDate leveringsdato, Adresse adresse, Medarbejder medarbejder, Bil bil, Kunde kunde){
-        this.salgs_ID = salgs_ID;
+    public Salgsaftale(int salg_ID, double salgspris, LocalDate leveringsdato, Adresse adresse, Medarbejder medarbejder, Bil bil, Kunde kunde){
+        this.salg_ID = salg_ID;
         this.salgspris = salgspris;
         this.leveringsdato = leveringsdato;
         this.adresse = adresse;
@@ -25,8 +25,8 @@ public class Salgsaftale {
         this.kunde = kunde;
     }
 
-    public int getSalgs_ID() {
-        return salgs_ID;
+    public int getSalg_ID() {
+        return salg_ID;
     }
 
     public double getSalgspris() {
@@ -53,8 +53,8 @@ public class Salgsaftale {
         return kunde;
     }
 
-    public void setSalgs_ID(int salgs_ID) {
-        this.salgs_ID = salgs_ID;
+    public void setSalg_ID(int salg_ID) {
+        this.salg_ID = salg_ID;
     }
 
     public void setSalgspris(double salgspris) {
@@ -80,7 +80,4 @@ public class Salgsaftale {
     public void setKunde(Kunde kunde) {
         this.kunde = kunde;
     }
-
-
-
 }

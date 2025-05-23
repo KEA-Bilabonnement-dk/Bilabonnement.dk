@@ -42,9 +42,18 @@ public class BilRepository {
 
     public void updateBil(Bil bil){
         String sql = "UPDATE bil SET indkoebsdato = ?, vognnr = ?, stelnr = ?, udstyrsniveau = ?, staalpris = ?, regafg = ?, co2udl = ?, Biltype = ?, maerke = ?, model = ? WHERE bil_ID = ?";
-        template.update(sql, bil.getIndkoebsdato(), bil.getVognnr(), bil.getStelnr(),
-                bil.getUdstyrsniveau(), bil.getStaalpris(), bil.getRegafg(), bil.getCo2udl(),
-                    bil.getBiltype().name(), bil.getMaerke(), bil.getModel(), bil.getBil_ID());
+        template.update(sql,
+                bil.getIndkoebsdato(),
+                bil.getVognnr(),
+                bil.getStelnr(),
+                bil.getUdstyrsniveau(),
+                bil.getStaalpris(),
+                bil.getRegafg(),
+                bil.getCo2udl(),
+                bil.getBiltype().name(),
+                bil.getMaerke(),
+                bil.getModel(),
+                bil.getBil_ID());
     }
 
     public void deleteBil(int bil_ID){
