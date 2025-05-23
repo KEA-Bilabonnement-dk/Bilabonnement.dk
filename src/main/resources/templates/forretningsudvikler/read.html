@@ -16,7 +16,13 @@
 
 <main class="login-container">
     <h2>Antal Udlejede Biler</h2>
-    <p th:text="'Der er i alt ' + ${antalUdlejde} + ' udlejede biler.'">Indlæser...</p>
+
+    <!-- Samlet antal leasingaftaler -->
+    <p th:text="'Der har i alt været ' + ${antalUdlejde} + ' leasingaftaler.'">Indlæser...</p>
+
+    <!-- Aktive udlejninger -->
+    <p th:text="'Heraf er ' + ${antalAktive} + ' aktive udlejninger.'">Indlæser...</p>
+
     <a href="/forretning">Tilbage til dashboard</a>
 </main>
 
