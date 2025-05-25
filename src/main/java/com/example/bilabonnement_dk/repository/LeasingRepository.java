@@ -135,4 +135,13 @@ public class LeasingRepository {
         String sql = "UPDATE leasing SET afleveret = true WHERE leasing_ID = ?";
         jdbcTemplate.update(sql, leasing_ID);
     }
+
+    public List<Leasing> findAfleveredeLeasing() {
+        String sql = """
+                SELECT * FROM leasing
+                WHERE slutdato < CURDATE() AND afleveret = true
+                """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs));
+    }
 }

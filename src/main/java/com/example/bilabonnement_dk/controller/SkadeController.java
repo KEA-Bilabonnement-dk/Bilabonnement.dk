@@ -50,8 +50,8 @@ public class SkadeController {
             return "redirect:/";
         }
         model.addAttribute("skaderapport", new Skaderapport());
-        model.addAttribute("leasingliste", leasingService.findEndedLeasing());
         model.addAttribute("reservedelliste", reservedelService.fetchAll());
+        model.addAttribute("leasingliste", leasingService.findReturnedLeasing());
 
         return "skade/create";
     }
@@ -68,9 +68,9 @@ public class SkadeController {
             return "redirect:/";
 
         Leasing valgtLeasing = leasingService.findLeasingByID(skaderapport.getLeasing().getLeasing_ID());
-        if (valgtLeasing.getSlutdato().isAfter(LocalDate.now())) {
-            redirectAttributes.addFlashAttribute("fejlbesked", "Du kan kun oprette skader på biler med afsluttet leasingperiode.");
-            return "redirect_/skade/create";
+        if (valgtLeasing.getSlutdato().isAfter(LocalDate.now()) || !valgtLeasing.isAfleveret()) {
+            redirectAttributes.addFlashAttribute("fejlbesked", "Du kan kun oprette skader på biler med afsluttet og afleveret leasingperiode.");
+            return "redirect:/skade/create";
         }
 
         skaderapport.setMedarbejder(medarbejder);

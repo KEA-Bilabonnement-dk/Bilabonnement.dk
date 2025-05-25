@@ -20,7 +20,9 @@ public class SkadeService {
     private RapportreservedelRepository rapportreservedelRepository;
 
     public int addSkade(Skaderapport skaderapport) {
-        return skadeRepository.insertAndReturnID(skaderapport);
+        int skaderapport_id = skadeRepository.insertAndReturnID(skaderapport);
+        skaderapport.setSkaderapport_ID(skaderapport_id);
+        return skaderapport_id;
     }
 
     public void addRapportreservedel(Rapportreservedel rapportreservedel) {

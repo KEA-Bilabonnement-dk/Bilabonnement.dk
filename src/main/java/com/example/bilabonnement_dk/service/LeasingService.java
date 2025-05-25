@@ -61,4 +61,8 @@ public class LeasingService {
     public void markAsAfleveret(int leasing_id) {
         leasingRepository.markAsAfleveret(leasing_id);
     }
+
+    public List<Leasing> findReturnedLeasing() {
+        return leasingRepository.findAfleveredeLeasing();
+    }
 }
