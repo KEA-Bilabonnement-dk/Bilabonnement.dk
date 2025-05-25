@@ -2,6 +2,7 @@ package com.example.bilabonnement_dk.controller;
 
 import com.example.bilabonnement_dk.model.Leasing;
 import com.example.bilabonnement_dk.model.Medarbejder;
+import com.example.bilabonnement_dk.service.AdresseService;
 import com.example.bilabonnement_dk.service.LeasingService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class LeasingController {
 
     @Autowired
     private LeasingService leasingService;
+    @Autowired
+    private AdresseService adresseService;
 
     // Metode til adgangstjek + return af medarbejder
     private Medarbejder hentMedarbejderHvisAdgang(HttpSession session, String ønsketRolle) {
@@ -32,6 +35,8 @@ public class LeasingController {
             return "redirect:/";
         }
         model.addAttribute("leasing", new Leasing());
+        model.addAttribute("adresseliste", adresseService.fetchAll());
+
         return "leasing/create";
     }
 
@@ -101,6 +106,7 @@ public class LeasingController {
         if (fejlbesked != null && !fejlbesked.isEmpty()) {
             model.addAttribute("fejlbesked", fejlbesked);
         }
+        model.addAttribute("adresseliste", adresseService.fetchAll());
 
         return "leasing/updateOne";
     }
@@ -147,6 +153,19 @@ public class LeasingController {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
         }
         return "redirect:/leasing/delete";
+    }
+
+    @PostMapping("/leasing/aflever")
+    public String markerSomAfleveret(@RequestParam("leasing_ID") int leasing_ID,
+                                     RedirectAttributes redirectAttributes,
+                                     HttpSession session) {
+        if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
+            return "redirect:/";
+        }
+
+        leasingService.markAsAfleveret(leasing_ID);
+        redirectAttributes.addFlashAttribute("besked", "Leasingaftale markeret som afleveret.");
+        return "redirect:/leasing/read";
     }
 
 

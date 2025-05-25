@@ -58,6 +58,16 @@
             </div>
 
             <div class="form-group">
+                <label>Afhentningssted:</label>
+                <select id="afhentningssted" th:field="*{afhentningssted.adresse_ID}" required>
+                    <option th:each="a : ${adresseliste}"
+                            th:value="${a.adresse_ID}"
+                            th:text="${a.vejnavn + ' ' + a.vejnr + ' ' + a.postnummer + ' ' + a.bynavn}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <button type="submit" class="btn btn-save">Gem ændringer</button>
             </div>
 

@@ -57,4 +57,8 @@ public class LeasingService {
     public List<Leasing> findEndedLeasing() {
         return leasingRepository.findEndedLeasing();
     }
+
+    public void markAsAfleveret(int leasing_id) {
+        leasingRepository.markAsAfleveret(leasing_id);
+    }
 }
