@@ -56,7 +56,11 @@ public class SkadeService {
         skadeRepository.updateSkaderapport(skaderapport_ID, arbejdstid, pris);
     }
 
-    public void deleteRapportreservedel(int skaderapport_ID) {
+    public void deleteOnlyRapportreservedel(int skaderapport_ID) {
+        rapportreservedelRepository.deleteSkaderapportByID(skaderapport_ID);
+    }
+
+    public void deleteSkaderapport(int skaderapport_ID) {
         rapportreservedelRepository.deleteSkaderapportByID(skaderapport_ID);
         skadeRepository.deleteSkaderapport(skaderapport_ID);
     }

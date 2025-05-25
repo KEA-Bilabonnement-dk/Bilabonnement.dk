@@ -22,7 +22,7 @@ public class SkadeRepository {
 
     public int insertAndReturnID(Skaderapport skaderapport) {
         String sql = """
-                INSERT INTO skaderapport (pris, arbejdstid, leasing_ID, medarbejder_ID)
+                INSERT INTO skaderapport (leasing_ID, medarbejder_ID, pris, arbejdstid)
                 VALUES (?, ?, ?, ?)
                 """;
 
@@ -30,10 +30,10 @@ public class SkadeRepository {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setDouble(1, skaderapport.getPris());
-            ps.setInt(2, skaderapport.getArbejdstid());
-            ps.setInt(3, skaderapport.getLeasing().getLeasing_ID());
-            ps.setInt(4, skaderapport.getMedarbejder().getMedarbejder_ID());
+            ps.setInt(1, skaderapport.getLeasing().getLeasing_ID());
+            ps.setInt(2, skaderapport.getMedarbejder().getMedarbejder_ID());
+            ps.setDouble(3, skaderapport.getPris());
+            ps.setInt(4, skaderapport.getArbejdstid());
             return ps;
         }, keyHolder);
 
