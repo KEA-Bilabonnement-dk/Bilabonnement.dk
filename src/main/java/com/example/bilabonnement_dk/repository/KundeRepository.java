@@ -16,10 +16,15 @@ public class KundeRepository {
 
 
     public void addKunde(Kunde kunde) {
-        String sql = "INSERT INTO kunde (kunde_ID, kfornavn, kefternavn, ktelefonnummer, kmail, adresse_ID) VALUES (?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,kunde.getKunde_ID(),kunde.getkFornavn(),
-                kunde.getkEfternavn(),kunde.getkTelefonnummer(),
-                kunde.getkEmail(),kunde.getAdresse());
+        String sql = "INSERT INTO kunde (kunde_ID, kfornavn, kefternavn, ktelefonnummer, kemail, adresse_ID) VALUES (?, ?, ?, ?, ?, ?)";
+        jdbcTemplate.update(
+                sql,
+                kunde.getKunde_ID(),
+                kunde.getkFornavn(),
+                kunde.getkEfternavn(),
+                kunde.getkTelefonnummer(),
+                kunde.getkEmail(),
+                kunde.getAdresse() !=null ? kunde.getAdresse().getAdresse_ID() : null);
     }
 
     public Kunde findKundeByID(int kunde_ID)
@@ -38,15 +43,25 @@ public class KundeRepository {
 
     public void updateKunde(Kunde kunde)
     {
-        String sql = "UPDATE Kunde SET Kunde_ID, kfornavn, kefternavn, ktelefonnummer, kmail, adresse_ID=? WHERE kunde_ID = ?";
-        jdbcTemplate.update(sql, kunde.getKunde_ID(),kunde.getkFornavn(),
-                kunde.getkEfternavn(),kunde.getkTelefonnummer(),
-                kunde.getkEmail(),kunde.getAdresse());
+        String sql = "UPDATE kunde SET kfornavn=?, kefternavn=?, ktelefonnummer=?, kemail=?, adresse_ID=? WHERE kunde_ID = ?";
+        jdbcTemplate.update(sql,
+                kunde.getkFornavn(),
+                kunde.getkEfternavn(),
+                kunde.getkTelefonnummer(),
+                kunde.getkEmail(),
+                kunde.getAdresse() !=null ? kunde.getAdresse().getAdresse_ID() : null,
+                kunde.getKunde_ID());
     }
 
     public void deleteKunde(int kunde_ID)
     {
         String sql = "DELETE FROM kunde WHERE kunde_ID = ?";
         jdbcTemplate.update(sql,kunde_ID);
+    }
+
+    public int getLatestKundeID()
+    {
+        String sql = "SELECT kunde_ID FROM kunde ORDER BY kunde_ID DESC LIMIT 1";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 }

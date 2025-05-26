@@ -28,8 +28,14 @@ public class AdresseRepository {
     }
 
     public Adresse findAdresseByID(int adresse_ID){
-        String sql = "SELECT * FROM adresse WHERE adresse_ID = ?";
+        String sql = "SELECT * FROM adresse WHERzE adresse_ID = ?";
         RowMapper<Adresse> rowMapper = new BeanPropertyRowMapper<>(Adresse.class);
         return jdbcTemplate.queryForObject(sql, rowMapper, adresse_ID);
+    }
+
+    public int getLatestAdresseID()
+    {
+        String sql = "SELECT adresse_ID FROM adresse ORDER BY adresse_ID DESC LIMIT 1";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <title>Salgsaftale Detaljer</title>
+</head>
+<body>
+<h2>Salgsaftale Detaljer</h2>
+<ul>
+  <li>ID: <span th:text="${salgsaftale.salg_ID}"></span></li>
+  <li>Salgspris: <span th:text="${salgsaftale.salgspris}"></span></li>
+  <li>Leveringsdato: <span th:text="${salgsaftale.leveringsdato}"></span></li>
+  <li>Leverings adresse:
+    <ul>
+      <li th:text="${salgsaftale.adresse.vejnavn}"></li>
+      <li th:text="${salgsaftale.adresse.vejnr}"></li>
+      <li th:text="${salgsaftale.adresse.postnummer}"></li>
+      <li th:text="${salgsaftale.adresse.bynavn}"></li>
+      <li th:text="${salgsaftale.adresse.land}"></li>
+    </ul>
+  </li>
+  <li>kunde:
+    <ul>
+      <li th:text="${salgsaftale.kunde.kFornavn}"></li>
+      <li th:text="${salgsaftale.kunde.kEfternavn}"></li>
+      <li th:text="${salgsaftale.kunde.kTelefonnummer}"></li>
+      <li th:text="${salgsaftale.kunde.kEmail}"></li>
+    </ul>
+  </li>
+  <li>Oprettet af medarbejder:
+    <span th:text="${salgsaftale.medarbejder.fornavn} + ' ' + ${salgsaftale.medarbejder.efternavn}"></span>
+  </li>
+</ul>
+<a href="/Dataregistrere/visSalgsaftaler">Tilbage</a>
+</body>
+</html>

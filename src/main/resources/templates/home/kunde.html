@@ -2,9 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Opret adresse | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/data.css">
 </head>
-<body>
+<body class="CreateAdresse">
 
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
+        <h1 class="title">Bilabonnement.dk</h1>
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Opret kunde</h2>
+        <form th:action="@{/home/kunde}" method="post" th:object="${kunde}">
+            <div class="form-group">
+                <label>Adresse</label>
+                <a href="/home/adresse" class="btn btn-link" target="_blank">Opret adresse</a>
+            </div>
+
+            <div class="form-group">
+                <input type="hidden" th:field="*{adresse.adresse_ID}"/>
+            </div>
+
+            <div class="form-group">
+                <label for="kFornavn">Fornavn:</label>
+                <input type="text" id="kFornavn" th:field="*{kFornavn}" placeholder="Fornavn" required>
+            </div>
+
+            <div class="form-group">
+                <label for="kEfternavn">Efternavn:</label>
+                <input type="text" id="kEfternavn" th:field="*{kEfternavn}" placeholder="Efternavn" required>
+            </div>
+
+            <div class="form-group">
+                <label for="kTelefonnummer">Tlf nr.:</label>
+                <input type="text" id="kTelefonnummer" th:field="*{kTelefonnummer}" placeholder="Tlf nr." required>
+            </div>
+
+            <div class="form-group">
+                <label for="kEmail">Email:</label>
+                <input type="text" id="kEmail" th:field="*{kEmail}" placeholder="Email" required>
+            </div>
+
+            <button type="submit" class="btn btn create">Opret kunde</button>
+        </form>
+    </div>
+</main>
 </body>
 </html>

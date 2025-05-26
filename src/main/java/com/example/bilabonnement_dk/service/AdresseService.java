@@ -13,4 +13,12 @@
         public void addAdresse(Adresse adresse) {
             adresseRepository.addAdresse(adresse);
         }
+
+        public int getLatestAdresseID(){
+            return adresseRepository.getLatestAdresseID();
+        }
+
+        public Adresse findAdresseByID(int adresse_ID){
+            return adresseRepository.findAdresseByID(adresse_ID);
+        }
     }
