@@ -69,19 +69,14 @@
 
     <div class="dashboard-boxes">
         <div class="dashboard-box">
-            <h3>Antal udlejede biler</h3>
+            <h3>Udlejningsgrad - Antal udlejede biler - Antal biler på lager</h3>
             <p th:text="${antalBiler}">0</p>
-            <a href="/forretningsudvikler/forretningsudvikler/read">Se detaljer for antal udlejede biler</a>
+            <a href="/forretningsudvikler/forretningsudvikler/read">Se detaljer</a>
         </div>
         <div class="dashboard-box">
             <h3>Samlet pris for udlejninger</h3>
             <p th:text="${samletPris}">0 DKK</p>
             <a href="/forretningsudvikler/forretningsudvikler/readpris">Se detaljer for samlet pris af udlejede biler</a>
-        </div>
-        <div class="dashboard-box">
-            <h3>Liste over Biler</h3>
-            <p th:text="${bilListe}">0 DKK</p>
-            <a href="/forretningsudvikler/forretningsudvikler/bilerliste">Se Bil liste</a>
         </div>
     </div>
 </main>
