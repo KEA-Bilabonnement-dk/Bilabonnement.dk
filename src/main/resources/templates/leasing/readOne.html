@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Se Leasingaftale | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/data.css">
 </head>
 <body class="read">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnemetn.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
@@ -28,6 +33,7 @@
                 <th>Start</th>
                 <th>Slut</th>
                 <th>Pris</th>
+                <th>Afhentning</th>
                 <th>Afleveret</th>
             </tr>
             </thead>
@@ -40,6 +46,7 @@
                 <td th:text="${leasing.startdato}"></td>
                 <td th:text="${leasing.slutdato}"></td>
                 <td th:text="${leasing.pris + ' DKK'}"></td>
+                <td th:text="${leasing.afhentningssted.vejnavn + ' ' + leasing.afhentningssted.vejnr + ', ' + leasing.afhentningssted.postnummer + ' ' + leasing.afhentningssted.bynavn}"></td>
                 <td th:text="${leasing.afleveret ? 'Ja ✔' : 'Nej ✖'}"
                     th:classappend="${leasing.afleveret ? 'status-yes' : 'status-no'}">
                 </td>
@@ -48,7 +55,8 @@
         </table>
 
         <div class="button-links">
-            <a href="/leasing/read" class="btn">Tilbage til oversigt</a>
+            <a th:href="@{/leasing/update(leasing_ID=${leasing.leasing_ID})}" class="btn btn-secondary">Redigér</a>
+            <a href="/leasing/read" class="btn btn-primary">Tilbage til oversigt</a>
             <a href="/data" class="btn btn-back">Tilbage til menu</a>
         </div>
     </div>

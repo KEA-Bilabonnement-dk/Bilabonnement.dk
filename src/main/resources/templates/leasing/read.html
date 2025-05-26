@@ -3,73 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <title>Se Leasingaftaler | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/data.css">
 </head>
 <body class="read">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
 <main class="container">
-    <div th:if="${besked}" class="besked">
-        <p th:text="${besked}"></p>
-    </div>
-    <div class="table-container">
+    <div class="form-container">
         <h2>Se leasingaftaler</h2>
-            <form th:action="@{/leasing/readOne}" method="get" class="search-form">
-                <label for="leasing_ID">Søg på leasing-ID:</label>
+
+        <div th:if="${besked}" class="besked">
+            <p th:text="${besked}"></p>
+        </div>
+
+        <form th:action="@{/leasing/readOne}" method="get" class="search-form">
+            <label for="leasing_ID">Søg på leasing-ID:</label>
                 <input type="number" id="leasing_ID" name="leasing_ID" placeholder="Indtast ID" required>
-                <div class="button-links">
-                    <button type="submit" class="btn btn-primary">Søg</button>
-                </div>
-            </form>
-    </div>
+                <button type="submit" class="btn btn-primary">Søg</button>
+        </form>
 
-    <div th:if="${fejlbesked}" class="fejlbesked">
-        <p th:text="${fejlbesked}"></p>
-    </div>
+        <div th:if="${fejlbesked}" class="fejl">
+            <p th:text="${fejlbesked}"></p>
+        </div>
 
-    <table class="leasing-table">
+        <div class="table-container">
+            <table class="leasing-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Kunde</th>
+                    <th>Bil</th>
+                    <th>Start</th>
+                    <th>Slut</th>
+                    <th>Pris</th>
+                    <th>Type</th>
+                    <th>Handling</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="leasing : ${leasingliste}">
+                    <td th:text="${leasing.leasing_ID}"></td>
+                    <td th:text="${leasing.kunde.kFornavn + ' ' + leasing.kunde.kEfternavn}"></td>
+                    <td th:text="${leasing.bil.maerke + ' ' + leasing.bil.model}"></td>
+                    <td th:text="${leasing.startdato}"></td>
+                    <td th:text="${leasing.slutdato}"></td>
+                    <td th:text="${leasing.pris + ' DKK'}"></td>
+                    <td th:text="${leasing.abonnementstype}"></td>
+                    <td>
+                        <span th:if="${leasing.afleveret}" class="status-aflveret">✔ Afleveret</span>
+                        <form th:if="${!leasing.afleveret and leasing.slutdato < T(java.time.LocalDate).now()}"
+                              th:action="@{/leasing/aflever}" method="post" style="margin: 0;">
+                            <input type="hidden" name="leasing_ID" th:value="${leasing.leasing_ID}"/>
+                            <button type="submit" class="btn btn-secondary">Marker som afleveret</button>
+                        </form>
+                        <span th:if="${!leasing.afleveret and leasing.slutdato >= T(java.time.LocalDate).now()}"
+                              style="color: #777;">Ikke afleveret endnu</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Kunde</th>
-            <th>Bil</th>
-            <th>Start</th>
-            <th>Slut</th>
-            <th>Pris</th>
-            <th>Type</th>
-            <th>Handling</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="leasing : ${leasingliste}">
-            <td th:text="${leasing.leasing_ID}"></td>
-            <td th:text="${leasing.kunde.kFornavn + ' ' + leasing.kunde.kEfternavn}"></td>
-            <td th:text="${leasing.bil.maerke + ' ' + leasing.bil.model}"></td>
-            <td th:text="${leasing.startdato}"></td>
-            <td th:text="${leasing.slutdato}"></td>
-            <td th:text="${leasing.pris + ' DKK'}"></td>
-            <td th:text="${leasing.abonnementstype}"></td>
-            <td>
-                <span th:if="${leasing.afleveret}" class="status-aflveret">✔ Afleveret</span>
-                <form th:if="${!leasing.afleveret and leasing.slutdato < T(java.time.LocalDate).now()}"
-                      th:action="@{/leasing/aflever}" method="post">
-                    <input type="hidden" name="leasing_ID" th:value="${leasing.leasing_ID}" />
-                    <button type="submit" class="btn btn-secondary">Marker som afleveret</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div class="button-links">
-        <a href="/data" class="btn btn-back">Tilbage til menu</a>
+        <div class="button-links">
+            <a href="/data" class="btn btn-back">Tilbage til menu</a>
+        </div>
     </div>
 </main>
 

@@ -22,8 +22,8 @@
 <main class="container">
     <div class="form-container">
         <h2>Opret leasingaftale</h2>
-        <form th:action="@{/leasing/create}" method="post" th:object="${leasing}">
 
+        <form th:action="@{/leasing/create}" method="post" th:object="${leasing}">
             <div class="form-group">
                 <label for="kunde_ID">Kunde-ID:</label>
                 <input type="number" id="kunde_ID" th:field="*{kunde.kunde_ID}" placeholder="Indtast kunde-ID" required>
@@ -31,8 +31,8 @@
 
             <div class="form-group">
                 <label for="bil_ID">Vælg bil:</label>
-                <div style="display: flex; align-items: center;">
-                    <input type="number" id="bil_ID" th:field="*{bil.bil_ID}" placeholder="Vælg bil via knappen" readonly required style="margin-right: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <input type="number" id="bil_ID" th:field="*{bil.bil_ID}" placeholder="Vælg bil via knappen" readonly required style="flex: 1;">
                     <button type="button" id="openCarModal" class="btn btn-secondary">Vælg bil</button>
                 </div>
             </div>
@@ -48,12 +48,12 @@
 
             <div class="form-group">
                 <label for="startdato">Startdato:</label>
-                <input type="date" id="startdato" th:field="*{startdato}" placeholder="Indtast startdato" required>
+                <input type="date" id="startdato" th:field="*{startdato}" required>
             </div>
 
             <div class="form-group">
                 <label for="slutdato">Slutdato:</label>
-                <input type="date" id="slutdato" th:field="*{slutdato}" placeholder="Indtast slutdato" required>
+                <input type="date" id="slutdato" th:field="*{slutdato}" required>
             </div>
 
             <div class="form-group">
@@ -80,6 +80,11 @@
     </div>
 </main>
 
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
+
+<!-- AUTO-SÆT DATO-LOGIK -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const abonnementstype = document.getElementById("abonnementstype");
@@ -95,36 +100,47 @@
             slutdato.readOnly = false;
             slutdato.min = "";
 
-            if (type == "LIMITED") {
-                // Sætter slutdato til præcis 5 måneder efter start
-                const limitedEnd = new Date(start);
-                limitedEnd.setMonth(start.getMonth() + 5);
-                slutdato.value = limitedEnd.toISOString().split("T")[0];
+            if (type === "LIMITED") {
+                const end = new Date(start);
+                end.setMonth(start.getMonth() + 5);
+                slutdato.value = end.toISOString().split("T")[0];
                 slutdato.readOnly = true;
             } else if (type === "UNLIMITED") {
-                // Sæt minimumsdato til 3 måneder frem
-                const minEnd = new Date(start);
-                minEnd.setMonth(start.getMonth() + 3);
-                slutdato.min = minEnd.toISOString().split("T")[0];
+                const min = new Date(start);
+                min.setMonth(start.getMonth() + 3);
+                slutdato.min = min.toISOString().split("T")[0];
 
-                const currentEnd = new Date(slutdato.value);
-                if (currentEnd < minEnd) {
+                const curr = new Date(slutdato.value);
+                if (curr < min) {
                     slutdato.value = "";
                 }
             }
         }
+
         abonnementstype.addEventListener("change", updateSlutdato);
-        startdato.addEventListener("change", updateSlutdato)
+        startdato.addEventListener("change", updateSlutdato);
     });
 </script>
 
-<footer class="footer">
-    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
-</footer>
+<!-- MODAL BILVÆLGER -->
+<div id="carModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+    <div style="position:relative; width:90%; max-width:1000px; margin:3em auto; background:#fff; border-radius:8px; padding:2em; max-height:80vh; overflow:auto;">
+        <button id="closeCarModal" style="position:absolute; top:8px; right:8px; font-size:1.3em;">&times;</button>
+        <h3>Vælg en bil</h3>
+
+        <form id="carSearchForm" style="margin-bottom: 1em; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <input type="text" id="carSearchInput" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" style="padding: 10px; flex: 1; border-radius: 6px; border: 1px solid #ccc;">
+            <button type="submit" class="btn btn-primary">Søg</button>
+        </form>
+
+        <div id="carListContainer" class="table-container">
+            <div style="text-align:center; color:#888;">Indtast søgning for at finde biler.</div>
+        </div>
+    </div>
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        // Modal elements
         const modal = document.getElementById("carModal");
         const openBtn = document.getElementById("openCarModal");
         const closeBtn = document.getElementById("closeCarModal");
@@ -133,23 +149,20 @@
         const carSearchInput = document.getElementById("carSearchInput");
         const bilIdInput = document.getElementById("bil_ID");
 
-        // Helper to load cars (all or with search)
         function loadCars(query = "") {
             carListContainer.innerHTML = "Indlæser...";
-            // Build endpoint
             let endpoint = "/Dataregistrere/searchAllFragment";
-            if (query && query.trim() !== "") {
+            if (query.trim() !== "") {
                 endpoint += "?q=" + encodeURIComponent(query);
             }
+
             fetch(endpoint)
                 .then(resp => resp.text())
                 .then(html => {
                     carListContainer.innerHTML = html;
-                    // Attach click handlers to all choose buttons
                     document.querySelectorAll(".choose-car-btn").forEach(btn => {
-                        btn.onclick = function() {
-                            const carId = this.getAttribute("data-bil-id");
-                            bilIdInput.value = carId;
+                        btn.onclick = function () {
+                            bilIdInput.value = this.getAttribute("data-bil-id");
                             modal.style.display = "none";
                         };
                     });
@@ -159,42 +172,26 @@
                 });
         }
 
-        // Open modal and load all cars
         openBtn.onclick = () => {
             modal.style.display = "block";
-            loadCars(); // no query, load all cars
+            loadCars();
         };
 
-        // Close modal
-        closeBtn.onclick = () => { modal.style.display = "none"; };
+        closeBtn.onclick = () => {
+            modal.style.display = "none";
+        };
 
-        // Click outside modal closes it
         window.onclick = (e) => {
             if (e.target === modal) modal.style.display = "none";
         };
 
-        // Handle search in modal
-        carSearchForm.onsubmit = function(e) {
+        carSearchForm.onsubmit = function (e) {
             e.preventDefault();
-            const q = carSearchInput.value.trim();
-            loadCars(q);
+            const query = carSearchInput.value.trim();
+            loadCars(query);
         };
     });
 </script>
 
-<div id="carModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
-    <div style="position:relative; width:90%; max-width:1000px; margin:3em auto; background:#fff; border-radius:8px; padding:2em; max-height:80vh; overflow:auto;">
-        <button id="closeCarModal" style="position:absolute; top:8px; right:8px; font-size:1.3em;">&times;</button>
-        <h3>Vælg en bil</h3>
-        <form id="carSearchForm" style="margin-bottom:1em;">
-            <input type="text" id="carSearchInput" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" style="width:300px;" />
-            <button type="submit">Søg</button>
-        </form>
-        <div id="carListContainer">
-            <!-- AJAX loads table here -->
-            <div style="text-align:center; color:#888;">Indtast søgning for at finde biler.</div>
-        </div>
-    </div>
-</div>
 </body>
 </html>

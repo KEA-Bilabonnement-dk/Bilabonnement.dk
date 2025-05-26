@@ -65,3 +65,42 @@
 #carListContainer {
     margin-top: 1em;
 }
+
+#carListContainer table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#carListContainer th, #carListContainer td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+#carListContainer tr:hover {
+    background-color: #f9f9f9;
+}
+
+#carSearchForm input {
+    padding: 8px;
+    width: 100%;
+    max-width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    margin: 20px 0;
+}
+.search-form input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+

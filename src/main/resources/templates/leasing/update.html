@@ -9,31 +9,28 @@
 <body class="update">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
 <main class="container">
     <div class="form-container">
         <h2>Rediger Leasingaftaler</h2>
+
         <form th:action="@{/leasing/updateOne}" method="get" class="search-form">
-            <div class="form-group">
                 <label for="leasing_ID">Indtast Leasing-ID:</label>
                 <input type="number" id="leasing_ID" name="leasing_ID" placeholder="Leasing-ID" required>
-            </div>
-
-            <div class="button-links">
                 <button type="submit" class="btn btn-primary">Søg</button>
-            </div>
-
-            <div th:if="${fejlbesked}" class="fejlbesked">
-                <p th:text="${fejlbesked}"></p>
-            </div>
-
-            <div class="button-links">
                 <a href="/data" class="btn btn-back">Tilbage til menu</a>
+
+            <div th:if="${fejlbesked}" class="fejl">
+                <p th:text="${fejlbesked}"></p>
             </div>
         </form>
     </div>
