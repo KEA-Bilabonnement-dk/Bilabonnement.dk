@@ -28,9 +28,31 @@ public class AdresseRepository {
     }
 
     public Adresse findAdresseByID(int adresse_ID){
-        String sql = "SELECT * FROM adresse WHERzE adresse_ID = ?";
-        RowMapper<Adresse> rowMapper = new BeanPropertyRowMapper<>(Adresse.class);
-        return jdbcTemplate.queryForObject(sql, rowMapper, adresse_ID);
+        String sql = "SELECT * FROM adresse WHERE adresse_ID = ?";
+        return jdbcTemplate.queryForObject(sql, new Object[]{adresse_ID}, (rs, rowNum) -> {
+            Adresse adresse = new Adresse();
+            adresse.setAdresse_ID(rs.getInt("adresse_ID"));
+            adresse.setVejnavn(rs.getString("vejnavn"));
+            adresse.setVejnr(rs.getString("vejnr"));
+            adresse.setLand(rs.getString("land"));
+            adresse.setPostnummer(rs.getInt("postnummer"));
+            adresse.setBynavn(rs.getString("bynavn"));
+            return adresse;
+        });
+    }
+
+    public List<Adresse> fetchAll() {
+        String sql = "SELECT * FROM adresse";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Adresse adresse = new Adresse();
+            adresse.setAdresse_ID(rs.getInt("adresse_ID"));
+            adresse.setVejnavn(rs.getString("vejnavn"));
+            adresse.setVejnr(rs.getString("vejnr"));
+            adresse.setLand(rs.getString("land"));
+            adresse.setPostnummer(rs.getInt("postnummer"));
+            adresse.setBynavn(rs.getString("bynavn"));
+            return adresse;
+        });
     }
 
     public int getLatestAdresseID()

@@ -22,13 +22,15 @@ public class LeasingRepository {
     @Autowired
     private BilRepository bilRepository;
 
+    @Autowired
+    private AdresseRepository adresseRepository;
+
     public void addLeasing(Leasing leasing) {
         String sql = """
-            INSERT INTO leasing (kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO leasing (kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID, afhentningssted_ID)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
-        int medarbejderId = 0;
         jdbcTemplate.update(sql,
                 leasing.getKunde().getKunde_ID(),
                 leasing.getBil().getBil_ID(),
@@ -36,13 +38,14 @@ public class LeasingRepository {
                 leasing.getStartdato(),
                 leasing.getSlutdato(),
                 leasing.getPris(),
-                leasing.getMedarbejder().getMedarbejder_ID()
+                leasing.getMedarbejder().getMedarbejder_ID(),
+                leasing.getAfhentningssted().getAdresse_ID()
         );
     }
 
     public List<Leasing> fetchAll() {
         String sql = """
-            SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
+            SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID, afhentningssted_ID, afleveret
             FROM leasing
         """;
 
@@ -51,7 +54,7 @@ public class LeasingRepository {
 
     public Leasing findLeasingByID(int leasing_ID) {
         String sql = """
-            SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris
+            SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID, afhentningssted_ID, afleveret
             FROM leasing
             WHERE leasing_ID = ?
         """;
@@ -72,9 +75,13 @@ public class LeasingRepository {
 
         int kunde_ID = rs.getInt("kunde_ID");
         int bil_ID = rs.getInt("bil_ID");
+        int medarbejder_ID = rs.getInt("medarbejder_ID");
+        int afhentningssted_ID = rs.getInt("afhentningssted_ID");
 
         leasing.setKunde(kundeRepository.findKundeByID(kunde_ID));
         leasing.setBil(bilRepository.findBilByID(bil_ID));
+        leasing.setAfhentningssted(adresseRepository.findAdresseByID(afhentningssted_ID));
+        leasing.setAfleveret(rs.getBoolean("afleveret"));
 
         return leasing;
     }
@@ -83,11 +90,10 @@ public class LeasingRepository {
     {
         String sql = """
                 UPDATE leasing
-                SET kunde_ID = ?, bil_ID = ?, abonnementstype = ?, startdato = ?, slutdato = ?, pris = ?, medarbejder_ID = ?
+                SET kunde_ID = ?, bil_ID = ?, abonnementstype = ?, startdato = ?, slutdato = ?, pris = ?, medarbejder_ID = ?, afhentningssted_ID = ?, afleveret = ?
                 WHERE leasing_ID = ?
                 """;
 
-        int medarbejderId = 0;
         jdbcTemplate.update(sql,
                 leasing.getKunde().getKunde_ID(),
                 leasing.getBil().getBil_ID(),
@@ -96,6 +102,8 @@ public class LeasingRepository {
                 leasing.getSlutdato(),
                 leasing.getPris(),
                 leasing.getMedarbejder().getMedarbejder_ID(),
+                leasing.getAfhentningssted().getAdresse_ID(),
+                leasing.isAfleveret(),
                 leasing.getLeasing_ID()
         );
     }
@@ -121,5 +129,19 @@ public class LeasingRepository {
 
             return leasing;
         });
+    }
+
+    public void markAsAfleveret(int leasing_ID) {
+        String sql = "UPDATE leasing SET afleveret = true WHERE leasing_ID = ?";
+        jdbcTemplate.update(sql, leasing_ID);
+    }
+
+    public List<Leasing> findAfleveredeLeasing() {
+        String sql = """
+                SELECT * FROM leasing
+                WHERE slutdato < CURDATE() AND afleveret = true
+                """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs));
     }
 }

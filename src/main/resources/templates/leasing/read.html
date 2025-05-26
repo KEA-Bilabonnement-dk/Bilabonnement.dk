@@ -15,6 +15,9 @@
 </header>
 
 <main class="container">
+    <div th:if="${besked}" class="besked">
+        <p th:text="${besked}"></p>
+    </div>
     <div class="table-container">
         <h2>Se leasingaftaler</h2>
             <form th:action="@{/leasing/readOne}" method="get" class="search-form">
@@ -41,6 +44,7 @@
             <th>Slut</th>
             <th>Pris</th>
             <th>Type</th>
+            <th>Handling</th>
         </tr>
         </thead>
         <tbody>
@@ -52,6 +56,14 @@
             <td th:text="${leasing.slutdato}"></td>
             <td th:text="${leasing.pris + ' DKK'}"></td>
             <td th:text="${leasing.abonnementstype}"></td>
+            <td>
+                <span th:if="${leasing.afleveret}" class="status-aflveret">✔ Afleveret</span>
+                <form th:if="${!leasing.afleveret and leasing.slutdato < T(java.time.LocalDate).now()}"
+                      th:action="@{/leasing/aflever}" method="post">
+                    <input type="hidden" name="leasing_ID" th:value="${leasing.leasing_ID}" />
+                    <button type="submit" class="btn btn-secondary">Marker som afleveret</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

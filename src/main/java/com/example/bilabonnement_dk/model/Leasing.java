@@ -3,6 +3,7 @@ package com.example.bilabonnement_dk.model;
 import java.time.LocalDate;
 
 public class Leasing {
+    private int leasing_ID;
     private Kunde kunde;
     private Bil bil;
     private Abonnementstype abonnementstype;
@@ -10,12 +11,14 @@ public class Leasing {
     private LocalDate slutdato;
     private double pris;
     private Medarbejder medarbejder;
-    private int leasing_ID;
+    private Adresse afhentningssted;
+    private boolean afleveret;
 
     public Leasing() {
     }
 
-    public Leasing(Kunde kunde, Bil bil, Abonnementstype abonnementstype, LocalDate startdato, LocalDate slutdato, double pris, Medarbejder medarbejder, int leasing_ID) {
+    public Leasing(int leasing_ID, Kunde kunde, Bil bil, Abonnementstype abonnementstype, LocalDate startdato, LocalDate slutdato, double pris, Medarbejder medarbejder, Adresse afhentningssted, boolean afleveret) {
+        this.leasing_ID = leasing_ID;
         this.kunde = kunde;
         this.bil = bil;
         this.abonnementstype = abonnementstype;
@@ -23,6 +26,15 @@ public class Leasing {
         this.slutdato = slutdato;
         this.pris = pris;
         this.medarbejder = medarbejder;
+        this.afhentningssted = afhentningssted;
+        this.afleveret = afleveret;
+    }
+
+    public int getLeasing_ID() {
+        return leasing_ID;
+    }
+
+    public void setLeasing_ID(int leasing_ID) {
         this.leasing_ID = leasing_ID;
     }
 
@@ -82,11 +94,19 @@ public class Leasing {
         this.medarbejder = medarbejder;
     }
 
-    public int getLeasing_ID() {
-        return leasing_ID;
+    public Adresse getAfhentningssted() {
+        return afhentningssted;
     }
 
-    public void setLeasing_ID(int leasing_ID) {
-        this.leasing_ID = leasing_ID;
+    public void setAfhentningssted(Adresse afhentningssted) {
+        this.afhentningssted = afhentningssted;
+    }
+
+    public boolean isAfleveret() {
+        return afleveret;
+    }
+
+    public void setAfleveret(boolean afleveret) {
+        this.afleveret = afleveret;
     }
 }

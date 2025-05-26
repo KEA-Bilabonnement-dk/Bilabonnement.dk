@@ -20,7 +20,9 @@ public class SkadeService {
     private RapportreservedelRepository rapportreservedelRepository;
 
     public int addSkade(Skaderapport skaderapport) {
-        return skadeRepository.insertAndReturnID(skaderapport);
+        int skaderapport_id = skadeRepository.insertAndReturnID(skaderapport);
+        skaderapport.setSkaderapport_ID(skaderapport_id);
+        return skaderapport_id;
     }
 
     public void addRapportreservedel(Rapportreservedel rapportreservedel) {
@@ -54,7 +56,11 @@ public class SkadeService {
         skadeRepository.updateSkaderapport(skaderapport_ID, arbejdstid, pris);
     }
 
-    public void deleteRapportreservedel(int skaderapport_ID) {
+    public void deleteOnlyRapportreservedel(int skaderapport_ID) {
+        rapportreservedelRepository.deleteSkaderapportByID(skaderapport_ID);
+    }
+
+    public void deleteSkaderapport(int skaderapport_ID) {
         rapportreservedelRepository.deleteSkaderapportByID(skaderapport_ID);
         skadeRepository.deleteSkaderapport(skaderapport_ID);
     }
