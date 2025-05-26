@@ -22,6 +22,7 @@ public class AdresseController {
     @PostMapping("home/adresse")
     public String createAdresse(@ModelAttribute Adresse adresse) {
         adresseService.addAdresse(adresse);
-        return "redirect:/Dataregistrere/createSalgsaftale";
+        int latestAdresseId = adresseService.getLatestAdresseID();
+        return "redirect:/home/kunde?adresseId=" + latestAdresseId;
     }
 }

@@ -37,4 +37,8 @@ public class KundeService {
         kundeRepository.deleteKunde(kunde_ID);
     }
 
+    public int getLatestKundeID(){
+        return kundeRepository.getLatestKundeID();
+    }
+
 }

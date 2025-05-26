@@ -25,8 +25,8 @@ public class SalgsaftaleService {
         return salgsaftaleRepository.fetchAll();
     }
 
-    public Salgsaftale findSalgsaftaleByID(int salgs_ID) {
-        return salgsaftaleRepository.findSalgsaftaleByID(salgs_ID);
+    public Salgsaftale findSalgsaftaleByID(int salg_ID) {
+        return salgsaftaleRepository.findSalgsaftaleByID(salg_ID);
     }
 
     public void updateSalgsaftale(Salgsaftale salgsaftale) {

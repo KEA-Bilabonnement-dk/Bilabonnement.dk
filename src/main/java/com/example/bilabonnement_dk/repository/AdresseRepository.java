@@ -55,4 +55,10 @@ public class AdresseRepository {
             return adresse;
         });
     }
+
+    public int getLatestAdresseID()
+    {
+        String sql = "SELECT adresse_ID FROM adresse ORDER BY adresse_ID DESC LIMIT 1";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
 }

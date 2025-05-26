@@ -15,15 +15,24 @@ public class KundeController {
     @Autowired
     private KundeService kundeService;
 
+    @Autowired
+    private AdresseService adresseService;
+
     @GetMapping("home/kunde")
-    public String showCreateKundeForm(Model model) {
-        model.addAttribute("kunde", new Kunde());
+    public String showCreateKundeForm(@RequestParam(value = "adresseId", required = false) Integer adresseId, Model model) {
+        Kunde kunde = new Kunde ();
+        if (adresseId!= null) {
+            Adresse adresse = adresseService.findAdresseByID(adresseId);
+            kunde.setAdresse(adresse);
+        }
+        model.addAttribute("kunde",  kunde);
         return "home/kunde";
     }
 
     @PostMapping("home/kunde")
     public String createAdresse(@ModelAttribute Kunde kunde) {
         kundeService.addKunde(kunde);
-        return "redirect:/Dataregistrere/createSalgsaftale";
+        int latestKundeId = kundeService.getLatestKundeID();
+        return "redirect:/Dataregistrere/createSalgsaftale?kundeId=" + latestKundeId;
     }
 }

@@ -24,4 +24,8 @@ public class AdresseService {
     public List<Adresse> fetchAll() {
         return adresseRepository.fetchAll();
     }
+
+    public int getLatestAdresseID() {
+        return adresseRepository.getLatestAdresseID();
+    }
 }

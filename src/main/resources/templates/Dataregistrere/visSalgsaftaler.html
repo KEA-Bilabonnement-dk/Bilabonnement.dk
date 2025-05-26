@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<h1>Bil liste</h1>
+<h1>Salgsaftaler</h1>
 
 <div class="dashboard-box">
     <h3>Opret salgsaftale</h3>
@@ -20,10 +20,7 @@
         <th>Id</th>
         <th>salgspris</th>
         <th>leveringsdato</th>
-        <th>adresse</th>
-        <th>medarbejder</th>
         <th>bil</th>
-        <th>kunde</th>
     </tr>
     </thead>
     <tbody>
@@ -34,12 +31,9 @@
         <td th:text="${salgsaftale.salg_ID}"></td>
         <td th:text="${salgsaftale.salgspris}"></td>
         <td th:text="${salgsaftale.leveringsdato}"></td>
-        <td th:text="${salgsaftale.adresse}"></td>
-        <td th:text="${salgsaftale.medarbejder.fornavn + ' ' + salgsaftale.medarbejder.efternavn}"></td>
         <td th:text="${salgsaftale.bil.bil_ID}"></td>
-        <td th:text="${salgsaftale.kunde.kFornavn + ' ' + salgsaftale.kunde.kEfternavn}"></td>
         <td>
-            <a th:href="@{'/viewOne/'+${salgsaftale.salgs_ID}}">
+            <a th:href="@{'/viewOneSalgsaftale/'+${salgsaftale.salgs_ID}}">
                 <button class="btn-viewOne" id="btn-viewOne">Vis salgsaftale</button>
             </a>
             <form th:action="@{/Dataregistrere/sletSalgsaftale}" method="post">
