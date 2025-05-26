@@ -1,0 +1,67 @@
+/* -------- DATA-ROLLE SPECIFIKT -------- */
+
+/* Vælg bil-knappen ved siden af input */
+#openCarModal {
+    margin-left: 10px;
+}
+
+/* Modal popup */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 1000px;
+    margin: 3em auto;
+    background: #fff;
+    border-radius: 8px;
+    padding: 2em;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+#closeCarModal {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1.3em;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#carSearchForm input {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 300px;
+}
+
+#carSearchForm button {
+    padding: 10px 16px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+#carSearchForm button:hover {
+    background-color: #3c6a8e;
+}
+
+#carListContainer {
+    margin-top: 1em;
+}
