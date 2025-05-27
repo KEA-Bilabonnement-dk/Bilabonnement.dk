@@ -14,6 +14,7 @@ public class RapportreservedelRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // Indsætter en ny rapportreservedel i databasen
     public void insertRapportreservedel(Rapportreservedel rapportreservedel) {
         String sql = """
                 INSERT INTO rapportreservedel (reservedel_ID, skaderapport_ID, antal)
@@ -26,6 +27,7 @@ public class RapportreservedelRepository {
         );
     }
 
+    // Henter alle rapportreservedele tilknyttet en given skaderapport via skaderapport_ID
     public List<Rapportreservedel> findBySkaderapportID(int skaderapport_ID) {
         String sql = """
                 SELECT rr.*,
@@ -36,12 +38,14 @@ public class RapportreservedelRepository {
                 """;
 
         return jdbcTemplate.query(sql, new Object[]{skaderapport_ID}, (rs, rowNum) -> {
+            // Opretter en Reservedel-objekt ud fra resultatsættet
             Reservedel reservedel = new Reservedel(
                     rs.getInt("reservedel_ID"),
                     rs.getString("type"),
                     rs.getDouble("pris")
             );
 
+            // Opretter og returnerer en Rapportreservedel med data og tilknyttet Reservedel
             Rapportreservedel rr = new Rapportreservedel();
             rr.setAntalReservedele_ID(rs.getInt("antalreservedele_ID"));
             rr.setReservedel(reservedel);
@@ -50,6 +54,7 @@ public class RapportreservedelRepository {
         });
     }
 
+    // Sletter alle rapportreservedele, der er tilknyttet en given skaderapport via skaderapport_ID
     public void deleteSkaderapportByID(int skaderapport_ID) {
         String sql = "DELETE FROM rapportreservedel WHERE skaderapport_ID = ?";
         jdbcTemplate.update(sql, skaderapport_ID);

@@ -9,13 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository // Marker som repository-komponent for Spring
 public class KundeRepository {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate; // JdbcTemplate til databasekommunikation
 
-
+    // Tilføjer en ny kunde til databasen
     public void addKunde(Kunde kunde) {
         String sql = "INSERT INTO kunde (kunde_ID, kfornavn, kefternavn, ktelefonnummer, kemail, adresse_ID) VALUES (?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(
@@ -25,43 +25,45 @@ public class KundeRepository {
                 kunde.getkEfternavn(),
                 kunde.getkTelefonnummer(),
                 kunde.getkEmail(),
-                kunde.getAdresse() !=null ? kunde.getAdresse().getAdresse_ID() : null);
+                // Sætter adresse_ID hvis adresse eksisterer, ellers null
+                kunde.getAdresse() != null ? kunde.getAdresse().getAdresse_ID() : null);
     }
 
-    public Kunde findKundeByID(int kunde_ID)
-    {
+    // Finder en kunde ud fra kunde_ID
+    public Kunde findKundeByID(int kunde_ID) {
         String sql = "SELECT * FROM kunde WHERE kunde_ID = ?";
         RowMapper<Kunde> rowMapper = new BeanPropertyRowMapper<>(Kunde.class);
         return jdbcTemplate.queryForObject(sql, rowMapper, kunde_ID);
     }
 
-    public List<Kunde> fetchAll()
-    {
+    // Henter alle kunder fra databasen
+    public List<Kunde> fetchAll() {
         String sql = "SELECT * FROM kunde";
         RowMapper<Kunde> rowMapper = new BeanPropertyRowMapper<>(Kunde.class);
         return jdbcTemplate.query(sql, rowMapper);
     }
 
-    public void updateKunde(Kunde kunde)
-    {
+    // Opdaterer en eksisterende kundes oplysninger
+    public void updateKunde(Kunde kunde) {
         String sql = "UPDATE kunde SET kfornavn=?, kefternavn=?, ktelefonnummer=?, kemail=?, adresse_ID=? WHERE kunde_ID = ?";
         jdbcTemplate.update(sql,
                 kunde.getkFornavn(),
                 kunde.getkEfternavn(),
                 kunde.getkTelefonnummer(),
                 kunde.getkEmail(),
-                kunde.getAdresse() !=null ? kunde.getAdresse().getAdresse_ID() : null,
+                // Opdaterer adresse_ID, eller null hvis ikke sat
+                kunde.getAdresse() != null ? kunde.getAdresse().getAdresse_ID() : null,
                 kunde.getKunde_ID());
     }
 
-    public void deleteKunde(int kunde_ID)
-    {
+    // Sletter en kunde baseret på kunde_ID
+    public void deleteKunde(int kunde_ID) {
         String sql = "DELETE FROM kunde WHERE kunde_ID = ?";
-        jdbcTemplate.update(sql,kunde_ID);
+        jdbcTemplate.update(sql, kunde_ID);
     }
 
-    public int getLatestKundeID()
-    {
+    // Henter det seneste (største) kunde_ID i databasen
+    public int getLatestKundeID() {
         String sql = "SELECT kunde_ID FROM kunde ORDER BY kunde_ID DESC LIMIT 1";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }

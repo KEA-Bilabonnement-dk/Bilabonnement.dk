@@ -13,12 +13,14 @@ public class AdresseController {
     @Autowired
     private AdresseService adresseService;
 
+    // Viser formular til oprettelse af adresse
     @GetMapping("home/adresse")
     public String showCreateAdresseForm(Model model) {
         model.addAttribute("adresse", new Adresse());
         return "home/adresse";
     }
 
+    // Gemmer ny adresse og videresender til kunde med adresseId
     @PostMapping("home/adresse")
     public String createAdresse(@ModelAttribute Adresse adresse) {
         adresseService.addAdresse(adresse);

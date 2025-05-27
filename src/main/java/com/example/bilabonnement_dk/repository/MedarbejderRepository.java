@@ -15,6 +15,7 @@ public class MedarbejderRepository
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // Finder en medarbejder ud fra brugernavn og adgangskode
     public Medarbejder findByBrugerOgKode(String brugernavn, String adgangskode) {
         String sql = "SELECT * FROM medarbejder WHERE brugernavn = ? AND adgangskode = ?";
         return jdbcTemplate.queryForObject(sql,
@@ -23,6 +24,7 @@ public class MedarbejderRepository
         );
     }
 
+    // Tilføjer en ny medarbejder i databasen
     public void addMedarbejder(Medarbejder medarbejder) {
         String sql = "INSERT INTO medarbejder (medarbejder_ID, fornavn, efternavn, telefonnummer, mail, brugernavn, adgangskode, rolle, adresse_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         jdbcTemplate.update(sql,medarbejder.getMedarbejder_ID(),medarbejder.getFornavn(),
@@ -30,12 +32,14 @@ public class MedarbejderRepository
                 medarbejder.getEmail(),medarbejder.getBrugernavn(),medarbejder.getAdgangskode(),medarbejder.getRolle(),medarbejder.getAdresse().getAdresse_ID());
     }
 
+    // Henter alle medarbejdere
     public List<Medarbejder> fetchAll() {
         String sql = "SELECT * FROM medarbejder";
         RowMapper<Medarbejder> rowMapper = new BeanPropertyRowMapper<>(Medarbejder.class);
         return jdbcTemplate.query(sql, rowMapper);
     }
 
+    // Opdaterer en eksisterende medarbejder
     public void updateMedarbejder(Medarbejder medarbejder) {
         String sql = "UPDATE Medarbejder SET fornavn = ?, efternavn = ?, telefonnummer = ?, mail = ?, brugernavn = ?, adgangskode = ?, rolle = ?, adresse_ID = ? WHERE medarbejder_ID = ?";
         jdbcTemplate.update(sql,
@@ -50,6 +54,7 @@ public class MedarbejderRepository
                 medarbejder.getAdresse() != null ? medarbejder.getAdresse().getAdresse_ID() : null);
     }
 
+    // Finder medarbejder på ID
     public Medarbejder findMedarbejderByID(int medarbejder_ID)
     {
         String sql = "SELECT * FROM medarbejder WHERE medarbejder_ID = ?";
@@ -57,6 +62,7 @@ public class MedarbejderRepository
         return jdbcTemplate.queryForObject(sql, rowMapper, medarbejder_ID);
     }
 
+    // Sletter medarbejder ud fra ID
     public void deleteMedarbejder(int medarbejder_ID)
     {
         String sql = "DELETE FROM medarbejder WHERE medarbejder_ID = ?";

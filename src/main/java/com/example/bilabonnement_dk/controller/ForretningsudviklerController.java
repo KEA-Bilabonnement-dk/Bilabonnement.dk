@@ -19,11 +19,13 @@ public class ForretningsudviklerController {
     private final BilService bilService;
     private final ForretningsudviklerService forretningsudviklerService;
 
+    // Constructor injection for services
     public ForretningsudviklerController(ForretningsudviklerService forretningsudviklerService, BilService bilService) {
         this.forretningsudviklerService = forretningsudviklerService;
         this.bilService = bilService;
     }
 
+    // Viser dashboard med statistik om leasing og biler
     @GetMapping("/read")
     public String visDashboard(Model model) {
         int antalUdlejde = forretningsudviklerService.hentAlleLeasninger();
@@ -31,7 +33,7 @@ public class ForretningsudviklerController {
         double udlejningsgrad = 0;
 
         if (antalUdlejde > 0) {
-            udlejningsgrad = ((double) aktiveUdlejninger / antalUdlejde) * 100;
+            udlejningsgrad = ((double) aktiveUdlejninger / antalUdlejde) * 100; // beregn udlejningsgrad i procent
         }
 
         List<Bil> udlejedeBiler = forretningsudviklerService.hentUdlejedeBiler();
@@ -46,6 +48,7 @@ public class ForretningsudviklerController {
         return "forretningsudvikler/read";
     }
 
+    // Viser samlet pris for udlejede biler og aktive udlejede biler
     @GetMapping("/readPris")
     public String visDashboardPris(Model model) {
         BigDecimal samletPris = forretningsudviklerService.hentSamletPrisUdlejdeBiler();
@@ -57,6 +60,7 @@ public class ForretningsudviklerController {
         return "forretningsudvikler/readPris";
     }
 
+    // Viser liste over udlejede biler og biler på lager
     @GetMapping("/bilerliste")
     public String bilerListe(Model model) {
         List<Bil> udlejedeBiler = forretningsudviklerService.hentUdlejedeBiler();
@@ -68,6 +72,7 @@ public class ForretningsudviklerController {
         return "forretningsudvikler/bilerliste";
     }
 
+    // Viser top 3 kunder med flest leasingaftaler
     @GetMapping("/topKunder")
     public String visTopKunder(Model model) {
         List<Map<String, Object>> topKunder = forretningsudviklerService.hentTop3KunderMedFlestLeasingaftaler();

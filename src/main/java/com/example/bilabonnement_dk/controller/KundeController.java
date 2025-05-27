@@ -18,17 +18,19 @@ public class KundeController {
     @Autowired
     private AdresseService adresseService;
 
+    // Viser formular til oprettelse af kunde, evt. med valgt adresse
     @GetMapping("home/kunde")
     public String showCreateKundeForm(@RequestParam(value = "adresseId", required = false) Integer adresseId, Model model) {
-        Kunde kunde = new Kunde ();
-        if (adresseId!= null) {
+        Kunde kunde = new Kunde();
+        if (adresseId != null) {
             Adresse adresse = adresseService.findAdresseByID(adresseId);
             kunde.setAdresse(adresse);
         }
-        model.addAttribute("kunde",  kunde);
+        model.addAttribute("kunde", kunde);
         return "home/kunde";
     }
 
+    // Håndterer oprettelse af kunde og redirect til oprettelse af salgsaftale med kundeId
     @PostMapping("home/kunde")
     public String createAdresse(@ModelAttribute Kunde kunde) {
         kundeService.addKunde(kunde);

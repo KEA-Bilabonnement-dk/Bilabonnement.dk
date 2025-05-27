@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-@Repository
+@Repository // Marker som repository-komponent for Spring
 public class LeasingRepository {
 
     @Autowired
@@ -25,6 +25,7 @@ public class LeasingRepository {
     @Autowired
     private AdresseRepository adresseRepository;
 
+    // Tilføjer en ny leasingaftale til databasen
     public void addLeasing(Leasing leasing) {
         String sql = """
             INSERT INTO leasing (kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID, afhentningssted_ID)
@@ -43,6 +44,7 @@ public class LeasingRepository {
         );
     }
 
+    // Henter alle leasingaftaler
     public List<Leasing> fetchAll() {
         String sql = """
             SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID, afhentningssted_ID, afleveret
@@ -52,6 +54,7 @@ public class LeasingRepository {
         return jdbcTemplate.query(sql, (rs, rowNum) -> mapRow(rs));
     }
 
+    // Finder en leasingaftale ud fra leasing_ID
     public Leasing findLeasingByID(int leasing_ID) {
         String sql = """
             SELECT leasing_ID, kunde_ID, bil_ID, abonnementstype, startdato, slutdato, pris, medarbejder_ID, afhentningssted_ID, afleveret
@@ -63,7 +66,7 @@ public class LeasingRepository {
         return resultater.isEmpty() ? null : resultater.get(0);
     }
 
-    // Privat metode til at genbruge mapping
+    // Privat metode til at mappe en række fra ResultSet til et Leasing-objekt
     private Leasing mapRow(ResultSet rs) throws SQLException {
         Leasing leasing = new Leasing();
 
@@ -86,8 +89,8 @@ public class LeasingRepository {
         return leasing;
     }
 
-    public void updateLeasing(Leasing leasing)
-    {
+    // Opdaterer en eksisterende leasingaftale
+    public void updateLeasing(Leasing leasing) {
         String sql = """
                 UPDATE leasing
                 SET kunde_ID = ?, bil_ID = ?, abonnementstype = ?, startdato = ?, slutdato = ?, pris = ?, medarbejder_ID = ?, afhentningssted_ID = ?, afleveret = ?
@@ -108,12 +111,13 @@ public class LeasingRepository {
         );
     }
 
-    public void deleteLeasingByID(int leasing_ID)
-    {
+    // Sletter en leasingaftale baseret på leasing_ID
+    public void deleteLeasingByID(int leasing_ID) {
         String sql = "DELETE FROM leasing WHERE leasing_ID = ?";
         jdbcTemplate.update(sql, leasing_ID);
     }
 
+    // Finder leasingaftaler hvor slutdato er overskredet
     public List<Leasing> findEndedLeasing() {
         String sql = """
                 SELECT * FROM leasing
@@ -131,11 +135,13 @@ public class LeasingRepository {
         });
     }
 
+    // Markerer en leasingaftale som afleveret
     public void markAsAfleveret(int leasing_ID) {
         String sql = "UPDATE leasing SET afleveret = true WHERE leasing_ID = ?";
         jdbcTemplate.update(sql, leasing_ID);
     }
 
+    // Finder leasingaftaler som er afleveret og har slutdato før dags dato
     public List<Leasing> findAfleveredeLeasing() {
         String sql = """
                 SELECT * FROM leasing

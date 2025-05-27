@@ -1,11 +1,8 @@
 package com.example.bilabonnement_dk.controller;
 
-
-import com.example.bilabonnement_dk.model.Kunde;
 import com.example.bilabonnement_dk.model.Kunde;
 import com.example.bilabonnement_dk.model.Medarbejder;
 import com.example.bilabonnement_dk.model.Salgsaftale;
-import com.example.bilabonnement_dk.service.KundeService;
 import com.example.bilabonnement_dk.service.KundeService;
 import com.example.bilabonnement_dk.service.SalgsaftaleService;
 import jakarta.servlet.http.HttpSession;
@@ -25,6 +22,7 @@ public class SalgsaftaleController {
     @Autowired
     KundeService kundeService;
 
+    // Tjekker om medarbejder har den rette rolle
     private Medarbejder hentMedarbejderHvisAdgang(HttpSession session, String ønsketRolle) {
         Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
         if (medarbejder != null && medarbejder.getRolle().name().equals(ønsketRolle)) {
@@ -33,6 +31,7 @@ public class SalgsaftaleController {
         return null;
     }
 
+    // Viser formular til oprettelse af salgsaftale (evt. med kunde valgt)
     @GetMapping("/Dataregistrere/createSalgsaftale")
     public String showCreateSalgsaftale(@RequestParam(value = "kundeId", required = false) Integer kundeId, Model model) {
         Salgsaftale salgsaftale = new Salgsaftale();
@@ -40,11 +39,11 @@ public class SalgsaftaleController {
             Kunde kunde = kundeService.findKundeByID(kundeId);
             salgsaftale.setKunde(kunde);
         }
-        // existing code to add lists for biler, kunder, osv.
         model.addAttribute("salgsaftale", salgsaftale);
         return "Dataregistrere/createSalgsaftale";
     }
 
+    // Opretter en ny salgsaftale
     @PostMapping("/Dataregistrere/createSalgsaftale")
     public String opretSalgsaftale(@ModelAttribute Salgsaftale salgsaftale, HttpSession session, RedirectAttributes redirectAttributes) {
         Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER");
@@ -57,12 +56,14 @@ public class SalgsaftaleController {
         return "redirect:/data";
     }
 
+    // Viser alle salgsaftaler
     @GetMapping("/Dataregistrere/visSalgsaftaler")
     public String visAlleSalgsaftale(Model model) {
         model.addAttribute("salgsaftaleliste", salgsaftaleService.fetchAll());
         return "Dataregistrere/visSalgsaftaler";
     }
 
+    // Sletter en salgsaftale ud fra ID, håndterer fejl hvis ID ikke findes
     @PostMapping("/Dataregistrere/sletSalgsaftale")
     public String sletSalgsaftale(@RequestParam("salgs_ID") int salgs_ID, RedirectAttributes redirectAttributes, HttpSession session) {
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
@@ -77,9 +78,10 @@ public class SalgsaftaleController {
         return "redirect:/Dataregistrere/visSalgsaftaler";
     }
 
+    // Viser detaljer for en enkelt salgsaftale
     @GetMapping("/viewOne/{salgs_ID}")
     public String visSalgsaftaleDetaljer(@PathVariable int salgs_ID, Model model) {
-        Salgsaftale salgsaftale = salgsaftaleService.findSalgsaftaleByID (salgs_ID);
+        Salgsaftale salgsaftale = salgsaftaleService.findSalgsaftaleByID(salgs_ID);
         model.addAttribute("salgsaftale", salgsaftale);
         return "Dataregistrere/viewOneSalgsaftale";
     }

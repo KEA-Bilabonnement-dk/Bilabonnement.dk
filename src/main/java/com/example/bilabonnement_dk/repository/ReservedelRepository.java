@@ -13,6 +13,7 @@ public class ReservedelRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // Henter alle reservedele fra databasen
     public List<Reservedel> fetchAll() {
         String sql = "SELECT * FROM reservedel";
         return jdbcTemplate.query(sql, (rs, rowNum) -> new Reservedel (
@@ -22,6 +23,7 @@ public class ReservedelRepository {
         ));
     }
 
+    // Finder en reservedel ud fra dens ID
     public Reservedel findByID(int reservedel_ID) {
         String sql = "SELECT * FROM reservedel WHERE reservedel_ID = ?";
         return jdbcTemplate.queryForObject(sql, new Object[]{reservedel_ID}, (rs, rowNum) -> new Reservedel(

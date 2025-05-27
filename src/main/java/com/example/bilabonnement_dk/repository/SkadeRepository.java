@@ -19,6 +19,7 @@ public class SkadeRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    // Indsætter en ny Skaderapport og returnerer den genererede ID
     public int insertAndReturnID(Skaderapport skaderapport) {
         String sql = """
                 INSERT INTO skaderapport (leasing_ID, medarbejder_ID, pris, arbejdstid)
@@ -39,11 +40,13 @@ public class SkadeRepository {
         return keyHolder.getKey().intValue();
     }
 
-    public void updatePrice(int skadeRapport_ID, double nyPris) {
+    // Opdaterer prisen på en eksisterende Skaderapport
+    public void updatePrice(int skaderapport_ID, double nyPris) {
         String sql = "UPDATE skaderapport SET pris = ? WHERE skaderapport_ID = ?";
-        jdbcTemplate.update(sql, nyPris, skadeRapport_ID);
+        jdbcTemplate.update(sql, nyPris, skaderapport_ID);
     }
 
+    // Henter alle Skaderapporter med tilhørende Leasing og Medarbejder information
     public List<Skaderapport> fetchAll() {
         String sql = """
                 SELECT s.*,
@@ -74,6 +77,7 @@ public class SkadeRepository {
         });
     }
 
+    // Finder en Skaderapport ud fra ID med tilhørende Leasing og Medarbejder data
     public Skaderapport findByID(int skaderapport_ID) {
         String sql = """
                 SELECT s.*, l.leasing_ID,
@@ -106,11 +110,13 @@ public class SkadeRepository {
         return result.isEmpty() ? null : result.get(0);
     }
 
+    // Opdaterer arbejdstid og pris på en eksisterende Skaderapport
     public void updateSkaderapport(int skaderapport_ID, int arbejdstid, double pris) {
         String sql = "UPDATE skaderapport SET arbejdstid = ?, pris = ? WHERE skaderapport_ID = ?";
         jdbcTemplate.update(sql, arbejdstid, pris, skaderapport_ID);
     }
 
+    // Sletter en Skaderapport ud fra ID
     public void deleteSkaderapport(int skaderapport_ID) {
         String sql = "DELETE FROM skaderapport WHERE skaderapport_ID = ?";
         jdbcTemplate.update(sql, skaderapport_ID);

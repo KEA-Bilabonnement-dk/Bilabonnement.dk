@@ -20,7 +20,7 @@ public class LeasingController {
     @Autowired
     private AdresseService adresseService;
 
-    // Metode til adgangstjek + return af medarbejder
+    // Tjekker om medarbejder har adgang baseret på rolle, returnerer medarbejder hvis OK
     private Medarbejder hentMedarbejderHvisAdgang(HttpSession session, String ønsketRolle) {
         Medarbejder medarbejder = (Medarbejder) session.getAttribute("bruger");
         if (medarbejder != null && medarbejder.getRolle().name().equals(ønsketRolle)) {
@@ -29,6 +29,7 @@ public class LeasingController {
         return null;
     }
 
+    // Viser formular til oprettelse af leasingaftale
     @GetMapping("/leasing/create")
     public String visLeasingOpret(HttpSession session, Model model) {
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
@@ -36,10 +37,10 @@ public class LeasingController {
         }
         model.addAttribute("leasing", new Leasing());
         model.addAttribute("adresseliste", adresseService.fetchAll());
-
         return "leasing/create";
     }
 
+    // Opretter leasingaftale og tilknytter medarbejder
     @PostMapping("/leasing/create")
     public String opretLeasing(@ModelAttribute Leasing leasing, HttpSession session, RedirectAttributes redirectAttributes) {
         Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER");
@@ -52,6 +53,7 @@ public class LeasingController {
         return "redirect:/data";
     }
 
+    // Viser liste over alle leasingaftaler
     @GetMapping("/leasing/read")
     public String visAlleLeasing(HttpSession session, Model model) {
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
@@ -61,13 +63,13 @@ public class LeasingController {
         return "leasing/read";
     }
 
+    // Viser detaljer om en specifik leasingaftale
     @GetMapping("/leasing/readOne")
     public String visEnLeasing(@RequestParam("leasing_ID") int leasing_ID,
                                Model model,
                                RedirectAttributes redirectAttributes) {
-            Leasing leasing = leasingService.findLeasingByID(leasing_ID);
-
-            if (leasing == null) {
+        Leasing leasing = leasingService.findLeasingByID(leasing_ID);
+        if (leasing == null) {
             redirectAttributes.addFlashAttribute("fejlbesked", "Ingen leasingaftale fundet med det angivne ID: " + leasing_ID);
             return "redirect:/leasing/read";
         }
@@ -75,6 +77,7 @@ public class LeasingController {
         return "leasing/readOne";
     }
 
+    // Viser formular til opdatering af leasingaftale
     @GetMapping("/leasing/update")
     public String visOpdateringsFormular(HttpSession session) {
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
@@ -83,6 +86,7 @@ public class LeasingController {
         return "leasing/update";
     }
 
+    // Viser detaljer til opdatering af en enkelt leasingaftale
     @GetMapping("/leasing/updateOne")
     public String opdaterEnLeasing(@RequestParam("leasing_ID") int leasing_ID,
                                    Model model,
@@ -111,6 +115,7 @@ public class LeasingController {
         return "leasing/updateOne";
     }
 
+    // Opdaterer leasingaftale efter indsendt formular
     @PostMapping("/leasing/update")
     public String opdaterLeasing(@ModelAttribute Leasing leasing, HttpSession session, RedirectAttributes redirectAttributes) {
         Medarbejder medarbejder = hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER");
@@ -130,6 +135,7 @@ public class LeasingController {
         return "redirect:/leasing/read";
     }
 
+    // Viser slet-side med liste over leasingaftaler
     @GetMapping("/leasing/delete")
     public String visSletLeasing(Model model, HttpSession session) {
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
@@ -139,6 +145,7 @@ public class LeasingController {
         return "leasing/delete";
     }
 
+    // Sletter leasingaftale baseret på ID
     @PostMapping("/leasing/delete")
     public String sletLeasing(@RequestParam("leasing_ID") int leasing_ID,
                               RedirectAttributes redirectAttributes,
@@ -155,6 +162,7 @@ public class LeasingController {
         return "redirect:/leasing/delete";
     }
 
+    // Marker leasingaftale som afleveret
     @PostMapping("/leasing/aflever")
     public String markerSomAfleveret(@RequestParam("leasing_ID") int leasing_ID,
                                      RedirectAttributes redirectAttributes,
@@ -162,11 +170,8 @@ public class LeasingController {
         if (hentMedarbejderHvisAdgang(session, "DATAREGISTRERINGSMEDARBEJDER") == null) {
             return "redirect:/";
         }
-
         leasingService.markAsAfleveret(leasing_ID);
         redirectAttributes.addFlashAttribute("besked", "Leasingaftale markeret som afleveret.");
         return "redirect:/leasing/read";
     }
-
-
 }
