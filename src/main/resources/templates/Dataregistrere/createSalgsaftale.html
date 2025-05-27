@@ -1,40 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <title>Opret Bil | Bilabonnement.dk</title>
-  <link rel="stylesheet" href="/data.css">
+    <meta charset="UTF-8">
+    <title>Opret Leasingaftale | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/data.css">
 </head>
-<body class="CreateSalgsaftale">
+<body class="createSalgsaftale">
 
 <header class="header">
-  <div class="logo-container">
-    <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-    <h1 class="title">Bilabonnement.dk</h1>
-  </div>
+    <div class="header-content">
+      <div class="logo-container">
+          <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+      </div>
+      <nav class="nav">
+          <a href="/logout" class="btn btn-logout">Log ud</a>
+      </nav>
+    </div>
 </header>
 
 <main class="container">
   <div class="form-container">
     <h2>Opret Salgsaftale</h2>
+
     <form th:action="@{/Dataregistrere/createSalgsaftale}" method="post" th:object="${salgsaftale}">
 
-      <a th:href="@{'/home/kunde'(adresseId=${latestAdresseId})}" class="btn btn-link" target="_blank">Opret kunde</a>
+      <div class="button-links" style="justify-content: flex-start; margin-bottom: 20px;">
+        <a th:href="@{'/home/kunde'(adresseId=${latestAdresseId})}" class="btn btn-primary" target="_blank">Opret kunde</a>
+        <a href="/home/adresse" class="btn btn-primary" target="_blank">Opret adresse</a>
+      </div>
 
       <div class="form-group">
         <label for="salgspris">Salgspris:</label>
-        <input type="number" id="salgspris" th:field="*{salgspris}" placeholder="salgspris" required>
+        <input type="number" id="salgspris" th:field="*{salgspris}" placeholder="Indtast salgspris" required>
       </div>
 
       <div class="form-group">
         <label for="leveringsdato">Leveringsdato:</label>
-        <input type="date" id="leveringsdato" th:field="*{leveringsdato}" placeholder="leveringsdato" required>
+        <input type="date" id="leveringsdato" th:field="*{leveringsdato}" required>
       </div>
-
-      <div class="form-group">
-        <a href="/home/adresse" class="btn btn-link" target="_blank">Opret adresse</a>
-      </div>
-
 
       <div class="form-group">
         <label for="bil_ID">Vælg bil:</label>
@@ -46,19 +50,36 @@
 
       <input type="hidden" th:field="*{kunde.kunde_ID}" />
 
-      <button type="submit" class="btn btn create">Opret salgsaftale</button>
-
       <div class="button-links">
+        <button type="submit" class="btn btn-primary">Opret salgsaftale</button>
         <a href="/Dataregistrere/visSalgsaftaler" class="btn btn-back">Tilbage</a>
       </div>
-
     </form>
   </div>
 </main>
 
+<footer class="footer">
+  <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
+
+<div id="carModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
+  <div style="position:relative; width:90%; max-width:1000px; margin:3em auto; background:#fff; border-radius:8px; padding:2em; max-height:80vh; overflow:auto;">
+    <button id="closeCarModal" style="position:absolute; top:8px; right:8px; font-size:1.3em;">&times;</button>
+    <h3>Vælg en bil</h3>
+
+    <form id="carSearchForm" style="margin-bottom: 1em; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <input type="text" id="carSearchInput" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" style="padding: 10px; flex: 1; border-radius: 6px; border: 1px solid #ccc;">
+      <button type="submit" class="btn btn-primary">Søg</button>
+    </form>
+
+    <div id="carListContainer" class="table-container">
+      <div style="text-align:center; color:#888;">Indtast søgning for at finde biler.</div>
+    </div>
+  </div>
+</div>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Modal elements
     const modal = document.getElementById("carModal");
     const openBtn = document.getElementById("openCarModal");
     const closeBtn = document.getElementById("closeCarModal");
@@ -67,7 +88,7 @@
     const carSearchInput = document.getElementById("carSearchInput");
     const bilIdInput = document.getElementById("bil_ID");
 
-    // Helper to load cars (all or with search)
+    // Hjælper til at loade cars (alle eller med søgning)
     function loadCars(query = "") {
       carListContainer.innerHTML = "Indlæser...";
       // Build endpoint
@@ -100,7 +121,8 @@
     };
 
     // Close modal
-    closeBtn.onclick = () => { modal.style.display = "none"; };
+    closeBtn.onclick = () => {
+      modal.style.display = "none"; };
 
     // Click outside modal closes it
     window.onclick = (e) => {
@@ -116,19 +138,5 @@
   });
 </script>
 
-<div id="carModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5);">
-  <div style="position:relative; width:90%; max-width:1000px; margin:3em auto; background:#fff; border-radius:8px; padding:2em; max-height:80vh; overflow:auto;">
-    <button id="closeCarModal" style="position:absolute; top:8px; right:8px; font-size:1.3em;">&times;</button>
-    <h3>Vælg en bil</h3>
-    <form id="carSearchForm" style="margin-bottom:1em;">
-      <input type="text" id="carSearchInput" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" style="width:300px;" />
-      <button type="submit">Søg</button>
-    </form>
-    <div id="carListContainer">
-      <!-- AJAX loads table here -->
-      <div style="text-align:center; color:#888;">Indtast søgning for at finde biler.</div>
-    </div>
-  </div>
-</div>
 </body>
 </html>

@@ -1,68 +1,96 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
-    <title>Bil liste</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Se biler | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/data.css">
 </head>
-<body>
-<h1>Bil liste</h1>
+<body class="viewBil">
 
-<div class="dashboard-box">
-    <h3>Opret bil</h3>
-    <p>Tilføj til bilkatalog</p>
-    <a th:href="@{/Dataregistrere/CreateBil}">Opret bil</a>
-</div>
+<header class="header">
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
+    </div>
+</header>
 
+<main class="container">
+    <div class="form-container">
+        <h2>Bil liste</h2>
 
-<form th:action="@{/Dataregistrere/searchAll}" method="get" style="margin-bottom: 1rem;">
-    <input type="text" name="q" th:value="${searchQuery}" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" style="width: 350px;" />
-    <button type="submit">Søg</button>
-</form>
+        <div th:if="${fejlbesked}" class="fejl">
+            <p th:text="${fejlbesked}"></p>
+        </div>
 
-<table>
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Indkøbsdato</th>
-        <th>Vognnr</th>
-        <th>Stelnr</th>
-        <th>Udstyrsniveau</th>
-        <th>Stålpris</th>
-        <th>Regafg</th>
-        <th>CO2udl</th>
-        <th>Type</th>
-        <th>Mærke</th>
-        <th>Model</th>
-        <th>Handlinger</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${#lists.isEmpty(bilListe)}">
-        <td colspan="12">Ingen biler fundet.</td>
-    </tr>
-    <tr th:each="Bil: ${bilListe}">
-        <td th:text="${Bil.bil_ID}"></td>
-        <td th:text="${Bil.indkoebsdato}"></td>
-        <td th:text="${Bil.vognnr}"></td>
-        <td th:text="${Bil.stelnr}"></td>
-        <td th:text="${Bil.udstyrsniveau}"></td>
-        <td th:text="${Bil.staalpris}"></td>
-        <td th:text="${Bil.regafg}"></td>
-        <td th:text="${Bil.co2udl}"></td>
-        <td th:text="${Bil.biltype}"></td>
-        <td th:text="${Bil.maerke}"></td>
-        <td th:text="${Bil.model}"></td>
-        <td>
-            <a th:href="@{'/Dataregistrere/deleteBil'(id=${Bil.bil_ID})}">
-                <button class="btn-deleteOne" id="btn-deleteOne">Slet bil</button>
-            </a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<div class="button-links">
-    <a href="/data" class="btn btn-back">Tilbage til dashboard</a>
-</div>
+        <div th:if="${besked}" class="besked">
+            <p th:text="${besked}"></p>
+        </div>
+
+        <form th:action="@{/Dataregistrere/searchAll}" method="get" class="search-form">
+            <label for="søg">Søg efter bil:</label>
+            <input type="text" id="søg" name="søg" th:value="${searchQuery}" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" />
+            <button type="submit" class="btn btn-primary">Søg</button>
+        </form>
+
+    <div class="button-links">
+        <a class="btn btn-primary " th:href="@{/Dataregistrere/CreateBil}">Opret bil</a>
+    </div>
+
+    <div class="table-container">
+        <table class="leasing-table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Indkøbsdato</th>
+                <th>Vognnr</th>
+                <th>Stelnr</th>
+                <th>Udstyrsniveau</th>
+                <th>Stålpris</th>
+                <th>Regafg</th>
+                <th>CO2udl</th>
+                <th>Type</th>
+                <th>Mærke</th>
+                <th>Model</th>
+                <th>Handlinger</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${#lists.isEmpty(bilListe)}">
+                <td colspan="12">Ingen biler fundet.</td>
+            </tr>
+            <tr th:each="Bil: ${bilListe}">
+                <td th:text="${Bil.bil_ID}"></td>
+                <td th:text="${Bil.indkoebsdato}"></td>
+                <td th:text="${Bil.vognnr}"></td>
+                <td th:text="${Bil.stelnr}"></td>
+                <td th:text="${Bil.udstyrsniveau}"></td>
+                <td th:text="${Bil.staalpris}"></td>
+                <td th:text="${Bil.regafg}"></td>
+                <td th:text="${Bil.co2udl}"></td>
+                <td th:text="${Bil.biltype}"></td>
+                <td th:text="${Bil.maerke}"></td>
+                <td th:text="${Bil.model}"></td>
+                <td>
+                    <a th:href="@{'/Dataregistrere/deleteBil'(id=${Bil.bil_ID})}" class="btn btn-delete">Slet bil</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+            <div class="button-links">
+                <a href="/data" class="btn btn-back">Tilbage til menu</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
 </body>
 </html>

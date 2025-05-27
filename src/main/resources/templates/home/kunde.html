@@ -2,15 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Opret adresse | Bilabonnement.dk</title>
+    <title>Opret kunde | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/data.css">
 </head>
-<body class="CreateAdresse">
+<body class="createKunde">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
@@ -19,8 +24,7 @@
         <h2>Opret kunde</h2>
         <form th:action="@{/home/kunde}" method="post" th:object="${kunde}">
             <div class="form-group">
-                <label>Adresse</label>
-                <a href="/home/adresse" class="btn btn-link" target="_blank">Opret adresse</a>
+                <a href="/home/adresse" class="btn btn-primary" target="_blank">Opret adresse</a>
             </div>
 
             <div class="form-group">
@@ -44,10 +48,14 @@
 
             <div class="form-group">
                 <label for="kEmail">Email:</label>
-                <input type="text" id="kEmail" th:field="*{kEmail}" placeholder="Email" required>
+                <input type="email" id="kEmail" th:field="*{kEmail}" placeholder="E-mail" required>
             </div>
 
-            <button type="submit" class="btn btn create">Opret kunde</button>
+            <button type="submit" class="btn btn-primary">Opret kunde</button>
+
+            <div class="button-links">
+                <a href="/data" class="btn btn-back">Tilbage til menu</a>
+            </div>
         </form>
     </div>
 </main>

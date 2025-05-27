@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
   <meta charset="UTF-8">
   <title>Opret adresse | Bilabonnement.dk</title>
+  <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/data.css">
 </head>
-<body class="CreateAdresse">
+<body class="createAdresse">
 
 <header class="header">
-  <div class="logo-container">
-    <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-    <h1 class="title">Bilabonnement.dk</h1>
+  <div class="header-content">
+    <div class="logo-container">
+      <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+    </div>
+    <nav class="nav">
+      <a href="/logout" class="btn btn-logout">Log ud</a>
+    </nav>
   </div>
 </header>
 
@@ -20,30 +25,34 @@
     <form th:action="@{/home/adresse}" method="post" th:object="${adresse}">
       <div class="form-group">
         <label for="vejnr">Vejnummer:</label>
-        <input type="text" id="vejnr" th:field="*{vejnr}" placeholder="vejnummer" required>
+        <input type="text" id="vejnr" th:field="*{vejnr}" placeholder="Vejnummer" required>
       </div>
 
       <div class="form-group">
         <label for="vejnavn">Vejnavn:</label>
-        <input type="text" id="vejnavn" th:field="*{vejnavn}" placeholder="vejnavn" required>
+        <input type="text" id="vejnavn" th:field="*{vejnavn}" placeholder="Vejnavn" required>
       </div>
 
       <div class="form-group">
         <label for="land">Land:</label>
-        <input type="text" id="land" th:field="*{land}" placeholder="land" required>
+        <input type="text" id="land" th:field="*{land}" placeholder="Land" required>
       </div>
 
       <div class="form-group">
         <label for="postnummer">Postnummer:</label>
-        <input type="number" id="postnummer" th:field="*{postnummer}" placeholder="postnummer" required>
+        <input type="number" id="postnummer" th:field="*{postnummer}" placeholder="Postnummer" required>
       </div>
 
       <div class="form-group">
         <label for="bynavn">Bynavn:</label>
-        <input type="text" id="bynavn" th:field="*{bynavn}" placeholder="bynavn" required>
+        <input type="text" id="bynavn" th:field="*{bynavn}" placeholder="Bynavn" required>
       </div>
 
-      <button type="submit" class="btn btn create">Opret adresse</button>
+      <button type="submit" class="btn btn-primary">Opret adresse</button>
+
+      <div class="button-links">
+        <a href="/data" class="btn btn-back">Tilbage til menu</a>
+      </div>
     </form>
   </div>
 </main>

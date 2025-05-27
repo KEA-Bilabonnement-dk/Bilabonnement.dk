@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <title>Opret Bil | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/data.css">
 </head>
-<body class="CreateBil">
+<body class="createBil">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
@@ -21,7 +26,7 @@
 
             <div class="form-group">
                 <label for="Indkoebsdato">Indkøbsdato:</label>
-                <input type="date" id="Indkoebsdato" th:field="*{indkoebsdato}" placeholder="indkøbsdato" required>
+                <input type="date" id="Indkoebsdato" th:field="*{indkoebsdato}" placeholder="Indkøbsdato" required>
             </div>
 
             <div class="form-group">
@@ -36,7 +41,7 @@
 
             <div class="form-group">
                 <label for="udstyrsniveau">Udstyrsniveau:</label>
-                <input type="text" id="udstyrsniveau" th:field="*{udstyrsniveau}" placeholder="udstyrsniveau" required>
+                <input type="text" id="udstyrsniveau" th:field="*{udstyrsniveau}" placeholder="Udstyrsniveau" required>
             </div>
 
             <div class="form-group">
@@ -45,13 +50,13 @@
             </div>
 
             <div class="form-group">
-                <label for="regafg">Registrerings afgift:</label>
-                <input type="number" id="regafg" th:field="*{regafg}" placeholder="Registrerings afgift" required>
+                <label for="regafg">Registreringsafgift:</label>
+                <input type="number" id="regafg" th:field="*{regafg}" placeholder="Registreringsafgift" required>
             </div>
 
             <div class="form-group">
-                <label for="co2udl">CO2 udledning:</label>
-                <input type="number" id="co2udl" th:field="*{co2udl}" placeholder="CO2 udledning" required>
+                <label for="co2udl">CO2-udledning:</label>
+                <input type="number" id="co2udl" th:field="*{co2udl}" placeholder="CO2-udledning" required>
             </div>
 
             <div class="form-group">
@@ -65,18 +70,18 @@
 
             <div class="form-group">
                 <label for="maerke">Mærke:</label>
-                <input type="text" id="maerke" th:field="*{maerke}" placeholder="mærke" required>
+                <input type="text" id="maerke" th:field="*{maerke}" placeholder="Mærke" required>
             </div>
 
             <div class="form-group">
                 <label for="model">Model:</label>
-                <input type="text" id="model" th:field="*{model}" placeholder="model" required>
+                <input type="text" id="model" th:field="*{model}" placeholder="Model" required>
             </div>
 
-            <button type="submit" class="btn btn create">Opret bil</button>
+            <button type="submit" class="btn btn-primary">Opret bil</button>
 
             <div class="button-links">
-                <a href="/data" class="btn btn-back">Back to Home</a>
+                <a href="/data" class="btn btn-back">Tilbage til menu</a>
             </div>
 
         </form>
