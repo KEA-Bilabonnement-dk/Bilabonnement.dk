@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <title>Samlet Pris For Udlejede Biler | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/forretning.css">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="login">
+
+<header class="header">
+    <div class="logo-container">
+        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+    </div>
+</header>
+
+<main class="container">
+    <div class="form-container">
+        <h2>Samlet Pris For Udlejede Biler</h2>
+
+        <!-- Total pris for alle udlejninger -->
+        <p th:text="'Der har i alt været udlejet for ' + ${#numbers.formatDecimal(samletPris, 1, 'POINT', 2, 'COMMA')} + ' kr.'">
+            Indlæser
+            ...
+        </p>
+        <p>
+            <strong th:text="'Heraf er ' + ${#numbers.formatDecimal(aktivPris, 1, 'POINT', 2, 'COMMA')} + ' kr. stadig aktive udlejninger.'">
+                Indlæser ...
+            </strong>
+        </p>
+
+        <div class="button-links">
+            <a href="/forretning" class="btn btn-back">Tilbage til menu</a>
+        </div>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
+
+</body>
+</html>

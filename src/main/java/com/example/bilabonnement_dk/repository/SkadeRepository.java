@@ -2,7 +2,6 @@ package com.example.bilabonnement_dk.repository;
 
 import com.example.bilabonnement_dk.model.Leasing;
 import com.example.bilabonnement_dk.model.Medarbejder;
-import com.example.bilabonnement_dk.model.Rapportreservedel;
 import com.example.bilabonnement_dk.model.Skaderapport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

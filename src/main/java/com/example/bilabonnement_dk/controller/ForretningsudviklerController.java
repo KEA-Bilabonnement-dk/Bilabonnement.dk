@@ -3,7 +3,6 @@ package com.example.bilabonnement_dk.controller;
 import com.example.bilabonnement_dk.model.Bil;
 import com.example.bilabonnement_dk.service.BilService;
 import com.example.bilabonnement_dk.service.ForretningsudviklerService;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,41 +17,47 @@ import java.util.Map;
 public class ForretningsudviklerController {
 
     private final BilService bilService;
-    private ForretningsudviklerService forretningsudviklerService;
+    private final ForretningsudviklerService forretningsudviklerService;
 
     public ForretningsudviklerController(ForretningsudviklerService forretningsudviklerService, BilService bilService) {
         this.forretningsudviklerService = forretningsudviklerService;
         this.bilService = bilService;
     }
-    @GetMapping("forretningsudvikler/read")
+
+    @GetMapping("/read")
     public String visDashboard(Model model) {
         int antalUdlejde = forretningsudviklerService.hentAlleLeasninger();
-        model.addAttribute("antalUdlejde", antalUdlejde);
         int aktiveUdlejninger = forretningsudviklerService.hentAntalAktiveBiler();
-        model.addAttribute("antalAktive",aktiveUdlejninger);
-        double udlejningsgrad = forretningsudviklerService.hentUdlejningsgrad();
+        double udlejningsgrad = 0;
+
         if (antalUdlejde > 0) {
             udlejningsgrad = ((double) aktiveUdlejninger / antalUdlejde) * 100;
         }
-        model.addAttribute("udlejningsgrad", udlejningsgrad);
+
         List<Bil> udlejedeBiler = forretningsudviklerService.hentUdlejedeBiler();
         List<Bil> bilerPaaLager = forretningsudviklerService.hentBilerPaaLager();
 
+        model.addAttribute("antalUdlejde", antalUdlejde);
+        model.addAttribute("antalAktive", aktiveUdlejninger);
+        model.addAttribute("udlejningsgrad", udlejningsgrad);
         model.addAttribute("udlejedeBiler", udlejedeBiler);
         model.addAttribute("bilerPaaLager", bilerPaaLager);
 
         return "forretningsudvikler/read";
     }
-    @GetMapping("/forretningsudvikler/readpris")
+
+    @GetMapping("/readPris")
     public String visDashboardPris(Model model) {
         BigDecimal samletPris = forretningsudviklerService.hentSamletPrisUdlejdeBiler();
-        model.addAttribute("samletPris", samletPris);
         BigDecimal aktivPris = forretningsudviklerService.hentSamletPrisAktiveUdlejdeBiler();
-        model.addAttribute("aktivPris", aktivPris);
-        return "forretningsudvikler/readpris";
 
+        model.addAttribute("samletPris", samletPris);
+        model.addAttribute("aktivPris", aktivPris);
+
+        return "forretningsudvikler/readPris";
     }
-    @GetMapping("/forretningsudvikler/bilerliste")
+
+    @GetMapping("/bilerliste")
     public String bilerListe(Model model) {
         List<Bil> udlejedeBiler = forretningsudviklerService.hentUdlejedeBiler();
         List<Bil> bilerPaaLager = forretningsudviklerService.hentBilerPaaLager();
@@ -61,14 +66,12 @@ public class ForretningsudviklerController {
         model.addAttribute("bilerPaaLager", bilerPaaLager);
 
         return "forretningsudvikler/bilerliste";
-
     }
-    @GetMapping("forretningsudvikler/topkunder")
+
+    @GetMapping("/topKunder")
     public String visTopKunder(Model model) {
         List<Map<String, Object>> topKunder = forretningsudviklerService.hentTop3KunderMedFlestLeasingaftaler();
         model.addAttribute("topKunder", topKunder);
-        return "forretningsudvikler/topkunder";
+        return "forretningsudvikler/topKunder";
     }
-
-
 }

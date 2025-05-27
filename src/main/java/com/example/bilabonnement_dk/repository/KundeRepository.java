@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public class KundeRepository {
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 

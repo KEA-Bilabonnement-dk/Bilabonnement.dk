@@ -35,7 +35,7 @@
         <form th:action="@{/skade/delete}" method="post" class="search-form">
             <label for="skaderapport_ID">Indtast skaderapport-ID:</label>
             <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="F.eks. 5" required>
-            <button type="submit" class="btn btn-delete">Slet</button>
+            <button type="submit" class="btn btn-delete" onclick="return confirm('Er du sikker på, at du vil slette skaderapporten?');">Slet</button>
         </form>
 
         <div class="table-container">

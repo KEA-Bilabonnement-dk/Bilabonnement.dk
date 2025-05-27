@@ -1,6 +1,5 @@
 package com.example.bilabonnement_dk.repository;
 
-import com.example.bilabonnement_dk.model.Kunde;
 import com.example.bilabonnement_dk.model.Medarbejder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

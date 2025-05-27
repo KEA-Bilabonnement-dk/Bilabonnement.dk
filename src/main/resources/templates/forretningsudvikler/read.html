@@ -1,116 +1,123 @@
 <!DOCTYPE html>
-<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <title>Biloversigt | Bilabonnement.dk</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/forretning.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="login">
+<body class="read">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
-<main class="login-container">
-    <h2>Biloversigt</h2>
+<main class="container">
+    <div class="form-container">
+        <h2>Biloversigt og Udlejningsdata</h2>
 
-    <section>
-        <h3>Udlejede Biler</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Vognnummer</th>
-                <th>Mærke</th>
-                <th>Model</th>
-                <th>Udstyrsniveau</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="bil : ${udlejedeBiler}">
-                <td th:text="${bil.vognnr}">Vognnr</td>
-                <td th:text="${bil.maerke}">Mærke</td>
-                <td th:text="${bil.model}">Model</td>
-                <td th:text="${bil.udstyrsniveau}">Udstyr</td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+        <p th:text="'Der har i alt været ' + ${antalUdlejde} + ' leasingaftaler.'">Indlæser...</p>
+        <p th:text="'Heraf er ' + ${antalAktive} + ' aktive udlejninger.'">Indlæser...</p>
+        <p>Udlejningsgrad: <strong th:text="${#numbers.formatDecimal(udlejningsgrad, 1, 1)} + '%'">0%</strong></p>
 
-    <section>
-        <h3>Biler på Lager</h3>
-        <table>
-            <thead>
-            <tr>
-                <th>Vognnummer</th>
-                <th>Mærke</th>
-                <th>Model</th>
-                <th>Udstyrsniveau</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="bil : ${bilerPaaLager}">
-                <td th:text="${bil.vognnr}">Vognnr</td>
-                <td th:text="${bil.maerke}">Mærke</td>
-                <td th:text="${bil.model}">Model</td>
-                <td th:text="${bil.udstyrsniveau}">Udstyr</td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+        <canvas id="udlejningsgradChart" width="500" height="500" style="margin: 20px auto;"></canvas>
 
-    <br>
-    <a href="/forretning">Tilbage til dashboard</a>
-    <!-- Samlet antal leasingaftaler -->
-    <p th:text="'Der har i alt været ' + ${antalUdlejde} + ' leasingaftaler.'">Indlæser...</p>
+        <section>
+            <h3>Udlejede Biler</h3>
+            <table class="leasing-table">
+                <thead>
+                <tr>
+                    <th>Vognnummer</th>
+                    <th>Mærke</th>
+                    <th>Model</th>
+                    <th>Udstyrsniveau</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="bil : ${udlejedeBiler}">
+                    <td th:text="${bil.vognnr}">Vognnr</td>
+                    <td th:text="${bil.maerke}">Mærke</td>
+                    <td th:text="${bil.model}">Model</td>
+                    <td th:text="${bil.udstyrsniveau}">Udstyr</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
 
-    <!-- Aktive udlejninger -->
-    <p th:text="'Heraf er ' + ${antalAktive} + ' aktive udlejninger.'">Indlæser...</p>
+        <section>
+            <h3>Biler på Lager</h3>
+            <table class="leasing-table">
+                <thead>
+                <tr>
+                    <th>Vognnummer</th>
+                    <th>Mærke</th>
+                    <th>Model</th>
+                    <th>Udstyrsniveau</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="bil : ${bilerPaaLager}">
+                    <td th:text="${bil.vognnr}">Vognnr</td>
+                    <td th:text="${bil.maerke}">Mærke</td>
+                    <td th:text="${bil.model}">Model</td>
+                    <td th:text="${bil.udstyrsniveau}">Udstyr</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
 
-    <p>Udlejningsgrad: <strong th:text="${udlejningsgrad} + '%'">0%</strong></p>
-    <canvas id="udlejningsgradChart" width="500" height="500" style="margin-top: 20px;"></canvas>
+        <div class="button-links">
+            <a href="/forretning" class="btn btn-back">Tilbage til menu</a>
+        </div>
+    </div>
+</main>
 
-    <script th:inline="javascript">
-        const udlejningsgrad = [[${udlejningsgrad}]];
-        const ikkeUdlejet = 100 - udlejningsgrad;
+<script th:inline="javascript">
+    let udlejningsgrad = /*[[${udlejningsgrad}]]*/ 0;
+    if (isNaN(udlejningsgrad)) udlejningsgrad = 0;
 
-        const ctx = document.getElementById('udlejningsgradChart').getContext('2d');
-        const udlejningsgradChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Udlejet', 'Ikke udlejet'],
-                datasets: [{
-                    label: 'Udlejningsgrad',
-                    data: [udlejningsgrad, ikkeUdlejet],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 99, 132, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false,  // Her skal du sætte det til false
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    },
-                    title: {
-                        display: true,
-                        text: 'Fordeling af udlejede vs. ikke udlejede biler'
-                    }
+    const ikkeUdlejet = 100 - udlejningsgrad;
+
+    const ctx = document.getElementById('udlejningsgradChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Udlejet', 'Ikke udlejet'],
+            datasets: [{
+                label: 'Udlejningsgrad',
+                data: [udlejningsgrad, ikkeUdlejet],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                legend: { position: 'bottom'
+                },
+                title: {
+                    display: true,
+                    text: 'Fordeling af udlejede vs. ikke udlejede biler'
                 }
             }
-        });
-    </script>
-</main>
+        }
+    });
+</script>
 
 <footer class="footer">
     <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>

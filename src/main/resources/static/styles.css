@@ -233,6 +233,16 @@ input[readonly] {
     background-color: #00528a;
 }
 
+.dashboard-box p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.dashboard-box a.btn {
+    margin-top: 10px;
+    display: inline-block;
+}
+
 /* ---------------- TABLE ---------------- */
 .search-form {
     display: flex;

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Topkunder | Bilabonnement.dk</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="login">
+
+<header class="header">
+  <div class="logo-container">
+    <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+  </div>
+</header>
+
+<main class="container">
+  <div class="form-container">
+    <h2>Top-3 kunder med flest leasingaftaler</h2>
+
+    <div class="table-container">
+      <table class="leasing-table">
+        <thead>
+        <tr>
+          <th>Kunde ID</th>
+          <th>Fornavn</th>
+          <th>Efternavn</th>
+          <th>Antal Leasingaftaler</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="kunde : ${topKunder}">
+          <td th:text="${kunde.kunde_ID}">Kunde ID</td>
+          <td th:text="${kunde.kfornavn}">Fornavn</td>
+          <td th:text="${kunde.kefternavn}">Efternavn</td>
+          <td th:text="${kunde.antal_leasingaftaler}">Antal</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="button-links">
+      <a href="/forretning" class="btn btn-back">Tilbage til menu</a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>© 2025 Bilabonnement.dk ApS • All Rights Reserved</p>
+</footer>
+
+</body>
+</html>
