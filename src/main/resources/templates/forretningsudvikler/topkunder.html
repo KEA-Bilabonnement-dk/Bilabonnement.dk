@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Top 3 Kunder</title>
+</head>
+<body>
+<h1>Top 3 Kunder med Flest Leasingaftaler</h1>
+<table border="1">
+  <thead>
+  <tr>
+    <th>Kunde ID</th>
+    <th>Fornavn</th>
+    <th>Efternavn</th>
+    <th>Antal Leasingaftaler</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="kunde : ${topKunder}">
+    <td th:text="${kunde.kunde_ID}">Kunde ID</td>
+    <td th:text="${kunde.kfornavn}">Fornavn</td>
+    <td th:text="${kunde.kefternavn}">Efternavn</td>
+    <td th:text="${kunde.antal_leasingaftaler}">Antal</td>
+  </tr>
+  </tbody>
+</table>
+</body>
+</html>
