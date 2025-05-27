@@ -89,18 +89,16 @@
     border-radius: 6px;
 }
 
-.search-form {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-    margin: 20px 0;
+.status-aflveret,
+.status-yes,
+.status-no {
+    font-weight: bold;
 }
-.search-form input {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+.status-aflveret,
+.status-yes {
+    color: var(--accent);
 }
-
+.status-no {
+    color: var(--danger);
+}
 

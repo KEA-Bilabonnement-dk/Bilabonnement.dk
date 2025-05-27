@@ -19,6 +19,10 @@
     <div class="form-container">
         <h2>Rediger Leasingaftale</h2>
 
+        <div th:if="${fejlbesked != null and !#strings.isEmpty(fejlbesked)}" class="fejl">
+            <p th:text="${fejlbesked}"></p>
+        </div>
+
         <form th:action="@{/leasing/update}" method="post" th:object="${leasing}">
             <input type="hidden" th:field="*{leasing_ID}"/>
 
@@ -69,10 +73,6 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Gem ændringer</button>
-            </div>
-
-            <div th:if="${fejlbesked}" class="fejlbesked">
-                <p th:text="${fejlbesked}"></p>
             </div>
 
             <div class="button-links">
