@@ -32,8 +32,8 @@
         </div>
 
         <form th:action="@{/Dataregistrere/searchAll}" method="get" class="search-form">
-            <label for="søg">Søg efter bil:</label>
-            <input type="text" id="søg" name="søg" th:value="${searchQuery}" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" />
+            <label for="q">Søg efter bil:</label>
+            <input type="text" id="q" name="q" th:value="${searchQuery}" placeholder="Søg efter bil (mærke, model, ID, stelnummer, osv.)" />
             <button type="submit" class="btn btn-primary">Søg</button>
         </form>
 

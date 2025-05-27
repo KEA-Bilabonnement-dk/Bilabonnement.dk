@@ -1,0 +1,43 @@
+.reservedel-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15px;
+    table-layout: fixed;
+}
+
+.reservedel-table thead {
+    background-color: #f6f6f6;
+}
+
+.reservedel-table th,
+.reservedel-table td {
+    padding: 12px 18px;
+    border-bottom: 1px solid #e0e0e0;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.reservedel-table td {
+    font-weight: 400;
+}
+
+.reservedel-table th {
+    font-weight: 600;
+    text-align: left;
+}
+
+/* Align right for tal */
+.reservedel-table th:nth-child(2),
+.reservedel-table td:nth-child(2),
+.reservedel-table th:nth-child(3),
+.reservedel-table td:nth-child(3),
+.reservedel-table th:nth-child(4),
+.reservedel-table td:nth-child(4) {
+    text-align: right;
+}
+
+/* Ekstra spacing mellem tabel og næste indhold */
+.rapport-box table {
+    margin-bottom: 20px;
+}

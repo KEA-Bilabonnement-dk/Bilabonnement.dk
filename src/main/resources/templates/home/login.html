@@ -18,6 +18,10 @@
 <main class="login-container">
     <h2>Login</h2>
 
+    <div th:if="${fejl}" class="fejl">
+        <p th:text="${fejl}"></p>
+    </div>
+
     <form th:action="@{/login}" method="post">
         <div class="form-group">
             <input type="text" id="brugernavn" name="brugernavn" placeholder="Brugernavn" required>
@@ -31,10 +35,6 @@
             <button type="submit" class="btn btn-login">Log ind</button>
         </div>
     </form>
-
-    <div th:if="${fejl}" class="fejl">
-        <p th:text="${fejl}"></p>
-    </div>
 
 </main>
 

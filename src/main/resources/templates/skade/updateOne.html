@@ -9,15 +9,23 @@
 <body class="update">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
 <main class="container">
     <div class="form-container">
         <h2>Rediger skaderapport</h2>
+
+        <div th:if="${fejlbesked}" class="fejl">
+            <p th:text="${fejlbesked}"></p>
+        </div>
 
         <form th:action="@{/skade/update}" method="post" th:object="${skaderapport}" id="skadeform">
             <input type="hidden" th:field="*{skaderapport_ID}" />
@@ -38,28 +46,29 @@
                         <select name="reservedel_ID" class="reservedel-select" required>
                             <option th:each="reserve : ${reservedelliste}"
                                     th:value="${reserve.reservedel_ID}"
-                                    th:text="${reserve.type}" th:attr="data-pris=${reserve.pris}"
+                                    th:text="${reserve.type}"
+                                    th:attr="data-pris=${reserve.pris}"
                                     th:selected="${reserve.reservedel_ID == r.reservedel.reservedel_ID}">
                             </option>
                         </select>
                         <input type="number" name="antal" class="antal-input" min="1" th:value="${r.antal}" required>
-                        <button type="button" class="remove-entry">Fjern</button>
+                        <button type="button" class="btn btn-secondary remove-entry">Fjern</button>
                     </div>
                 </div>
 
-            <button type="button" id="add-entry">+ Tilføj reservedel</button>
+            <button type="button" class="btn btn-secondary" id="add-entry">+ Tilføj reservedel</button>
 
             <div class="form-group">
                 <label>Samlet pris:</label>
                 <strong id="samlet-pris">0 DKK</strong>
+
+                <div class="button-links">
+                    <button type="submit" class="btn btn-primary">Gem ændringer</button>
+                </div>
             </div>
 
             <div class="button-links">
-                <button type="submit" class="btn">Gem ændringer</button>
-            </div>
-
-            <div class="button-links">
-                <a href="/skade/update" class="btn">Tilbage til oversigt</a>
+                <a href="/skade/update" class="btn btn-secondary">Tilbage til oversigt</a>
                 <a href="/skade" class="btn btn-back">Tilbage til menu</a>
             </div>
         </form>

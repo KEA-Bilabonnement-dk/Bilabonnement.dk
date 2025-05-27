@@ -9,15 +9,19 @@
 <body class="update">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
 <main class="container">
     <div class="form-container">
-        <h2>Rediger Leasingaftale</h2>
+        <h2>Rediger leasingaftale</h2>
 
         <div th:if="${fejlbesked != null and !#strings.isEmpty(fejlbesked)}" class="fejl">
             <p th:text="${fejlbesked}"></p>
@@ -76,7 +80,7 @@
             </div>
 
             <div class="button-links">
-                <a href="/leasing/update" class="btn">Tilbage til oversigt</a>
+                <a href="/leasing/update" class="btn btn-secondary">Tilbage til oversigt</a>
                 <a href="/data" class="btn btn-back">Tilbage til menu</a>
             </div>
         </form>

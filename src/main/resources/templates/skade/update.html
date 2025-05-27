@@ -9,32 +9,35 @@
 <body class="update">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
 <main class="container">
     <div class="form-container">
         <h2>Opdater Skaderapport</h2>
+
+        <div th:if="${fejlbesked}" class="fejl">
+            <p th:text="${fejlbesked}"></p>
+        </div>
+
         <form th:action="@{/skade/updateOne}" method="get" class="search-form">
             <div class="form-group">
                 <label for="skaderapport_ID">Søg på skaderapport-ID:</label>
                 <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="Skaderapport-ID" required>
-                <div class="button-links">
-                    <button type="submit" class="btn btn-view">Søg</button>
-                </div>
-            </div>
-
-            <div th:if="${fejlbesked}" class="fejlbesked">
-                <p th:text="${fejlbesked}"></p>
-            </div>
-
-            <div class="button-links">
-                <a href="/skade" class="btn btn-back">Tilbage til menu</a>
+                    <button type="submit" class="btn btn-primary">Søg</button>
             </div>
         </form>
+
+        <div class="button-links">
+            <a href="/skade" class="btn btn-back">Tilbage til menu</a>
+        </div>
     </div>
 </main>
 

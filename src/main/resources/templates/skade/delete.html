@@ -3,50 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Slet Skaderapporter | Bilabonnement.dk</title>
+    <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/data.css">
+
 </head>
 <body class="delete">
 
 <header class="header">
-    <div class="logo-container">
-        <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement.dk logo" class="logo">
-        <h1 class="title">Bilabonnement.dk</h1>
+    <div class="header-content">
+        <div class="logo-container">
+            <img src="/images/Bilabonnement.dk.png" alt="Bilabonnement logo" class="logo">
+        </div>
+        <nav class="nav">
+            <a href="/logout" class="btn btn-logout">Log ud</a>
+        </nav>
     </div>
 </header>
 
 <main class="container">
-
     <div class="form-container">
-        <h2>Slet skaderapport ved ID</h2>
-            <form th:action="@{/skade/delete}" method="post" class="search-form">
-                <label for="skaderapport_ID">Indtsat skaderapport-ID:</label>
-                <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="Indtast-ID" required>
-                <div class="button-links">
-                    <button type="submit" class="btn btn-delete">Slet</button>
-                </div>
-            </form>
-    </div>
+        <h2>Slet skaderapport</h2>
 
-    <div th:if="${fejlbesked}" class="fejlbesked">
-        <p th:text="${fejlbesked}"></p>
-    </div>
+        <div th:if="${fejlbesked}" class="fejl">
+            <p th:text="${fejlbesked}"></p>
+        </div>
 
-    <div th:if="${besked}" class="besked">
-        <p th:text="${besked}"></p>
-    </div>
+        <div th:if="${besked}" class="besked">
+            <p th:text="${besked}"></p>
+        </div>
 
-    <section class="table-container">
-        <h2>Alle skaderapport</h2>
-        <table>
-            <thead>
+        <form th:action="@{/skade/delete}" method="post" class="search-form">
+            <label for="skaderapport_ID">Indtast skaderapport-ID:</label>
+            <input type="number" id="skaderapport_ID" name="skaderapport_ID" placeholder="F.eks. 5" required>
+            <button type="submit" class="btn btn-delete">Slet</button>
+        </form>
+
+        <div class="table-container">
+            <h2>Alle skaderapporter</h2>
+            <table class="leasing-table">
+                <thead>
                 <tr>
                     <th>ID</th>
                     <th>Medarbejder</th>
                     <th>Leasing-ID</th>
                     <th>Handling</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr th:each="s : ${skaderapporter}">
                     <td th:text="${s.skaderapport_ID}"></td>
                     <td th:text="${s.medarbejder.fornavn + ' ' + s.medarbejder.efternavn}"></td>
@@ -54,18 +57,21 @@
                     <td>
                         <form th:action="@{/skade/delete}" method="post">
                             <input type="hidden" name="skaderapport_ID" th:value="${s.skaderapport_ID}" />
-                            <button type="submit" class="btn btn-delete">Slet</button>
+                            <button type="submit" class="btn btn-delete" onclick="return confirm('Er du sikker på, at du vil slette skaderapporten?');">Slet</button>
                         </form>
                     </td>
                 </tr>
-            </tbody>
-        </table>
-    </section>
+                <tr th:if="${#lists.isEmpty(skaderapporter)}">
+                    <td colspan="4" class="empty">Ingen skaderapporter fundet.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <div class="button-links">
-        <a href="/skade" class="btn btn-back">Tilbage til menu</a>
+        <div class="button-links">
+            <a href="/skade" class="btn btn-back">Tilbage til menu</a>
+        </div>
     </div>
-
 </main>
 
 <footer class="footer">

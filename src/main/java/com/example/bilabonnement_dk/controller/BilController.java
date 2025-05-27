@@ -57,8 +57,15 @@ public class BilController {
 
 
     @GetMapping("/Dataregistrere/searchAll")
-    public String searchAll(@RequestParam("q") String query, Model model) {
-        List<Bil> results = bilService.searchAllFields(query);
+    public String searchAll(@RequestParam(value = "q", required = false) String query, Model model) {
+        List<Bil> results;
+
+        if (query == null || query.trim().isEmpty()) {
+            results = bilService.fetchAll(); // Vis alle biler, hvis ingen søgning
+        } else {
+            results = bilService.searchAllFields(query);
+        }
+
         model.addAttribute("bilListe", results);
         model.addAttribute("searchQuery", query);
         return "Dataregistrere/viewBil";

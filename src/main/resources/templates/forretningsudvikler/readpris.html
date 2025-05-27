@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<html lang="da">
 <head>
     <meta charset="UTF-8">
     <title>Samlet Pris For Udlejede Biler | Bilabonnement.dk</title>
@@ -18,8 +18,8 @@
     <h2>Samlet Pris For Udlejede Biler</h2>
 
     <!-- Total pris for alle udlejninger -->
-    <p th:text="'Der er i alt udlejet for ' + ${samletPris} + ' kr.'">Indlæser...</p>
-    <p th:text="'Heraf er ' + ${aktivPris} + ' kr. stadig aktive udlejninger.'">Indlæser...</p>
+    <p th:text="'Der har i alt været udlejet for ' + ${samletPris} + ' kr.'">Indlæser...</p>
+    <p><strong>th:text="'Heraf er ' + ${aktivPris} + ' kr. stadig aktive udlejninger.'">Indlæser...</strong></p>
 
     <a href="/forretning">Tilbage til dashboard</a>
 </main>
