@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ForretningsudviklerRepository {
@@ -53,5 +54,24 @@ public class ForretningsudviklerRepository {
 
         Double result = jdbcTemplate.queryForObject(sql, Double.class);
         return result != null ? result : 0.0;
+    }
+    public List<Map<String, Object>> findTop3KunderMedFlestLeasingaftaler() {
+        String sql = """
+        SELECT 
+            k.kunde_ID,
+            k.kfornavn,
+            k.kefternavn,
+            COUNT(l.leasing_ID) AS antal_leasingaftaler
+        FROM 
+            kunde k
+        JOIN 
+            leasing l ON k.kunde_ID = l.kunde_ID
+        GROUP BY 
+            k.kunde_ID, k.kfornavn, k.kefternavn
+        ORDER BY 
+            antal_leasingaftaler DESC
+        LIMIT 3
+    """;
+        return jdbcTemplate.queryForList(sql);
     }
 }

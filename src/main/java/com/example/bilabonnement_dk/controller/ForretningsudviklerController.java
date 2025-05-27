@@ -63,6 +63,12 @@ public class ForretningsudviklerController {
         return "forretningsudvikler/bilerliste";
 
     }
+    @GetMapping("forretningsudvikler/topkunder")
+    public String visTopKunder(Model model) {
+        List<Map<String, Object>> topKunder = forretningsudviklerService.hentTop3KunderMedFlestLeasingaftaler();
+        model.addAttribute("topKunder", topKunder);
+        return "forretningsudvikler/topkunder";
+    }
 
 
 }

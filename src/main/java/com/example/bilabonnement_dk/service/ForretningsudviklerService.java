@@ -40,5 +40,8 @@ public class ForretningsudviklerService {
         return forretningsudviklerRepository.findBilerPaaLager();
 
     }
+    public List<Map<String, Object>> hentTop3KunderMedFlestLeasingaftaler() {
+        return forretningsudviklerRepository.findTop3KunderMedFlestLeasingaftaler();
+    }
 
 }
