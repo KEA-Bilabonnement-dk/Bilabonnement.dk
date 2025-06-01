@@ -31,18 +31,6 @@ public class ForretningsudviklerRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    // Finder den samlede pris af alle leasingaftaler (uanset status)
-    public BigDecimal findSamletPrisUdlejedeBiler() {
-        String sql = "SELECT SUM(pris) FROM leasing";
-        return jdbcTemplate.queryForObject(sql, BigDecimal.class);
-    }
-
-    // Finder den samlede pris af aktive leasingaftaler (slutdato i fremtiden)
-    public BigDecimal findSamletPrisAktiveUdlejedeBiler() {
-        String sql = "SELECT SUM(pris) FROM leasing WHERE slutdato > CURRENT_DATE";
-        return jdbcTemplate.queryForObject(sql, BigDecimal.class);
-    }
-
     // Finder alle biler, der aktuelt er udlejet (aktive leasingaftaler)
     public List<Bil> findUdlejedeBiler() {
         String sql = "SELECT b.* FROM bil b JOIN leasing l ON b.bil_ID = l.bil_ID WHERE l.slutdato > CURRENT_DATE";
@@ -53,6 +41,18 @@ public class ForretningsudviklerRepository {
     public List<Bil> findBilerPaaLager() {
         String sql = "SELECT * FROM bil WHERE bil_ID NOT IN (SELECT bil_ID FROM leasing WHERE slutdato > CURRENT_DATE)";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Bil.class));
+    }
+
+    // Finder den samlede pris af alle leasingaftaler (uanset status)
+    public BigDecimal findSamletPrisUdlejedeBiler() {
+        String sql = "SELECT SUM(pris) FROM leasing";
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class);
+    }
+
+    // Finder den samlede pris af aktive leasingaftaler (slutdato i fremtiden)
+    public BigDecimal findSamletPrisAktiveUdlejedeBiler() {
+        String sql = "SELECT SUM(pris) FROM leasing WHERE slutdato > CURRENT_DATE";
+        return jdbcTemplate.queryForObject(sql, BigDecimal.class);
     }
 
     // Beregner udlejningsgraden i procent (antal udlejede biler ift. samlet antal biler)

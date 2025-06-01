@@ -15,12 +15,23 @@ public class ForretningsudviklerService {
     public ForretningsudviklerService(ForretningsudviklerRepository repository) {
         this.forretningsudviklerRepository = repository;
     }
+
     public int hentAlleLeasninger(){
         return forretningsudviklerRepository.fetchAllLeasninger();
     }
+
     public int hentAntalAktiveBiler() {
         return forretningsudviklerRepository.findSamletAntalAktivtUdlejede();
     }
+
+    public List<Bil> hentUdlejedeBiler() {
+        return forretningsudviklerRepository.findUdlejedeBiler();
+    }
+
+    public List<Bil> hentBilerPaaLager() {
+        return forretningsudviklerRepository.findBilerPaaLager();
+    }
+
     public BigDecimal hentSamletPrisUdlejdeBiler() {
         BigDecimal pris = forretningsudviklerRepository.findSamletPrisUdlejedeBiler();
         return pris != null ? pris : BigDecimal.ZERO;
@@ -33,15 +44,8 @@ public class ForretningsudviklerService {
     public double hentUdlejningsgrad() {
         return forretningsudviklerRepository.hentUdlejningsgrad();
     }
-    public List<Bil> hentUdlejedeBiler() {
-        return forretningsudviklerRepository.findUdlejedeBiler();
-    }
-    public List<Bil> hentBilerPaaLager() {
-        return forretningsudviklerRepository.findBilerPaaLager();
 
-    }
     public List<Map<String, Object>> hentTop3KunderMedFlestLeasingaftaler() {
         return forretningsudviklerRepository.findTop3KunderMedFlestLeasingaftaler();
     }
-
 }
